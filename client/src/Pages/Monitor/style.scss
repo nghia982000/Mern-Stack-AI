@@ -1,0 +1,28 @@
+.monitorMain{
+    text-align: center;
+    .monitorVideo{
+        width: 500px;
+        height: 380px;
+        background-color: rgb(83, 43, 43);
+    }
+    .monitorControl{
+        .btn{
+            width: 70px;
+            height: 30px;
+            outline: none;
+            background-color: rgb(98, 172, 236);
+            color: #fff;
+        }
+    }
+    .listImage{
+        display: flex;
+        flex-wrap: wrap;
+        width:100%;
+        .item{
+            width: 25%;
+            img{
+                width: 100%;
+            }
+        }
+    }
+}

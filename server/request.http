@@ -1,0 +1,49 @@
+POST http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"123456789"
+}
+###
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"123456789"
+}
+###
+POSt http://localhost:5000/course/addCourse
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+
+{
+    "title":"title4",
+    "description":"description",
+    "image":"test",
+    "url":"google.com"
+}
+###
+GET http://localhost:5000/course/listCourse
+
+
+###
+GET http://localhost:5000/course/getCourse
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+
+###
+PUT http://localhost:5000/course/updateCourse/623c97d59051364a3ae007fa
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+
+{
+    "title":"title",
+    "description":"description",
+    "image":"image",
+    "url":"google.com"
+}
+
+###
+DELETE  http://localhost:5000/course/deleteCourse/6229c83b3373194860cc0c3b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
