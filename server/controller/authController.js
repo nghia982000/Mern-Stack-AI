@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
+
 class AuthController {
 
     async register(req, res) {
@@ -45,6 +46,7 @@ class AuthController {
         }
 
     }
+
     async login(req, res) {
         const { username, password } = req.body
         if (!username || !password) {
@@ -87,6 +89,7 @@ class AuthController {
             })
         }
     }
+    
     async checkLogin(req, res) {
         try {
             const user = await User.findById(req.userId).select('-password')

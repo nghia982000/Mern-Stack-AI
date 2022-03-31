@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import Webcam from 'react-webcam'
 
-const Monitor = () => {
+const Home = () => {
     const video = useRef()
     const webRef = useRef()
     const [image, setImage] = useState([])
@@ -70,4 +70,4 @@ const Monitor = () => {
     )
 }
 
-export default Monitor
+export default Home

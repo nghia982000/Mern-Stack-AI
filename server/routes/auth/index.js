@@ -7,6 +7,4 @@ router.get('/checkLogin',verifyToken,authController.checkLogin )
 router.post('/register', authController.register)
 router.post('/login', authController.login)
 
-
-
 module.exports = router

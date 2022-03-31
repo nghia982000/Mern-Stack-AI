@@ -2,6 +2,7 @@ const Course = require('../models/Course')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const { findOneAndUpdate } = require('../models/Course')
+
 class CourseController {
 
     async listCourse(req, res, next) {
@@ -65,6 +66,7 @@ class CourseController {
             })
         }
     }
+
     async updateCourse(req, res) {
         const { title, description, url,image}= req.body
         if (!title) {
@@ -109,6 +111,7 @@ class CourseController {
             })
         }
     }
+    
     async deleteCourse(req, res) {
         try {
             const courseDeleteCondition = {

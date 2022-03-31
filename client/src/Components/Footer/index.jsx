@@ -3,8 +3,8 @@ import './style.scss'
 
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <div className='test'>Footer</div>
   )
 }
-
+ 
 export default Footer
