@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "username":"admin",
+    "username":"admintest",
     "password":"123456789"
 }
 ###
@@ -10,13 +10,15 @@ POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"admin",
+    "username":"admintest",
     "password":"123456789"
 }
+
+
 ###
 POSt http://localhost:5000/course/addCourse
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjQ2YTc1NDVkMGM1MDNmNjU5NGE1NTgiLCJpYXQiOjE2NDg3OTc2NDB9.okTI_N3oYWNMdJcVlf9qSRFKvnYWcssBbVS-fWgsqGQ
 
 {
     "title":"title4",
@@ -30,12 +32,12 @@ GET http://localhost:5000/course/listCourse
 
 ###
 GET http://localhost:5000/course/getCourse
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjQ2YTc1NDVkMGM1MDNmNjU5NGE1NTgiLCJpYXQiOjE2NDg3OTc2NDB9.okTI_N3oYWNMdJcVlf9qSRFKvnYWcssBbVS-fWgsqGQ
 
 ###
-PUT http://localhost:5000/course/updateCourse/623c97d59051364a3ae007fa
+PUT http://localhost:5000/course/updateCourse/6246a7d85d0c503f6594a55c
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NDgxMzgwNTJ9.qeKyu7xsrOFiGZbP761dj7Lb07zChRXTX3WnBgNPyMM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjQ2YTc1NDVkMGM1MDNmNjU5NGE1NTgiLCJpYXQiOjE2NDg3OTc2NDB9.okTI_N3oYWNMdJcVlf9qSRFKvnYWcssBbVS-fWgsqGQ
 
 {
     "title":"title",

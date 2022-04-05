@@ -1,0 +1,38 @@
+.login{
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    width: 900px;
+    height: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    padding: 50px;
+    .loginImage{
+        flex: 50%;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        .loginImagePic{
+            width: 80%;
+        }
+        .loginImageCreate{
+
+        }
+    }
+    .loginForm{
+        flex: 50%;
+        hr{
+            margin: 0;
+            height: 0px;
+            color: black;
+        }
+        .loginFormTitle{
+            font-size: 35px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import 'antd/dist/antd.min.css'
 import Layout from './Layout'
 import Admin from './Pages/Admin'
 import Login from './Pages/Login'
