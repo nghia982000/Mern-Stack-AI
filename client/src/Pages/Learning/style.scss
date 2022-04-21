@@ -1,0 +1,22 @@
+.learing{
+    display: flex;
+    padding-top: 50px;
+    .learingLeft{
+        flex: 3;
+        padding-right: 10px;
+        .learingLeftVideo{
+            padding-top: 60%;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .learingLeftTitle{
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    }
+    .learingRight{
+        flex: 1;
+    }
+}

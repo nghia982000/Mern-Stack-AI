@@ -6,7 +6,12 @@ import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined,CloseCircleOutlined,CheckCircleOutlined } from '@ant-design/icons'
 import { notification } from 'antd'
 
-const Register = () => {
+import * as actions from '../../Store/Actions/auth'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { createStructuredSelector } from 'reselect'
+
+const Register = ({register}) => {
   const onFinish = (values) => {
     if (values.password !== values.confirmPassword) {
       notification.open({
@@ -16,7 +21,9 @@ const Register = () => {
     })
       return
     }
-    console.log('Success:', values)
+    console.log('Success:', {...values,role:'user'})
+    register({...values,role:'user'})
+
   }
   return (
     <div className='register'>
@@ -72,4 +79,12 @@ const Register = () => {
   )
 }
 
-export default Register
+const mapStateToProps = createStructuredSelector({
+
+})
+const mapDispatchToProps = (dispatch) => ({
+  register: (payload) => dispatch(actions.register(payload))
+})
+
+const withConnect = connect(mapStateToProps,mapDispatchToProps)
+export default compose(withConnect)(Register)

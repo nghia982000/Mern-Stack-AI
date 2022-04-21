@@ -1,5 +1,9 @@
 import { combineReducers } from "redux"
-import auth from './auth'
+import authReducers from './auth'
+import courseReducers from './course'
+import videoReducers from './video'
 export default combineReducers({
-    auth
+    authReducers,
+    courseReducers,
+    videoReducers
 })

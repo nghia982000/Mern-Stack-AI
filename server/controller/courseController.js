@@ -2,7 +2,12 @@ const Course = require('../models/Course')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const { findOneAndUpdate } = require('../models/Course')
-
+const cloudinary = require('cloudinary').v2
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key:  process.env.API_KEY,
+    api_secret:  process.env.API_SECRET
+})
 class CourseController {
 
     async listCourse(req, res, next) {
@@ -23,10 +28,27 @@ class CourseController {
         }
     }
 
+    // async getCourse(req, res) {
+    //     try {
+    //         const courses = await Course.find({ user: req.userId})
+    //         res.json({ success: true, courses })
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.status(500).json({
+    //             success: false,
+    //             message: 'Internal server error'
+    //         })
+    //     }
+    // }
     async getCourse(req, res) {
         try {
-            const courses = await Course.find({ user: req.userId })
-            res.json({ success: true, courses })
+            Course.find({})
+                .then(data => {
+                    res.json({ success: true, data })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         } catch (error) {
             console.log(error)
             res.status(500).json({
@@ -37,7 +59,7 @@ class CourseController {
     }
 
     async addCourse(req, res) {
-        const { title, description,url,image} = req.body
+        const { title, description, image, benefit } = req.body
         if (!title) {
             return res.status(400).json({
                 message: 'Title is required',
@@ -49,8 +71,9 @@ class CourseController {
                 title,
                 description,
                 image,
-                url: url.startsWith('https://') ? url : `https://${url}`,
-                user:req.userId
+                benefit,
+                // url: url.startsWith('https://') ? url : `https://${url}`,
+                // user: req.userId
             })
             await newCourse.save()
             res.json({
@@ -68,7 +91,7 @@ class CourseController {
     }
 
     async updateCourse(req, res) {
-        const { title, description, url,image}= req.body
+        const { title, description, url, image,benefit } = req.body
         if (!title) {
             return res.status(400).json({
                 message: 'Title is required',
@@ -80,11 +103,12 @@ class CourseController {
                 title,
                 description,
                 image,
-                url: url.startsWith('https://') ? url : `https://${url}`
+                benefit,
+                url
             }
             const courseUpdateCondition = {
                 _id: req.params.id,
-                user: req.userId
+                // user: req.userId
             }
             updateCourse = await Course.findOneAndUpdate(
                 courseUpdateCondition,
@@ -101,7 +125,7 @@ class CourseController {
             res.json({
                 success: true,
                 message: 'Excellent progress',
-                Course: updateCourse
+                course: updateCourse
             })
         } catch (error) {
             console.log(error)
@@ -111,12 +135,11 @@ class CourseController {
             })
         }
     }
-    
+
     async deleteCourse(req, res) {
         try {
             const courseDeleteCondition = {
-                _id: req.params.id,
-                user: req.userId
+                _id: req.params.id
             }
             const deletedCourse = await Course.findOneAndDelete(courseDeleteCondition)
             //User not authorised to update Course or Course not found
@@ -137,6 +160,18 @@ class CourseController {
                 message: 'Internal server error'
             })
         }
+    }
+
+    async testUpload(req, res, next) {
+        console.log(req.files.photo)
+        const file = req.files.photo
+        console.log(file)
+        cloudinary.uploader.upload(
+            file.tempFilePath,
+            { resource_type: "video" },
+            (err, result) => {
+                console.log(result)
+            })
     }
 }
 

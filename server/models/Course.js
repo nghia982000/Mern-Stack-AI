@@ -12,7 +12,7 @@ const CourseSchema = new Schema({
     image: {
         type: String,
     },
-    url: {
+    benefit: {
         type: String,
     },
     user: {

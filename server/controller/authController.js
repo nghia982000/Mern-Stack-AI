@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 class AuthController {
 
     async register(req, res) {
-        const { username, password } = req.body
+        const { username, password, role} = req.body
         if (!username || !password) {
             return res.status(400).json({
                 message: 'Missing username and/or password',
@@ -26,7 +26,8 @@ class AuthController {
             const hashedPassword = await argon2.hash(password)
             const newUser = new User({
                 username,
-                password: hashedPassword
+                password: hashedPassword,
+                role
             })
             await newUser.save()
             //Return token
@@ -78,7 +79,8 @@ class AuthController {
             res.json({
                 success: true,
                 message: 'User logged in successfully',
-                accessToken
+                accessToken,
+                role:user.role
             })
 
         } catch (error) {

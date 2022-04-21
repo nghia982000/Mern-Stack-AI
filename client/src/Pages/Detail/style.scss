@@ -1,0 +1,80 @@
+.detail{
+    display: flex;
+    padding-top: 50px;
+    .detailLeft{
+        flex: 2;
+        .detailLeftTitle{
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px 0;
+
+        }
+        .detailLeftDescription{
+
+        }
+        .detailLeftBenefit{
+            h3{
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 30px;
+            }
+            .benefitDetail{
+                display: flex;
+                flex-wrap: wrap;
+                p{
+                    flex: 50%;
+                }
+            }
+        }
+        .detailLeftContent{
+            h3{
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 30px;
+            }
+            .itemVideoCourse{
+                span{
+                    padding-right: 10px;
+                }
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+    }
+    .detailRight{
+        flex: 1;
+        padding-left: 30px;
+        .detailRightImg{
+            padding-top: 60%;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 20px;
+        }
+        .detailRightAction{
+            align-items: center;
+            p{
+                font-size: 30px;
+                font-weight: bold;
+                text-align: center;
+                color: #f05123;
+                margin: 20px 0;
+            }
+            .detailRightActionBtn{
+                background-color: #f05123;
+                color: aliceblue;
+                margin: 10px 0;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 10px;
+                cursor: pointer;
+                text-align: center;
+                &:hover{
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                }
+            }
+        }
+    }
+}

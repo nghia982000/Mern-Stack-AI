@@ -1,28 +1,46 @@
-.monitorMain{
-    text-align: center;
-    .monitorVideo{
-        width: 500px;
-        height: 380px;
-        background-color: rgb(83, 43, 43);
+
+.home{
+    .homeTitle{
+        font-size: 50px;
+        font-weight: 700;
     }
-    .monitorControl{
-        .btn{
-            width: 70px;
-            height: 30px;
-            outline: none;
-            background-color: rgb(98, 172, 236);
-            color: #fff;
+    .homeBxh{
+        padding-top: 50px;
+        .homeBxhContent{
+            margin: 0 -5px;
+            border: 1px solid #bab1b1;
+            border-radius: 15px;
+            padding:50px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            .homeBxhLeft{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 2;
+                img{
+                    width: 50%;
+                }
+            }
+            .homeBxhRight{
+                flex: 1;
+                height: 350px;
+            }
         }
     }
-    .listImage{
-        display: flex;
-        flex-wrap: wrap;
-        width:100%;
-        .item{
-            width: 25%;
-            img{
-                width: 100%;
-            }
+    .homeMonitoring{
+        padding-top: 50px;
+
+    }
+    .homeCourse{
+        padding-top: 50px;
+        .homeCourseQuote{
+            font-size: 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .homeCourseContent{
+            margin: 0 -10px;
         }
     }
 }

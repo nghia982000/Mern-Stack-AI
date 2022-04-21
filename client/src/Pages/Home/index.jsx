@@ -1,70 +1,75 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import Webcam from 'react-webcam'
+import ItemBxh from '../../Components/ItemBxh'
+import ItemMonitoring from '../../Components/ItemMonitoring'
+import ItemCourse from '../../Components/ItemCourse'
+import Slider from "react-slick"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+import imgBxh from '../../Assets/img/bxh.jpg'
 
 const Home = () => {
-    const video = useRef()
-    const webRef = useRef()
-    const [image, setImage] = useState([])
-    const captureImage = () => {
-        const img = webRef.current.getScreenshot()
-        setImage([...image, img])
+    const settingsBxh = {
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        vertical: true,
+        verticalSwiping: true,
+        speed: 500,
     }
-    // const init=async()=>{
-    //     console.log('init...')
-    //     await setUpCamera()
-    //     console.log('set up camrea success')
-    // }
-    // const setUpCamera=()=>{
-    //     return new Promise((resolve,reject)=>{
-    //         navigator.getUserMedia=navigator.getUserMedia||
-    //             navigator.webkitGetUserMedia||
-    //             navigator.MozGetUserMedia||
-    //             navigator.msGetUserMedia
-    //         if( navigator.getUserMedia){
-    //             navigator.getUserMedia(
-    //                 {video:true},
-    //                 stream=>{
-    //                     video.current.srcObject=stream
-    //                     video.current.addEventListener('loadeddata',resolve)
-    //                 },
-    //                 error=>reject(error)
-    //             )
-    //         }else{
-    //             reject()
-    //         }
-    //     })
-    // }
-    // useEffect(()=>{
-    //     // init()
-
-    //     return ()=>{
-
-    //     }
-    // },[])
+    const settingsCourse = {
+        infinite: false,
+        speed: 500,
+        slidesToScroll: 3,
+        slidesToShow: 3
+    }
     return (
-        <div className='monitorMain'>
-            {/* <video 
-            ref={video}
-            className='monitorVideo' 
-            autoPlay /> */}
-            <div className="webcam">
-                <Webcam ref={webRef} />
+        <div className='home'>
+            <div className="homeMonitoring">
+                <div className="homeMonitoringContent">
+                    <ItemMonitoring />
+                </div>
             </div>
-            <div className="monitorControl">
-                <button className='btn' onClick={() => captureImage()}>Chụp</button>
-            </div>
-            <div className="listImage">
-                {
-                    image.map((item, index) => {
-                        return (
-                            <div className="item">
-                                <img src={item} alt="" key={index} />
-                            </div>
-                        )
-                    })
-                }
+            <div className="homeCourse">
+                <div className="homeTitle">
+                    All course
+                </div>
+                <div className="homeCourseQuote">
+                    If you fall asleep now, you will dream. If you study now, you will live your dream.
+                </div>
+                <div className="homeCourseContent">
+                    <Slider {...settingsCourse}>
+                        <ItemCourse type='itemCourseHome' />
+                        <ItemCourse type='itemCourseHome' />
+                        <ItemCourse type='itemCourseHome' />
+                        <ItemCourse type='itemCourseHome' />
+                        <ItemCourse type='itemCourseHome' />
+                        <ItemCourse type='itemCourseHome' />
+                    </Slider>
 
+                </div>
+            </div>
+            <div className="homeBxh">
+                <div className="homeTitle">
+                    BXH
+                </div>
+                <div className="homeBxhContent">
+                    <div className="homeBxhLeft">
+                        <img src={imgBxh} alt="" />
+                    </div>
+                    <div className="homeBxhRight">
+                        <Slider {...settingsBxh} style={{ height: '100%' }}>
+                            <ItemBxh></ItemBxh>
+                            <ItemBxh></ItemBxh>
+                            <ItemBxh></ItemBxh>
+                            <ItemBxh></ItemBxh>
+                            <ItemBxh></ItemBxh>
+                            <ItemBxh></ItemBxh>
+                        </Slider>
+                    </div>
+                </div>
             </div>
         </div>
     )

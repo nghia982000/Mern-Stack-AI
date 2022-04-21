@@ -1,0 +1,79 @@
+.itemCourseHome{
+    margin: 10px;
+    
+    transition: transform linear 0.2s;
+    will-change: transform;
+    &:hover{
+        transform: translateY(-2px)
+    }
+    .itemCoursePicture{
+        padding-top: 100%;
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        position: relative;
+        border: 1px solid #c7b9b9;
+        cursor: pointer;
+        &:hover .itemCoursePictureAc{
+            display: block;
+        }
+        .itemCoursePictureAc{
+            position: absolute;
+            top: 50%;
+            background-color: rgb(184, 160, 42);
+            padding:5px 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            display: none;
+            border-radius: 5px;
+            color: aliceblue;
+        }
+    }
+    .itemCourseTitle{
+        font-size: 25px;
+        font-weight: 600;
+    }
+}
+.itemCourse{
+    margin: 10px;
+    flex: 22.5%;
+    max-width: 23%;
+    transition: transform linear 0.2s;
+    will-change: transform;
+    &:hover{
+        transform: translateY(-2px)
+    }
+    .itemCoursePicture{
+        padding-top: 60%;
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        position: relative;
+        border: 1px solid #c7b9b9;
+        cursor: pointer;
+        &:hover .itemCoursePictureAc{
+            display: block;
+        }
+        .itemCoursePictureAc{
+            position: absolute;
+            top: 50%;
+            background-color: rgb(184, 160, 42);
+            padding:5px 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            display: none;
+            border-radius: 5px;
+            color: aliceblue;
+        }
+    }
+    .itemCourseTitle{
+        font-size: 25px;
+        font-weight: 600;
+    }
+}
