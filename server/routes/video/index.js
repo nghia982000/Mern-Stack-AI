@@ -9,6 +9,7 @@ router.get('/getVideo/:id', verifyToken, videoController.getVideo)
 // router.get('/listCourse', courseController.listCourse)
 router.put('/updateVideo', verifyToken,decentralization, videoController.updateVideo)
 router.delete('/deleteVideo/:id',verifyToken,decentralization, videoController.deleteVideo)
+router.get('/model',videoController.getModel)
 
 
 module.exports = router

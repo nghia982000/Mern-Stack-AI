@@ -2,6 +2,7 @@ const Video = require('../models/video')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const { findOneAndUpdate } = require('../models/video')
+const modelAI= require ('../Model/model.json')
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -23,7 +24,17 @@ class VideoController {
             })
         }
     }
-
+    async getModel(req, res) {
+        try {
+            res.json( modelAI )
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
     async createVideo(req, res) {
         const { title, lecture, id } = req.body
         const video = req.files.video
