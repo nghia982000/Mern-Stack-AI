@@ -40,7 +40,7 @@ const Layout = ({ checkLoginRequest, selectAuthLoading, selectIsAuthenticated })
                     <Route path="/" element={<Home />} />
                     <Route path="/course" element={<Course />} />
                     <Route path="/myCourse" element={<MyCourse />} />
-                    <Route path="/detail" element={<Detail />} />
+                    <Route path="/detail/:id" element={<Detail />} />
                     <Route path="/learning" element={<Learning />} />
                     <Route path="/monitoring" element={<Monitoring />} />
                 </Routes>

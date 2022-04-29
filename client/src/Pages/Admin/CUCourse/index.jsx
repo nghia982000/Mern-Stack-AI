@@ -38,7 +38,7 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
             formModal.setFieldsValue({
                 title: selectDetailCourse.title,
                 description: selectDetailCourse.description,
-                benefit: selectDetailCourse.benefit,
+                benefit: selectDetailCourse.benefit.join('\n'),
                 image: selectDetailCourse.image,
             })
         }

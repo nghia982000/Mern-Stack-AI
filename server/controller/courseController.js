@@ -71,7 +71,7 @@ class CourseController {
                 title,
                 description,
                 image,
-                benefit,
+                benefit:benefit.split('\n'),
                 // url: url.startsWith('https://') ? url : `https://${url}`,
                 // user: req.userId
             })

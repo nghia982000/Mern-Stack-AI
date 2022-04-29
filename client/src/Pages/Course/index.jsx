@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
 
-const Course = () => {
+import * as actions from '../../Store/Actions/course'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectListCourse } from '../../Store/Selectors/course'
+
+const Course = ({ listCourse, dataCourse }) => {
+  useEffect(() => {
+    listCourse()
+  }
+    , [])
   return (
     <div className='course'>
       <div className="catagoryCourse">
@@ -23,19 +33,22 @@ const Course = () => {
         </div>
       </div>
       <div className="allCourse">
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
-          <ItemCourse type='itemCourse'/>
+        {
+          dataCourse.map((item, index) => {
+            return (<ItemCourse key={index} type='itemCourse' item={item} />)
+          })
+        }
       </div>
     </div>
   )
 }
 
-export default Course
+const mapStateToProps = createStructuredSelector({
+  dataCourse: selectListCourse,
+})
+const mapDispatchToProps = (dispatch) => ({
+  listCourse: () => dispatch(actions.listCourse())
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(Course)

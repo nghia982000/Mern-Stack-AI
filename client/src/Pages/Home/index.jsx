@@ -9,7 +9,17 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import imgBxh from '../../Assets/img/bxh.jpg'
 
-const Home = () => {
+import * as actions from '../../Store/Actions/course'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectListCourse } from '../../Store/Selectors/course'
+
+const Home = ({listCourse,dataCourse}) => {
+    useEffect(()=>{
+        listCourse()
+    }
+    ,[])
     const settingsBxh = {
         dots: true,
         infinite: true,
@@ -41,12 +51,11 @@ const Home = () => {
                 </div>
                 <div className="homeCourseContent">
                     <Slider {...settingsCourse}>
-                        <ItemCourse type='itemCourseHome' />
-                        <ItemCourse type='itemCourseHome' />
-                        <ItemCourse type='itemCourseHome' />
-                        <ItemCourse type='itemCourseHome' />
-                        <ItemCourse type='itemCourseHome' />
-                        <ItemCourse type='itemCourseHome' />
+                        {
+                            dataCourse.map((item,index)=>{
+                                return (<ItemCourse key ={index} type='itemCourseHome' item={item} />)
+                            })
+                        }
                     </Slider>
 
                 </div>
@@ -75,4 +84,12 @@ const Home = () => {
     )
 }
 
-export default Home
+const mapStateToProps = createStructuredSelector({
+    dataCourse: selectListCourse,
+})
+const mapDispatchToProps = (dispatch) => ({
+    listCourse: () => dispatch(actions.listCourse())
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(Home)

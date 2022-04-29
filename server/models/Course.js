@@ -13,7 +13,7 @@ const CourseSchema = new Schema({
         type: String,
     },
     benefit: {
-        type: String,
+        type: Array,
     },
     user: {
         type:Schema.Types.ObjectId,

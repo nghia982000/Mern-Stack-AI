@@ -1,29 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './style.scss'
 import { Collapse } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
 import { CheckOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { useParams } from 'react-router-dom'
+
+import * as actions from '../../Store/Actions/course'
+import * as actionsVideo from '../../Store/Actions/video'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectDetailCourse, } from '../../Store/Selectors/course'
+import { selectVideos } from '../../Store/Selectors/video'
 
 const { Panel } = Collapse
 
-const Detail = () => {
+const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos }) => {
+  const { id } = useParams()
+  useEffect(() => {
+    detailCourse(id)
+    getVideo(id)
+  }, [])
   const text = 'Chưa cập nhật'
   return (
     <div className='detail'>
       <div className="detailLeft">
         <div className="detailLeftTitle">
-          Xây Dựng Website với ReactJS
+          {selectDetailCourse.title}
         </div>
         <div className="detailLeftDescription">
-          Khóa học ReactJS từ cơ bản tới nâng cao, kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS. Cuối khóa học này bạn sẽ sở hữu một dự án giống Tiktok.com, bạn có thể tự tin đi xin việc khi nắm chắc các kiến thức được chia sẻ trong khóa học này.
+          {selectDetailCourse.description}
         </div>
         <div className="detailLeftBenefit">
           <h3>Bạn sẽ học được gì?</h3>
           <div className="benefitDetail">
-            <p><CheckOutlined style={{ color: '#f05123' }} /> Hiểu về khái niệm SPA/MPA</p>
-            <p><CheckOutlined style={{ color: '#f05123' }} /> Hiểu cách ReactJS hoạt động</p>
-            <p><CheckOutlined style={{ color: '#f05123' }} /> Biết cách tối ưu hiệu năng ứng dụng</p>
-            <p><CheckOutlined style={{ color: '#f05123' }} /> Hiểu rõ ràng Redux workflow</p>
+            {
+              selectDetailCourse.benefit.map((item, index) => {
+                return (
+                  <p key={index}  ><CheckOutlined key={index} style={{ color: '#f05123' }} /> {item}</p>
+                )
+              })
+            }
           </div>
         </div>
         <div className="detailLeftContent">
@@ -32,7 +49,7 @@ const Detail = () => {
             <Panel header="Giới thiệu" key="1">
               <div className="itemVideoCourse">
                 <span>
-                  <PlayCircleOutlined style={{ color: '#f9b9a7' }}/>
+                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
                   1. ReactJS là gì? Tại sao nên học ReactJS?
                 </span>
                 <span>10:41</span>
@@ -51,8 +68,7 @@ const Detail = () => {
         </div>
       </div>
       <div className="detailRight">
-        <div className="detailRightImg" style={{ backgroundImage: `url(${imgCourse})` }}>
-
+        <div className="detailRightImg" style={{ backgroundImage: `url(${selectDetailCourse.image})`}}>
         </div>
         <div className="detailRightAction">
           <p>999đ</p>
@@ -64,9 +80,18 @@ const Detail = () => {
           </div>
         </div>
       </div>
-
     </div>
   )
 }
 
-export default Detail
+const mapStateToProps = createStructuredSelector({
+  selectDetailCourse,
+  selectVideos
+})
+const mapDispatchToProps = (dispatch) => ({
+  detailCourse: (payload) => dispatch(actions.detailCourse(payload)),
+  getVideo: (payload) => dispatch(actionsVideo.getVideo(payload))
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(Detail)
