@@ -8,6 +8,9 @@ import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import imgBxh from '../../Assets/img/bxh.jpg'
+import {
+    TrophyOutlined
+} from "@ant-design/icons"
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -15,25 +18,26 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { selectListCourse } from '../../Store/Selectors/course'
 
-const Home = ({listCourse,dataCourse}) => {
-    useEffect(()=>{
+const Home = ({ listCourse, dataCourse }) => {
+    useEffect(() => {
         listCourse()
-    }
-    ,[])
+    }, [])
     const settingsBxh = {
-        dots: true,
         infinite: true,
         slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToScroll: 1,
         vertical: true,
         verticalSwiping: true,
-        speed: 500,
+        className: 'sliderBxh',
+        autoplay: true,
+        autoplaySpeed: 2000,
+        pauseOnHover: true
     }
     const settingsCourse = {
         infinite: false,
         speed: 500,
-        slidesToScroll: 3,
-        slidesToShow: 3
+        slidesToScroll: 4,
+        slidesToShow: 4
     }
     return (
         <div className='home'>
@@ -52,8 +56,8 @@ const Home = ({listCourse,dataCourse}) => {
                 <div className="homeCourseContent">
                     <Slider {...settingsCourse}>
                         {
-                            dataCourse.map((item,index)=>{
-                                return (<ItemCourse key ={index} type='itemCourseHome' item={item} />)
+                            dataCourse.map((item, index) => {
+                                return (<ItemCourse key={index} type='itemCourseHome' item={item} />)
                             })
                         }
                     </Slider>
@@ -69,14 +73,23 @@ const Home = ({listCourse,dataCourse}) => {
                         <img src={imgBxh} alt="" />
                     </div>
                     <div className="homeBxhRight">
-                        <Slider {...settingsBxh} style={{ height: '100%' }}>
-                            <ItemBxh></ItemBxh>
-                            <ItemBxh></ItemBxh>
-                            <ItemBxh></ItemBxh>
-                            <ItemBxh></ItemBxh>
-                            <ItemBxh></ItemBxh>
-                            <ItemBxh></ItemBxh>
-                        </Slider>
+                        <div className="homeBxhRighttitle">
+                            Set your target and keep trying until you reach it
+                        </div>
+                        <div className="homeBxhRightList">
+                            <p> <TrophyOutlined /> Top</p>
+                            <Slider {...settingsBxh}>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                                <ItemBxh></ItemBxh>
+                            </Slider>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,7 +98,7 @@ const Home = ({listCourse,dataCourse}) => {
 }
 
 const mapStateToProps = createStructuredSelector({
-    dataCourse: selectListCourse,
+    dataCourse: selectListCourse
 })
 const mapDispatchToProps = (dispatch) => ({
     listCourse: () => dispatch(actions.listCourse())

@@ -7,6 +7,7 @@ import Detail from '../Pages/Detail'
 import Learning from '../Pages/Learning'
 import MyCourse from '../Pages/MyCourse'
 import Course from '../Pages/Course'
+import Account from '../Pages/Account'
 import './style.scss'
 
 import * as actions from '../Store/Actions/auth'
@@ -15,11 +16,10 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {
     selectAuthLoading,
-    selectIsAuthenticated
 } from '../Store/Selectors/auth'
 import Monitoring from '../Pages/Monitoring'
 
-const Layout = ({ checkLoginRequest, selectAuthLoading, selectIsAuthenticated }) => {
+const Layout = ({ checkLoginRequest, selectAuthLoading }) => {
     useEffect(() => {
         checkLoginRequest()
     }, [])
@@ -31,7 +31,7 @@ const Layout = ({ checkLoginRequest, selectAuthLoading, selectIsAuthenticated })
     // // if (!selectIsAuthenticated) {
     // //     window.location.href = '/login'
     // // }
-    console.log(selectIsAuthenticated)
+    // console.log(selectIsAuthenticated)
     return (
         <>
             <Header />
@@ -41,8 +41,9 @@ const Layout = ({ checkLoginRequest, selectAuthLoading, selectIsAuthenticated })
                     <Route path="/course" element={<Course />} />
                     <Route path="/myCourse" element={<MyCourse />} />
                     <Route path="/detail/:id" element={<Detail />} />
-                    <Route path="/learning" element={<Learning />} />
+                    <Route path="/learning/:id" element={<Learning />} />
                     <Route path="/monitoring" element={<Monitoring />} />
+                    <Route path="/account" element={<Account />} />
                 </Routes>
             </div>
             <Footer />
@@ -52,7 +53,6 @@ const Layout = ({ checkLoginRequest, selectAuthLoading, selectIsAuthenticated })
 
 const mapStateToProps = createStructuredSelector({
     selectAuthLoading,
-    selectIsAuthenticated
 })
 const mapDispatchToProps = (dispatch) => ({
     checkLoginRequest: () => dispatch(actions.checkLoginRequest()),

@@ -54,7 +54,8 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
                 console.log('ko có url')
                 formData.append('video', values.video.file)
             }else{
-                formData.append('url', values.url)
+                formData.append('url', selectDetailVideo.url)
+                formData.append('duration', selectDetailVideo.duration)
                 console.log('có url')
             }
             updateVideo(formData)

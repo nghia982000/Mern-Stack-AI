@@ -17,11 +17,12 @@ function* fetchLoginSaga(action) {
         console.log(response)
         if (response.data.success) {
             sessionStorage.setItem('token',response.data.accessToken)
-            if(response.data.role==='manager'){
-                window.location.href='/admin/course'
-            }else{
-                window.location.href='/'
-            }
+            yield put(checkLoginSuccess(response.data.user))
+            // if(response.data.role==='manager'){
+            //     window.location.href='/admin/course'
+            // }else{
+            //     window.location.href='/'
+            // }
         }
 
     } catch (err) {
@@ -67,8 +68,10 @@ export function* sagaRegister() {
 
 function* fetchCheckLoginSaga() {
     if(sessionStorage['token']){
-        console.log('test1')
         setAuthToken(sessionStorage['token'])
+    }
+    if(!sessionStorage['token']){
+        setAuthToken(null)
     }
     try {
         const response = yield call(apiAuth.fetchCheckLogin)

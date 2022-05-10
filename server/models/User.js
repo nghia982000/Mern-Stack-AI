@@ -15,6 +15,9 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    point:{
+        type: Number,
+    },
     createdAt: {
         type: Date,
         default: Date.now()

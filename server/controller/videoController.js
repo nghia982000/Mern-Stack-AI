@@ -32,11 +32,13 @@ class VideoController {
                 { resource_type: "video" },
                 (err, result) => result
             )
+            console.log(urlVideo)
             const newVideo = new Video({
                 title,
                 lecture,
                 url: urlVideo.url,
-                course: id
+                course: id,
+                duration:urlVideo.duration
             })
             await newVideo.save()
             res.json({
@@ -55,7 +57,7 @@ class VideoController {
 
     async updateVideo(req, res) {
         // const video = req.files.video
-        const { title, lecture, id, url } = req.body
+        const { title, lecture, id, url,duration} = req.body
         const videoUrl = {
             url
         }
@@ -68,11 +70,13 @@ class VideoController {
             )
         }
         console.log(videoUrl.url.url || url)
+        console.log(videoUrl)
         let updateVideo = {
             title,
             lecture,
             id,
-            url: videoUrl.url.url || url
+            url: videoUrl.url.url || url,
+            duration:videoUrl.url.duration||duration
         }
         const videoUpdateCondition = {
             _id: id,

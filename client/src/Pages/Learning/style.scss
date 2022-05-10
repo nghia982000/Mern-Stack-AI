@@ -5,7 +5,8 @@
         flex: 3;
         padding-right: 10px;
         .learingLeftVideo{
-            padding-top: 60%;
+            width: 100%;
+            height: 100%;
             background-position: top center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -18,5 +19,13 @@
     }
     .learingRight{
         flex: 1;
+        .itemVideoLearing{
+            cursor: pointer;
+            span{
+                padding-right: 10px;
+            }
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }

@@ -8,23 +8,43 @@
         padding-top: 50px;
         .homeBxhContent{
             margin: 0 -5px;
-            border: 1px solid #bab1b1;
             border-radius: 15px;
             padding:50px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             display: flex;
+            justify-content: space-between;
             .homeBxhLeft{
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                flex: 2;
+                flex: 1.5;
                 img{
-                    width: 50%;
+                    width: 100%;
                 }
             }
             .homeBxhRight{
-                flex: 1;
-                height: 350px;
+                flex: 2;
+                padding-left: 30px;
+                .homeBxhRighttitle{
+                    font-size: 50px;
+                    font-weight: bold;
+                }
+                .homeBxhRightList{
+                    display: flex;
+                    flex-flow: column;
+                    align-items: center;
+                    width: 700px;
+                    p{
+                        font-size: 30px;
+                        color: rgb(200, 228, 42);
+                        margin-bottom: 0;
+                    }
+                    .sliderBxh{
+                        box-shadow: 0 2px 5px #222222;
+                        border-radius: 5px;
+                        width: 300px;
+                        padding: 20px;
+                    }
+                }
             }
         }
     }

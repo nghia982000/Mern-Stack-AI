@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import './style.scss'
 import { Collapse } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
@@ -10,18 +10,41 @@ import * as actionsVideo from '../../Store/Actions/video'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { selectDetailCourse, } from '../../Store/Selectors/course'
+import { selectDetailCourse, selectFavoriteCourse, selectBoughtCourse } from '../../Store/Selectors/course'
 import { selectVideos } from '../../Store/Selectors/video'
 
 const { Panel } = Collapse
 
-const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos }) => {
+const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favoriteCourse, selectFavoriteCourse, deleteFavorite, buyCourseRequest, selectBoughtCourse }) => {
   const { id } = useParams()
+  const [btnFavorite, setBtnFavorite] = useState(selectFavoriteCourse.some((item) => {
+    return item._id === id
+  }))
+  const [btnBuyCourse, setBtnBuyCourse] = useState(selectBoughtCourse.some((item) => {
+    return item._id === id
+  }))
+  useEffect(() => {
+    setBtnFavorite(selectFavoriteCourse.some((item) => {
+      return item._id === id
+    }))
+  }, [selectFavoriteCourse, id])
+  useEffect(() => {
+    setBtnBuyCourse(selectBoughtCourse.some((item) => {
+      return item._id === id
+    }))
+  }, [selectBoughtCourse, id])
   useEffect(() => {
     detailCourse(id)
     getVideo(id)
-  }, [])
-  const text = 'Chưa cập nhật'
+  }, [id])
+  const formatTime = (timer) => {
+    const getSeconds = `0${Math.floor(timer % 60)}`.slice(-2)
+    const minutes = `${Math.floor(timer / 60)}`
+    const getMinutes = `0${minutes % 60}`.slice(-2)
+    const getHours = `0${Math.floor(timer / 3600)}`.slice(-2)
+
+    return `${getHours} : ${getMinutes} : ${getSeconds}`
+  }
   return (
     <div className='detail'>
       <div className="detailLeft">
@@ -35,7 +58,7 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos }) =>
           <h3>Bạn sẽ học được gì?</h3>
           <div className="benefitDetail">
             {
-              selectDetailCourse.benefit.map((item, index) => {
+              selectDetailCourse.benefit && selectDetailCourse.benefit.map((item, index) => {
                 return (
                   <p key={index}  ><CheckOutlined key={index} style={{ color: '#f05123' }} /> {item}</p>
                 )
@@ -46,51 +69,75 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos }) =>
         <div className="detailLeftContent">
           <h3>Nội dung khóa học</h3>
           <Collapse >
-            <Panel header="Giới thiệu" key="1">
-              <div className="itemVideoCourse">
-                <span>
-                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                  1. ReactJS là gì? Tại sao nên học ReactJS?
-                </span>
-                <span>10:41</span>
-              </div>
-            </Panel>
-            <Panel header="Ôn lại ES6 " key="2">
-              <p>{text}</p>
-            </Panel>
-            <Panel header="React, React-DOM" key="3">
-              <p>{text}</p>
-            </Panel>
-            <Panel header="JSX, Component, Props" key="4">
-              <p>{text}</p>
-            </Panel>
+            {
+              selectVideos.map((item, index) => {
+                return (
+                  <Panel header={item.lecture} key={index}>
+                    <div className="itemVideoCourse">
+                      <span>
+                        <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                        {item.title}
+                      </span>
+                      <span>{formatTime(item.duration)}</span>
+                    </div>
+                  </Panel>
+                )
+              })
+            }
           </Collapse>
         </div>
       </div>
       <div className="detailRight">
-        <div className="detailRightImg" style={{ backgroundImage: `url(${selectDetailCourse.image})`}}>
+        <div className="detailRightImg" style={{ backgroundImage: `url(${selectDetailCourse.image})` }}>
         </div>
         <div className="detailRightAction">
-          <p>999đ</p>
-          <div className="detailRightActionBtn">
-            Thêm vào yêu thích
-          </div>
-          <div className="detailRightActionBtn">
-            Mua khóa học
-          </div>
+          {
+            !btnBuyCourse && (
+              <p>{selectDetailCourse.point}Coin</p>
+            )
+          }
+
+          {
+            !btnFavorite && (
+              <div className="detailRightActionBtn" onClick={() => {
+                favoriteCourse({ id })
+              }}>
+                Thêm vào yêu thích
+              </div>
+            )
+          }
+          {
+            btnFavorite && (
+              <div className="detailRightActionBtn" onClick={() => deleteFavorite(id)}>
+                Xóa khỏi yêu thích
+              </div>
+            )
+          }
+          {
+            !btnBuyCourse && (
+              <div className="detailRightActionBtn" onClick={() => buyCourseRequest({ id })} >
+                Mua khóa học
+              </div>
+            )
+          }
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
 const mapStateToProps = createStructuredSelector({
   selectDetailCourse,
-  selectVideos
+  selectVideos,
+  selectFavoriteCourse,
+  selectBoughtCourse
 })
 const mapDispatchToProps = (dispatch) => ({
   detailCourse: (payload) => dispatch(actions.detailCourse(payload)),
-  getVideo: (payload) => dispatch(actionsVideo.getVideo(payload))
+  deleteFavorite: (payload) => dispatch(actions.deleteFavorite(payload)),
+  favoriteCourse: (payload) => dispatch(actions.favoriteCourse(payload)),
+  buyCourseRequest: (payload) => dispatch(actions.buyCourseRequest(payload)),
+  getVideo: (payload) => dispatch(actionsVideo.getVideo(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

@@ -80,7 +80,12 @@ class AuthController {
                 success: true,
                 message: 'User logged in successfully',
                 accessToken,
-                role:user.role
+                role:user.role,
+                user:{
+                    _id:user._id,
+                    username:user.username,
+                    role:user.role
+                }
             })
 
         } catch (error) {

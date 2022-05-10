@@ -1,0 +1,11 @@
+.MyCourse{
+    .myCourseTitle{
+        font-size: 40px;
+        font-weight: 600;
+    }
+    .allCourse{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+    }
+}

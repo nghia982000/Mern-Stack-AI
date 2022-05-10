@@ -4,5 +4,7 @@ export const INIT_STATE={
     editState:{
         create:false,
         update:false
-    }
+    },
+    favorite:[],
+    course:[]
 }

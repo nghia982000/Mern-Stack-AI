@@ -12,10 +12,13 @@ const Course = ({ listCourse, dataCourse }) => {
   useEffect(() => {
     listCourse()
   }
-    , [])
+  ,[])
   return (
     <div className='course'>
       <div className="catagoryCourse">
+        <div className="itemCatagory active">
+          Tất cả
+        </div>
         <div className="itemCatagory">
           Lập trình
         </div>

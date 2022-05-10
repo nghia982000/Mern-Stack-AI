@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import ItemCourse from '../../Components/ItemCourse'
+import './style.scss'
 
-const MyCourse = () => {
+import * as actions from '../../Store/Actions/course'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectBoughtCourse } from '../../Store/Selectors/course'
+
+const MyCourse = ({selectBoughtCourse }) => {
   return (
-    <div className='test'>This is MyCourse Page</div>
+    <div className='MyCourse'>
+      <div className="myCourseTitle">
+        My Course
+      </div>
+      <div className="allCourse">
+        {
+          selectBoughtCourse.map((item, index) => {
+            return (<ItemCourse key={index} type='itemCourse' item={item} />)
+          })
+        }
+      </div>
+    </div>
   )
 }
 
-export default MyCourse
+const mapStateToProps = createStructuredSelector({
+  selectBoughtCourse
+})
+const mapDispatchToProps = (dispatch) => ({
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(MyCourse)

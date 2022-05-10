@@ -4,6 +4,9 @@ import {
     CHECKLOGINSUCCESS,
     CHECKLOGINFAILURE
 } from '../Constants/auth'
+import {
+    BUY_COURSE_SUCCESS
+} from '../Constants/course'
 
 export default function authReducers(state=INIT_STATE.auth,action){
     switch (action.type){
@@ -19,6 +22,11 @@ export default function authReducers(state=INIT_STATE.auth,action){
                 authLoading:true,
                 isAuthenticated:true,
                 user:action.payload
+            }
+        case BUY_COURSE_SUCCESS:
+            return {
+                ...state,
+                user:{...state.user,point:action.payload.point}
             }
         case CHECKLOGINFAILURE:
             return {

@@ -13,6 +13,9 @@ const VideoSchema = new Schema({
     url: {
         type: String,
     },  
+    duration:{
+        type: Number,
+    },
     course: {
         type:Schema.Types.ObjectId,
         ref:'courses'

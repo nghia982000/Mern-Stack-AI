@@ -11,24 +11,32 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {
   selectAuthLoading,
-  selectIsAuthenticated
+  selectIsAuthenticated,
+  selectUser
 } from '../../Store/Selectors/auth'
 
-const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthenticated }) => {
+const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthenticated,selectUser }) => {
+  const [token,setToken]=useState()
   const onFinish = (values) => {
     console.log('Success:', values)
     login(values)
   }
   const navigate = useNavigate()
   useEffect(() => {
-    checkLoginRequest()
-
-  }, [])
-  useEffect(() => {
-    if (selectIsAuthenticated) {
-      navigate('/admin/course')
+    if(selectUser){
+      checkLoginRequest()
     }
-  }, [selectIsAuthenticated])
+  }, [selectUser])
+  useEffect(() => {
+    if(selectUser){
+      if (selectUser.role ==='user') {
+        navigate('/')
+      }
+      if (selectUser.role ==='manager') {
+        navigate('/admin/course')
+      }
+    }
+  }, [selectUser])
   return (
     <>
       <div className='login'>
@@ -36,7 +44,7 @@ const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthentica
           <img className="loginImagePic" src={imgLogin}>
           </img>
           <div className="loginImageCreate">
-            <Link to="/Register" style={{ color: '#222222', fontWeight: 'bold' }}>Create an account</Link>
+            <Link to="/Register" style={{color: '#222222', fontWeight: 'bold' }}>Create an account</Link>
           </div>
         </div>
         <div className="loginForm">
@@ -86,7 +94,8 @@ const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthentica
 
 const mapStateToProps = createStructuredSelector({
   selectAuthLoading,
-  selectIsAuthenticated
+  selectIsAuthenticated,
+  selectUser
 })
 const mapDispatchToProps = (dispatch) => ({
   checkLoginRequest: () => dispatch(actions.checkLoginRequest()),

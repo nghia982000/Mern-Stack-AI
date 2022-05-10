@@ -5,6 +5,11 @@
         width: 50%;
         flex-wrap: wrap;
         margin: 0 -10px;
+        .active{
+            color: aliceblue;
+            background-color: #ab7c24;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
         .itemCatagory{
             font-size: 25px;
             border: 1px solid #decfcf;

@@ -6,7 +6,15 @@ import {
     DETAIL_COURSE,
     CREATE_STATE,
     UPDATE_STATE,
+    SAVE_FAVORITE,
+    DELETE_FAVORITE_SUCCESS,
+    FAVORITE_COURSE_SUCCESS,
+    SAVE_BOUGHT_COURSE,
+    BUY_COURSE_SUCCESS
 } from '../Constants/course'
+import {
+    CHECKLOGINFAILURE
+} from '../Constants/auth'
 import produce from "immer"
 
 export default function courseReducers(state = INIT_STATE, action) {
@@ -31,6 +39,29 @@ export default function courseReducers(state = INIT_STATE, action) {
                 break
             case UPDATE_STATE:
                 draft.editState.update = action.payload
+                break
+            case SAVE_FAVORITE:
+                draft.favorite = action.payload
+                break
+            case DELETE_FAVORITE_SUCCESS:
+                draft.favorite = state.favorite.filter(course => course._id !== action.payload)
+                break
+            case FAVORITE_COURSE_SUCCESS:
+                const newArr = [...state.favorite]
+                newArr.push(action.payload)
+                draft.favorite = newArr
+                break
+            case CHECKLOGINFAILURE:
+                draft.favorite = []
+                draft.course = []
+                break
+            case SAVE_BOUGHT_COURSE:
+                draft.course = action.payload
+                break
+            case BUY_COURSE_SUCCESS:
+                const newArrCourse = [...state.course]
+                newArrCourse.push(action.payload.data)
+                draft.course = newArrCourse
                 break
             default:
                 return state

@@ -7,7 +7,17 @@ import {
     UPDATE_COURSE_SUCCESS,
     DETAIL_COURSE,
     CREATE_STATE,
-    UPDATE_STATE
+    UPDATE_STATE,
+    DELETE_FAVORITE,
+    FAVORITE_COURSE,
+    GET_FAVORITE,
+    SAVE_FAVORITE,
+    DELETE_FAVORITE_SUCCESS,
+    FAVORITE_COURSE_SUCCESS,
+    BUY_COURSE_REQUEST,
+    BUY_COURSE_SUCCESS,
+    GET_BOUGHT_COURSE,
+    SAVE_BOUGHT_COURSE
 } from '../Constants/course'
 export function listCourse(){
     return{
@@ -59,6 +69,65 @@ export function updateState(payload){
 export function createState(payload){
     return{
         type: CREATE_STATE,
+        payload
+    }
+}
+export function deleteFavorite(payload){
+    return{
+        type: DELETE_FAVORITE,
+        payload
+    }
+}
+export function deleteFavoriteSuccess(payload){
+    return{
+        type: DELETE_FAVORITE_SUCCESS,
+        payload
+    }
+}
+export function favoriteCourse(payload){
+    return{
+        type: FAVORITE_COURSE,
+        payload
+    }
+}
+export function favoriteCourseSuccess(payload){
+    return{
+        type: FAVORITE_COURSE_SUCCESS,
+        payload
+    }
+}
+export function getFavorite(){
+    return{
+        type: GET_FAVORITE
+    }
+}
+export function saveFavorite(payload){
+    return{
+        type: SAVE_FAVORITE,
+        payload
+    }
+}
+export function buyCourseRequest(payload){
+    return{
+        type: BUY_COURSE_REQUEST,
+        payload
+    }
+}
+export function buyCourseSuccess(payload){
+    return{
+        type: BUY_COURSE_SUCCESS,
+        payload
+    }
+}
+export function getBoughtCourse(){
+    return{
+        type: GET_BOUGHT_COURSE,
+        
+    }
+}
+export function saveBoughtCourse(payload){
+    return{
+        type: SAVE_BOUGHT_COURSE,
         payload
     }
 }

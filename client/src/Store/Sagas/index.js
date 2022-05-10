@@ -9,13 +9,21 @@ export default function* () {
     Auth.sagaLogin(),
     Auth.sagaRegister(),
     Auth.sagaCheckLogin(),
+
     Course.sagaListCourse(),
     Course.sagaDeleteCourse(),    
     Course.sagaCreateCourse(),
     Course.sagaUpdateCourse(),
+    Course.sagaFavoriteCourse(),
+    Course.sagaDeleteFavorite(),
+    Course.sagaGetFavorite(),
+    Course.sagaBuyCourse(),
+    Course.sagaGetBoughtCourse(),
+
     Video.sagaCreateVideo(),
     Video.sagaGetVideo(),
     Video.sagaDeleteVideo(),
     Video.sagaUpdateVideo(),
+
   ])
 }
