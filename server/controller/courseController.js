@@ -8,6 +8,12 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
 })
+// const fs = require('fs')
+// const removeTmp = (path) =>{
+//     fs.unlink(path, err=>{
+//         if(err) throw err
+//     })
+// }
 class CourseController {
 
     async listCourse(req, res, next) {
@@ -167,12 +173,15 @@ class CourseController {
     //     console.log(req.files.photo)
     //     const file = req.files.photo
     //     console.log(file)
-    //     cloudinary.uploader.upload(
-    //         file.tempFilePath,
-    //         { resource_type: "video" },
-    //         (err, result) => {
-    //             console.log(result)
-    //         })
+    //     if(file){
+    //         removeTmp(file.tempFilePath)
+    //     }
+    //     // cloudinary.uploader.upload(
+    //     //     file.tempFilePath,
+    //     //     { resource_type: "video" },
+    //     //     (err, result) => {
+    //     //         console.log(result)
+    //     //     })
     // }
 
     async searchCourse(req, res, next) {

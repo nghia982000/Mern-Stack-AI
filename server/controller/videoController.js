@@ -8,6 +8,12 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
 })
+const fs = require('fs')
+const removeTmp = (path) =>{
+    fs.unlink(path, err=>{
+        if(err) throw err
+    })
+}
 class VideoController {
 
     async getVideo(req, res) {
@@ -30,7 +36,10 @@ class VideoController {
             const urlVideo = await cloudinary.uploader.upload(
                 video.tempFilePath,
                 { resource_type: "video" },
-                (err, result) => result
+                (err, result) => {
+                    removeTmp(video.tempFilePath)
+                    return result
+                }
             )
             console.log(urlVideo)
             const newVideo = new Video({
