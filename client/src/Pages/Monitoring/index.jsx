@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
-import Webcam from 'react-webcam'
-import { loadGraphModel } from '@tensorflow/tfjs-converter'
-// tf.setBackend('webgl')
+// import Webcam from 'react-webcam'
+// import { loadGraphModel } from '@tensorflow/tfjs-converter'
+// // tf.setBackend('webgl')
 import {
     DollarCircleOutlined
 } from "@ant-design/icons"
