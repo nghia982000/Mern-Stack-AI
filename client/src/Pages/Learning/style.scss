@@ -1,29 +1,67 @@
-.learing{
+.learing {
     display: flex;
-    padding-top: 50px;
-    .learingLeft{
+    padding-top: 0px;
+    margin: 0 -95px -80px -95px;
+
+    .learingLeft {
         flex: 3;
+        // border: 1px solid #222222;
         padding-right: 10px;
-        .learingLeftVideo{
+        height: 615px;
+        overflow: auto;
+        &::-webkit-scrollbar{
+            width: 5px;
+        }
+        &::-webkit-scrollbar-track{
+            background: transparent !important;
+        
+        }
+        &::-webkit-scrollbar-thumb{
+            background: #bbbbbb;
+            border-radius: 10px;
+        }
+        .learingLeftVideo {
             width: 100%;
-            height: 100%;
             background-position: top center;
             background-repeat: no-repeat;
             background-size: cover;
         }
-        .learingLeftTitle{
+
+        .learingLeftTitle {
             font-size: 30px;
             font-weight: bold;
             margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        .learingLeftComment {
+            
         }
     }
-    .learingRight{
+
+    .learingRight {
         flex: 1;
-        .itemVideoLearing{
+        padding-left: 10px;
+        height: 615px;
+        overflow: auto;
+        &::-webkit-scrollbar{
+            width: 5px;
+        }
+        &::-webkit-scrollbar-track{
+            background: transparent !important;
+        
+        }
+        &::-webkit-scrollbar-thumb{
+            background: #bbbbbb;
+            border-radius: 10px;
+        }
+        .itemVideoLearing {
             cursor: pointer;
-            span{
+
+            span {
                 padding-right: 10px;
             }
+
             display: flex;
             justify-content: space-between;
         }

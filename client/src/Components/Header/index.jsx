@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import Logo from '../../Assets/img/logoWeb.png'
 import LogoAD from '../../Assets/img/logoUser.png'
@@ -18,17 +18,18 @@ import * as actionsAuth from '../../Store/Actions/auth'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { selectIsAuthenticated,selectUser } from '../../Store/Selectors/auth'
-import { selectFavoriteCourse,selectBoughtCourse } from '../../Store/Selectors/course'
+import { selectIsAuthenticated, selectUser } from '../../Store/Selectors/auth'
+import { selectFavoriteCourse, selectBoughtCourse } from '../../Store/Selectors/course'
 
-const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteCourse,checkLoginRequest,getBoughtCourse,selectBoughtCourse }) => {
+const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavoriteCourse, checkLoginRequest, getBoughtCourse, selectBoughtCourse, searchCourse }) => {
   const [btnCourse, setBtnCourse] = useState(false)
   const [btnFavorite, setBtnFavorite] = useState(false)
   const [btnUser, setBtnUser] = useState(false)
   const navigate = useNavigate()
+  const search = useRef()
   const SignOut = () => {
     sessionStorage.removeItem('token')
-    if(!sessionStorage['token']){
+    if (!sessionStorage['token']) {
       checkLoginRequest()
       notification.open({
         message: 'Đăng xuất thành công',
@@ -37,6 +38,16 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
       navigate('/')
     }
   }
+  const onFocus = () => {
+    navigate('/course')
+  }
+  const onSubmit = (e) => {
+    e.preventDefault()
+    searchCourse({ item: search.current.value })
+    // console.log(search.current.value)
+    search.current.value = ''
+  }
+
   useEffect(() => {
     if (btnFavorite) {
       getFavorite()
@@ -76,8 +87,10 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
           <div className="headerSearchLogo">
             <SearchOutlined style={{ fontSize: '20px' }} />
           </div>
-          <input type="text" placeholder='Search...' >
-          </input>
+          <form action="" onSubmit={(e) => onSubmit(e)}>
+            <input type="text" ref={search} onFocus={() => onFocus()} placeholder='Search course ...' >
+            </input>
+          </form>
         </div>
       </div>
       <div className="headerRight">
@@ -98,31 +111,45 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
                   setBtnUser(false)
                 }
                 } />
-                {
-                  btnCourse && (
-                    <div className="headerUserCourse">
-                      <div className="userCourseHeader" onClick={() => navigate('/myCourse')}>
-                        Khóa học của tôi
-                      </div>
-                      <div className="userCourseContent">
+                  {
+                    btnCourse && (
+                      <div className="headerUserCourse">
                         {
-                          selectBoughtCourse.map((item,index)=>{
-                            return (
-                            <div className="userCourseItem" key={index} onClick={()=>navigate(`/detail/${item._id}`)}>
-                              <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
-                              </div>
-                              <div className="CourseItemTitle">
-                              {item.title}
-                              </div>
+                          (selectBoughtCourse.length === 0) ? (
+                            <div className="userCourseHeader">
+                              Chưa có khóa học nào
                             </div>
-                            )
-                          })
+                          ) : (
+                            <>
+                              <div className="userCourseHeader" onClick={() => navigate('/myCourse')}>
+                                Khóa học của tôi
+                              </div>
+                              <div className="userCourseContent">
+                                {
+                                  selectBoughtCourse.map((item, index) => {
+                                    return (
+                                      <div className="userCourseItem" key={index} onClick={() => {
+                                        setBtnCourse(!btnCourse)
+                                        navigate(`/learning/${item._id}`)
+                                      }}>
+                                        <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
+                                        </div>
+                                        <div className="CourseItemTitle">
+                                          {item.title}
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                }
+
+                              </div>
+                            </>
+                          )
                         }
-                        
+
                       </div>
-                    </div>
-                  )
-                }
+                    )
+                  }
 
               </div>
               <div className="headerUserIcon">
@@ -135,25 +162,39 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
                 {
                   btnFavorite && (
                     <div className="headerUserCourse">
-                      <div className="userCourseHeader">
-                        Khóa học yêu thích
-                      </div>
-                      <div className="userCourseContent">
-                        {
-                          selectFavoriteCourse.map((item, index) => {
-                            return (
-                              <div className="userCourseItem" key={index} onClick={()=>navigate(`/detail/${item._id}`)}>
-                                <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
-                                </div>
-                                <div className="CourseItemTitle">
-                                  {item.title}
-                                </div>
-                              </div>
-                            )
-                          })
-                        }
+                      {
+                        (selectFavoriteCourse.length === 0) ? (
+                          <div className="userCourseHeader">
+                            Chưa có khóa học yêu thích nào
+                          </div>
+                        ) : (
+                          <>
+                            <div className="userCourseHeader">
+                              Khóa học yêu thích
+                            </div>
+                            <div className="userCourseContent">
+                              {
+                                selectFavoriteCourse.map((item, index) => {
+                                  return (
+                                    <div className="userCourseItem" key={index} onClick={() => {
+                                      setBtnFavorite(!btnFavorite)
+                                      navigate(`/detail/${item._id}`)
+                                    }}>
+                                      <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
+                                      </div>
+                                      <div className="CourseItemTitle">
+                                        {item.title}
+                                      </div>
+                                    </div>
+                                  )
+                                })
+                              }
 
-                      </div>
+                            </div>
+                          </>
+                        )
+                      }
+
                     </div>
                   )
                 }
@@ -163,7 +204,7 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
                   setBtnFavorite(false)
                   setBtnCourse(false)
                   setBtnUser(!btnUser)
-                  
+
                 }
                 } >
                   <img src={LogoAD} alt="" />
@@ -180,7 +221,10 @@ const Header = ({ selectIsAuthenticated,selectUser, getFavorite, selectFavoriteC
                         </div>
                       </div>
                       <div className="UserAuthContent">
-                        <p onClick={() => navigate('/account')}>Trang cá nhân</p>
+                        <p onClick={() => {
+                          navigate('/account')
+                          setBtnUser(!btnUser)
+                        }}>Trang cá nhân</p>
                         <p onClick={() => SignOut()}>Đăng xuất</p>
                       </div>
                     </div>
@@ -206,6 +250,7 @@ const mapDispatchToProps = (dispatch) => ({
   checkLoginRequest: () => dispatch(actionsAuth.checkLoginRequest()),
   getFavorite: () => dispatch(actions.getFavorite()),
   getBoughtCourse: () => dispatch(actions.getBoughtCourse()),
+  searchCourse: (payload) => dispatch(actions.searchCourse(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

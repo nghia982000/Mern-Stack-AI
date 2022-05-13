@@ -17,6 +17,8 @@ const BUY_COURSE_REQUEST='buy course request'
 const BUY_COURSE_SUCCESS='buy course success'
 const GET_BOUGHT_COURSE='get bought course'
 const SAVE_BOUGHT_COURSE='save bought course'
+const SELECT_FIELD='select field'
+const SEARCH_COURSE='search course'
 export {
     LIST_COURSE,
     SAVE_COURSE,
@@ -36,5 +38,7 @@ export {
     BUY_COURSE_REQUEST,
     BUY_COURSE_SUCCESS,
     GET_BOUGHT_COURSE,
-    SAVE_BOUGHT_COURSE
+    SAVE_BOUGHT_COURSE,
+    SELECT_FIELD,
+    SEARCH_COURSE
 }

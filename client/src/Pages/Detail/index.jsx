@@ -3,7 +3,7 @@ import './style.scss'
 import { Collapse } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
 import { CheckOutlined, PlayCircleOutlined } from '@ant-design/icons'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import * as actions from '../../Store/Actions/course'
 import * as actionsVideo from '../../Store/Actions/video'
@@ -17,6 +17,7 @@ const { Panel } = Collapse
 
 const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favoriteCourse, selectFavoriteCourse, deleteFavorite, buyCourseRequest, selectBoughtCourse }) => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [btnFavorite, setBtnFavorite] = useState(selectFavoriteCourse.some((item) => {
     return item._id === id
   }))
@@ -68,23 +69,30 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
         </div>
         <div className="detailLeftContent">
           <h3>Nội dung khóa học</h3>
-          <Collapse >
-            {
-              selectVideos.map((item, index) => {
-                return (
-                  <Panel header={item.lecture} key={index}>
-                    <div className="itemVideoCourse">
-                      <span>
-                        <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                        {item.title}
-                      </span>
-                      <span>{formatTime(item.duration)}</span>
-                    </div>
-                  </Panel>
-                )
-              })
-            }
-          </Collapse>
+          {
+            (selectVideos.length===0) ? (
+              <p>Chưa cập nhật video</p>
+            ) : (
+              <Collapse >
+                {
+                  selectVideos.map((item, index) => {
+                    return (
+                      <Panel header={item.lecture} key={index}>
+                        <div className="itemVideoCourse">
+                          <span>
+                            <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                            {item.title}
+                          </span>
+                          <span>{formatTime(item.duration)}</span>
+                        </div>
+                      </Panel>
+                    )
+                  })
+
+                }
+              </Collapse>
+            )
+          }
         </div>
       </div>
       <div className="detailRight">
@@ -117,6 +125,13 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             !btnBuyCourse && (
               <div className="detailRightActionBtn" onClick={() => buyCourseRequest({ id })} >
                 Mua khóa học
+              </div>
+            )
+          }
+          {
+            btnBuyCourse && (
+              <div className="detailRightActionBtn" onClick={() => navigate(`/learning/${id}`)} >
+                Tiếp tục học
               </div>
             )
           }

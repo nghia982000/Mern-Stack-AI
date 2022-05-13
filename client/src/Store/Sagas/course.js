@@ -8,7 +8,9 @@ import {
     GET_FAVORITE,
     DELETE_FAVORITE,
     BUY_COURSE_REQUEST,
-    GET_BOUGHT_COURSE
+    GET_BOUGHT_COURSE,
+    SELECT_FIELD,
+    SEARCH_COURSE
 } from '../Constants/course'
 import {
     saveCourse,
@@ -40,6 +42,46 @@ function* fetchListCourse() {
 }
 export function* sagaListCourse() {
     yield takeLatest(LIST_COURSE, fetchListCourse)
+}
+function* fetchSelectField(Actions) {
+    try {
+        const response = yield call(apiCourse.apiSelectField,Actions.payload)
+        // console.log(response)
+        yield put(saveCourse(response.data))
+    } catch (err) {
+        console.error(err)
+        if(err.response){
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else{
+            console.log({success:false,message:err.message})
+            alert(err.message)
+        }
+    }
+}
+export function* sagaSelectField() {
+    yield takeLatest(SELECT_FIELD, fetchSelectField)
+}
+function* fetchSearchCourse(Actions) {
+    try {
+        const response = yield call(apiCourse.apiSearchCourse,Actions.payload)
+        // console.log(response)
+        yield put(saveCourse(response.data))
+    } catch (err) {
+        console.error(err)
+        if(err.response){
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else{
+            console.log({success:false,message:err.message})
+            alert(err.message)
+        }
+    }
+}
+export function* sagaSearchCourse() {
+    yield takeLatest(SEARCH_COURSE, fetchSearchCourse)
 }
 
 function* fetchDeleteCourse(Actions) {

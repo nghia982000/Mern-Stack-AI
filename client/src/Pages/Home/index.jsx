@@ -51,7 +51,7 @@ const Home = ({ listCourse, dataCourse }) => {
                     All course
                 </div>
                 <div className="homeCourseQuote">
-                    If you fall asleep now, you will dream. If you study now, you will live your dream.
+                    If you fall asleep now, you will dream. If you study now, you will live your dream!
                 </div>
                 <div className="homeCourseContent">
                     <Slider {...settingsCourse}>
@@ -66,7 +66,7 @@ const Home = ({ listCourse, dataCourse }) => {
             </div>
             <div className="homeBxh">
                 <div className="homeTitle">
-                    BXH
+                    RANK
                 </div>
                 <div className="homeBxhContent">
                     <div className="homeBxhLeft">

@@ -6,5 +6,6 @@ export const INIT_STATE={
         update:false
     },
     favorite:[],
-    course:[]
+    course:[],
+    listField:[]
 }

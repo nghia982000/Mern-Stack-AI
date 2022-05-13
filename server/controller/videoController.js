@@ -1,7 +1,7 @@
-const Video = require('../models/video')
+const Video = require('../models/Video')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
-const { findOneAndUpdate } = require('../models/video')
+const { findOneAndUpdate } = require('../models/Video')
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,

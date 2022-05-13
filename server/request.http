@@ -29,7 +29,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjO
 }
 ###
 GET http://localhost:5000/course/listCourse
+Content-Type: application/json
 
+###
+POST  http://localhost:5000/course/selectField
+Content-Type: application/json
+
+{
+    "field":"Photoshop"
+}
 
 ###
 GET http://localhost:5000/course/getCourse
@@ -94,3 +102,44 @@ DELETE   http://localhost:5000/course/deleteFavorite/626a656e3515c4ac1963dd12
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTE4NTQ4OTJ9.waK5KVp5W3eGmWeCWo1L318SAsJazMEhgcO2b1_56hU
 
+
+###
+POST    http://localhost:5000/monitor/createActive
+Content-Type: application/json
+
+{
+    "result":{
+        "Leaving": 100,
+        "Tired": 300,
+        "Turn around": 90,
+        "Using Phone": 80,
+        "Working": 4000
+    },
+    "precent":{
+        "Leaving": 100,
+        "Tired": 300,
+        "Turn around": 90,
+        "Using Phone": 80,
+        "Working": 4000
+    },
+    "time":180,
+    "userId":"626a65b23515c4ac1963dd1b"
+}
+###
+POST    http://localhost:5000/comment/createComment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTIzNzM4NDN9.Veu873gHitCykfFO5E3FKROEELH8IfiXfb_vSpXy_x4
+
+{
+    "content":"test comment 2",
+    "videoId":"626a65b23515c4ac1963dd1b"
+}
+
+###
+POST      http://localhost:5000/comment/getComment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTIzNzM4NDN9.Veu873gHitCykfFO5E3FKROEELH8IfiXfb_vSpXy_x4
+
+{
+    "videoId":"626a65b23515c4ac1963dd1b"
+}

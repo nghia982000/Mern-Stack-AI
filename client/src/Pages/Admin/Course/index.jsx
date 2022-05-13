@@ -33,8 +33,8 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
   const columns = [
     { title: 'Title', dataIndex: 'title', key: '1', ellipsis: true },
     { title: 'Desciption', dataIndex: 'description', key: '2', ellipsis: true },
-    { title: 'benefit', dataIndex: 'benefit', key: '3', ellipsis: true },
-    { title: 'Image', dataIndex: 'image', key: '4', ellipsis: true },
+    { title: 'Benefit', dataIndex: 'benefit', key: '3', ellipsis: true },
+    { title: 'Point', dataIndex: 'point', key: '4', ellipsis: true },
     {
       title: 'Action',
       dataIndex: '',

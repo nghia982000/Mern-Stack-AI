@@ -40,7 +40,8 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
                 description: selectDetailCourse.description,
                 benefit: selectDetailCourse.benefit.join('\n'),
                 image: selectDetailCourse.image,
-                point:selectDetailCourse.point
+                point:selectDetailCourse.point,
+                field:selectDetailCourse.field,
             })
         }
     }, [selectUpdateState,selectCreateState])
@@ -116,6 +117,13 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
                     rules={[{ required: true, message: 'Please input your point!' }]}
                 >
                     <Input size="large" placeholder="Point" />
+                </Form.Item>
+                <Form.Item
+                    label='Field'
+                    name="field"
+                    rules={[{ required: true, message: 'Please input your field!' }]}
+                >
+                    <Input size="large" placeholder="Field" />
                 </Form.Item>
                 <Form.Item
                     label='Benefit'

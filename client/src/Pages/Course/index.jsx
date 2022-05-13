@@ -6,34 +6,27 @@ import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { selectListCourse } from '../../Store/Selectors/course'
+import { selectListCourse, selectListField } from '../../Store/Selectors/course'
 
-const Course = ({ listCourse, dataCourse }) => {
+const Course = ({ listCourse, dataCourse, selectListField, selectField }) => {
   useEffect(() => {
     listCourse()
-  }
-  ,[])
+  }, [])
   return (
     <div className='course'>
       <div className="catagoryCourse">
-        <div className="itemCatagory active">
+        <div className="itemCatagory" onClick={()=>{listCourse()}}>
           Tất cả
         </div>
-        <div className="itemCatagory">
-          Lập trình
-        </div>
-        <div className="itemCatagory">
-          Kinh doanh
-        </div>
-        <div className="itemCatagory">
-          Giao tiếp
-        </div>
-        <div className="itemCatagory">
-          Kỹ năng sống
-        </div>
-        <div className="itemCatagory">
-          Chỉnh sửa ảnh, video
-        </div>
+        {
+          selectListField.map((item, index) => {
+            return (
+              <div className="itemCatagory" key={index} onClick={()=>{selectField({field:item})}}>
+                {item}
+              </div>
+            )
+          })
+        }
       </div>
       <div className="allCourse">
         {
@@ -48,9 +41,11 @@ const Course = ({ listCourse, dataCourse }) => {
 
 const mapStateToProps = createStructuredSelector({
   dataCourse: selectListCourse,
+  selectListField
 })
 const mapDispatchToProps = (dispatch) => ({
-  listCourse: () => dispatch(actions.listCourse())
+  listCourse: () => dispatch(actions.listCourse()),
+  selectField: (payload) => dispatch(actions.selectField(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

@@ -8,6 +8,7 @@ const selectCreateState= createSelector(selectData, (state) => state.editState.c
 const selectUpdateState= createSelector(selectData, (state) => state.editState.update)
 const selectFavoriteCourse= createSelector(selectData, (state) => state.favorite)
 const selectBoughtCourse= createSelector(selectData, (state) => state.course)
+const selectListField= createSelector(selectData, (state) => state.listField)
 
 export {
     selectListCourse,
@@ -15,5 +16,6 @@ export {
     selectCreateState,
     selectUpdateState,
     selectFavoriteCourse,
-    selectBoughtCourse
+    selectBoughtCourse,
+    selectListField
 }

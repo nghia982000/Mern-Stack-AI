@@ -20,7 +20,12 @@ class CourseController {
         try {
             Course.find({})
                 .then(data => {
-                    res.json({ success: true, data })
+                    const listField = data.map((item) => (item.field))
+                    let newListField = []
+                    newListField = listField.filter((item) => {
+                        return newListField.includes(item) ? '' : newListField.push(item)
+                    })
+                    res.json({ success: true, data, listField: newListField })
                 })
                 .catch(err => {
                     console.log(err)
@@ -63,9 +68,33 @@ class CourseController {
             })
         }
     }
+    async selectField(req, res) {
+        const field = req.body.field
+        try {
+            const listCourse = await Course.find({})
+            Course.find({ field })
+                .then(data => {
+                    const listField = listCourse.map((item) => (item.field))
+                    let newListField = []
+                    newListField = listField.filter((item) => {
+                        return newListField.includes(item) ? '' : newListField.push(item)
+                    })
+                    res.json({ success: true, data, listField: newListField })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 
     async addCourse(req, res) {
-        const { title, description, image, benefit,point } = req.body
+        const { title, description, image, benefit, point, field } = req.body
         if (!title) {
             return res.status(400).json({
                 message: 'Title is required',
@@ -78,7 +107,8 @@ class CourseController {
                 description,
                 image,
                 benefit: benefit.split('\n'),
-                point:point
+                point,
+                field
                 // url: url.startsWith('https://') ? url : `https://${url}`,
                 // user: req.userId
             })
@@ -98,7 +128,7 @@ class CourseController {
     }
 
     async updateCourse(req, res) {
-        const { title, description, image, benefit,point } = req.body
+        const { title, description, image, benefit, point, field } = req.body
         if (!title) {
             return res.status(400).json({
                 message: 'Title is required',
@@ -110,8 +140,9 @@ class CourseController {
                 title,
                 description,
                 image,
-                benefit:benefit.split('\n'),
-                point
+                benefit: benefit.split('\n'),
+                point,
+                field
             }
             const courseUpdateCondition = {
                 _id: req.params.id,
@@ -188,12 +219,15 @@ class CourseController {
         const item = req.body.item
         console.log(item)
         if (item) {
+            const listCourse = await Course.find({})
             Course.find({ $text: { $search: item } })
-                .then(course => {
-                    res.json({
-                        success: true,
-                        course: course
+                .then(data => {
+                    const listField = listCourse.map((item) => (item.field))
+                    let newListField = []
+                    newListField = listField.filter((item) => {
+                        return newListField.includes(item) ? '' : newListField.push(item)
                     })
+                    res.json({ success: true, data, listField: newListField })
                 })
                 .catch(err => {
                     res.status(500).json({
@@ -204,11 +238,13 @@ class CourseController {
         }
         else {
             Course.find({})
-                .then(course => {
-                    res.json({
-                        success: true,
-                        course: course
+                .then(data => {
+                    const listField = data.map((item) => (item.field))
+                    let newListField = []
+                    newListField = listField.filter((item) => {
+                        return newListField.includes(item) ? '' : newListField.push(item)
                     })
+                    res.json({ success: true, data, listField: newListField })
                 })
                 .catch(err => {
                     res.status(500).json({
@@ -273,7 +309,7 @@ class CourseController {
                     res.json({
                         message: "Successfully purchase",
                         success: true,
-                        point:req.point,
+                        point: req.point,
                         data: data
                     })
                 })

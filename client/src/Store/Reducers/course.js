@@ -22,6 +22,7 @@ export default function courseReducers(state = INIT_STATE, action) {
         switch (action.type) {
             case SAVE_COURSE:
                 draft.data = action.payload.data
+                draft.listField=action.payload.listField
                 break
             case DELETE_COURSE:
                 draft.data = state.data.filter(course => course._id !== action.payload)

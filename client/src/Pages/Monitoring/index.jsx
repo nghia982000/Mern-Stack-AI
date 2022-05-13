@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
+import axios from 'axios'
 // import Webcam from 'react-webcam'
 // import { loadGraphModel } from '@tensorflow/tfjs-converter'
 // // tf.setBackend('webgl')
@@ -12,8 +13,13 @@ import imgFrame from '../../Assets/img/cameraFrame.jpg'
 import imgMonitor from '../../Assets/img/monitor.png'
 import LogoAD from '../../Assets/img/logoUser.png'
 
+import * as actionsAuth from '../../Store/Actions/auth'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectIsAuthenticated, selectUser } from '../../Store/Selectors/auth'
 
-const Monitoring = () => {
+const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
     const class_Name = { 0: 'Leaving', 1: 'Tired', 2: 'Turn around', 3: 'Using Phone', 4: 'Working' }
     const video = useRef()
     const [step1, setStep1] = useState(false)
@@ -71,7 +77,7 @@ const Monitoring = () => {
     //     addResult(values.test)
     // }
     const addResult = (value) => {
-        result.current[value] =  result.current[value]+1
+        result.current[value] = result.current[value] + 1
         console.log(result.current)
     }
     const detectFrame = async (video, model) => {
@@ -124,7 +130,6 @@ const Monitoring = () => {
                 })
         }
         return () => {
-            // offWebcam()
         }
     }, [step1])
     const offWebcam = () => {
@@ -144,8 +149,15 @@ const Monitoring = () => {
 
     const handlePause = () => {
         clearInterval(countRef.current)
-        setIsPaused(false)
         setTimer(0)
+        setIsPaused(false)
+        offWebcam()
+        setIsActive(false)
+        setStep2(false)
+        setStep1(false)
+        loop.current = false
+        console.log(result.current)
+        alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
     }
 
     // const handleResume = () => {
@@ -177,16 +189,67 @@ const Monitoring = () => {
             setStep2(false)
             setStep1(false)
             loop.current = false
+            console.log(result.current)
+            alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
+        }
+        return () => {
         }
     }, [timer])
+    const percent = (result) => {
+        const arrResult = Object.values(result)
+        const total = arrResult.reduce((total, item) => {
+            return total + item
+        }, 0)
+        let newResult = {
+            'Leaving': 0,
+            'Tired': 0,
+            'Turn around': 0,
+            'Using Phone': 0,
+            'Working': 0
+        }
+        for (var key in result) {
+            newResult[key] = (result[key] / total) * 100
+        }
+        // axios.post(`https://server-mern-stack-ai.herokuapp.com/monitor/createActive`, {
+        //     result,
+        //     precent: newResult,
+        //     time
+        // })
+        //     .then(res => {
+        //         console.log(res.data.Active)
+        //     })
+        axios.post(` http://localhost:5000/monitor/createActive`, {
+            result,
+            precent: newResult,
+            time
+        })
+            .then(res => {
+                console.log(res.data.Active)
+            })
+        return newResult
+    }
+    useEffect(() => {
+        console.log('reset')
+        result.current = {
+            'Leaving': 0,
+            'Tired': 0,
+            'Turn around': 0,
+            'Using Phone': 0,
+            'Working': 0
+        }
+        return () => {
+        }
+    }, [loop.current])
     useEffect(() => {
         if (isActive && model) {
             console.log(model)
             loop.current = true
             detectFrame(video.current, model)
         }
+        return () => {
+        }
     }, [isActive])
-    
+
     return (
         <div className='monitorMain'>
 
@@ -208,21 +271,24 @@ const Monitoring = () => {
                         </div>
                     )
                 }
-
-                <div className="monitorHandleUser">
-                    <div className="monitorProfile">
-                        <div className="monitorProfileLogo">
-                            <img src={LogoAD} alt="" />
+                {
+                    selectIsAuthenticated && (
+                        <div className="monitorHandleUser">
+                            <div className="monitorProfile">
+                                <div className="monitorProfileLogo">
+                                    <img src={LogoAD} alt="" />
+                                </div>
+                                <div className="monitorProfileName">
+                                    <p>{selectUser.username}</p>
+                                    {/* <p>999đ</p> */}
+                                </div>
+                            </div>
+                            <div className="monitorPoint">
+                                {selectUser.poin} Coin
+                            </div>
                         </div>
-                        <div className="monitorProfileName">
-                            <p>Admin</p>
-                            {/* <p>999đ</p> */}
-                        </div>
-                    </div>
-                    <div className="monitorPoint">
-                        999đ
-                    </div>
-                </div>
+                    )
+                }
                 {
                     !step1 && (
                         <div className="monitorHandleAction">
@@ -244,18 +310,24 @@ const Monitoring = () => {
                             <div className='stopwatch-card'>
                                 <p>Choose monitoring time</p>
                                 <TimePicker className='selectTime' onChange={value => setTime(value._d.getHours() * 60 * 60 + value._d.getMinutes() * 60 + value._d.getSeconds())} />
-                                <p>{formatTime(timer)}</p>
-                                <div className='buttons'>
-                                    {
-                                        !isActive && !isPaused ?
-                                            <button onClick={handleStart}>Start</button>
-                                            : (
-                                                isPaused ? <button onClick={handlePause}>Pause</button> :
-                                                    <button onClick={handleReset} disabled={!isActive}>Reset</button>
-                                            )
-                                    }
-                                    {/* <button onClick={handleReset} disabled={!isActive}>Reset</button> */}
-                                </div>
+                                {
+                                    time && (
+                                        <>
+                                            <p>{formatTime(timer)}</p>
+                                            <div className='buttons'>
+                                                {
+                                                    !isActive && !isPaused ?
+                                                        <button onClick={handleStart}>Start</button>
+                                                        : (
+                                                            isPaused ? <button onClick={handlePause}>Pause</button> :
+                                                                <button onClick={handleReset} disabled={!isActive}>Reset</button>
+                                                        )
+                                                }
+                                                {/* <button onClick={handleReset} disabled={!isActive}>Reset</button> */}
+                                            </div>
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
                     )
@@ -265,4 +337,13 @@ const Monitoring = () => {
     )
 }
 
-export default Monitoring
+const mapStateToProps = createStructuredSelector({
+    selectIsAuthenticated,
+    selectUser,
+})
+const mapDispatchToProps = (dispatch) => ({
+    checkLoginRequest: () => dispatch(actionsAuth.checkLoginRequest()),
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(Monitoring)

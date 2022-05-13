@@ -17,7 +17,9 @@ import {
     BUY_COURSE_REQUEST,
     BUY_COURSE_SUCCESS,
     GET_BOUGHT_COURSE,
-    SAVE_BOUGHT_COURSE
+    SAVE_BOUGHT_COURSE,
+    SELECT_FIELD,
+    SEARCH_COURSE
 } from '../Constants/course'
 export function listCourse(){
     return{
@@ -128,6 +130,18 @@ export function getBoughtCourse(){
 export function saveBoughtCourse(payload){
     return{
         type: SAVE_BOUGHT_COURSE,
+        payload
+    }
+}
+export function selectField(payload){
+    return{
+        type: SELECT_FIELD,
+        payload
+    }
+}
+export function searchCourse(payload){
+    return{
+        type: SEARCH_COURSE,
         payload
     }
 }
