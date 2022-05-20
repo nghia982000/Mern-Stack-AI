@@ -3,6 +3,7 @@ import * as Auth from './auth'
 import * as Course from './course'
 import * as Video from './video'
 import * as Comment from './comment'
+import * as Exercise from './exercise'
 
 
 export default function* () {
@@ -30,5 +31,7 @@ export default function* () {
 
     Comment.sagaCreateComment(),
     Comment.sagaGetComment(),
+
+    Exercise.sagaCreateExercise(),
   ])
 }

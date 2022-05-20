@@ -20,6 +20,7 @@ import Comment from './Comment'
 import Statistical from './Statistical'
 import CUCourse from './CUCourse'
 import EditVideo from './EditVideo'
+import Exercise from './Exercise'
 
 import * as actions from '../../Store/Actions/auth'
 import { createStructuredSelector } from 'reselect'
@@ -126,6 +127,7 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
               <Route path="/statistical" element={<Statistical />} />
               <Route path="/cuCourse" element={<CUCourse />} />
               <Route path="/editVideo/:id" element={<EditVideo />} />
+              <Route path="/exercise/:id" element={<Exercise />} />
             </Routes>
           </Content>
         </Layout>

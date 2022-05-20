@@ -18,15 +18,21 @@ import {
 const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthenticated,selectUser }) => {
   const [token,setToken]=useState()
   const onFinish = (values) => {
-    console.log('Success:', values)
+    // console.log('Success:', values)
     login(values)
   }
+  // console.log(selectIsAuthenticated)
   const navigate = useNavigate()
   useEffect(() => {
     if(selectUser){
       checkLoginRequest()
     }
   }, [selectUser])
+  useEffect(() => {
+    if(!selectIsAuthenticated){
+      checkLoginRequest()
+    }
+  }, [selectIsAuthenticated])
   useEffect(() => {
     if(selectUser){
       if (selectUser.role ==='user') {

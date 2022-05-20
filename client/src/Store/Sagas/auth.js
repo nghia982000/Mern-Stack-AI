@@ -41,14 +41,15 @@ export function* sagaLogin() {
     yield takeLatest(LOGIN, fetchLoginSaga)
 }
 
-function* fetchRegisterSaga(action) {
+function* fetchRegisterSaga({ payload, resolve }) {
     try {
-        const response = yield call(apiAuth.fetchRegister, action.payload)
-        console.log(response)
-        if (response.data.success) {
-            window.location.href='/login'
-            alert('Account successfully created')
-        }
+        const response = yield call(apiAuth.fetchRegister,payload)
+        // console.log(response)
+        resolve(response.data)
+        // if (response.data.success) {
+        //     window.location.href='/login'
+        //     alert('Account successfully created')
+        // }
 
     } catch (err) {
         console.error(err)

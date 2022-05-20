@@ -27,7 +27,7 @@ import { selectIsLoading, selectVideos, selectDetailVideo } from '../../../Store
 
 const { TextArea } = Input
 
-const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, deleteVideo, selectDetailVideo, detailVideo,updateVideo }) => {
+const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, deleteVideo, selectDetailVideo, detailVideo, updateVideo }) => {
     const { id } = useParams()
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [statusForm, setStatusForm] = useState(true)
@@ -35,7 +35,7 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
     const navigate = useNavigate()
     const [formModal] = Form.useForm()
     const onFinish = (values) => {
-        if(!statusForm){
+        if (!statusForm) {
             const formData = new FormData()
             formData.append('title', values.title)
             formData.append('id', id)
@@ -44,16 +44,17 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
             console.log(formData)
             createVideo(formData)
         }
-        if(statusForm){
+        if (statusForm) {
             const formData = new FormData()
             formData.append('title', values.title)
             formData.append('id', selectDetailVideo._id)
             formData.append('lecture', values.lecture)
+            formData.append('role', 'video')
             // console.log(formData)
-            if(urlVideo){
+            if (urlVideo) {
                 console.log('ko có url')
                 formData.append('video', values.video.file)
-            }else{
+            } else {
                 formData.append('url', selectDetailVideo.url)
                 formData.append('duration', selectDetailVideo.duration)
                 console.log('có url')
@@ -99,7 +100,6 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
     const columns = [
         { title: 'Lecture', dataIndex: 'lecture', key: '0', ellipsis: true },
         { title: 'Title', dataIndex: 'title', key: '1', ellipsis: true },
-        { title: 'Url', dataIndex: 'url', key: '2', ellipsis: true },
         {
             title: 'Action',
             dataIndex: '',
@@ -122,6 +122,9 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
         <div>
             <div className='editVideo'>
                 <button onClick={() => modalCreate()}>Create video</button>
+                <button onClick={() => (
+                    navigate(`/admin/exercise/${id}`)
+                )}>Create exercise</button>
                 <Table
                     columns={columns}
                     dataSource={selectVideos}
@@ -163,7 +166,7 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
                             <Input />
                         </Form.Item>
                         {
-                            (urlVideo||!statusForm) && (
+                            (urlVideo || !statusForm) && (
                                 <Form.Item label="Video" name="video" >
                                     <Upload
                                         beforeUpload={() => false}
@@ -175,7 +178,7 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
                             )
                         }
                         {
-                           statusForm && !urlVideo && (
+                            statusForm && !urlVideo && (
                                 <>
                                     <Form.Item
                                         wrapperCol={{

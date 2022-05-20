@@ -2,7 +2,7 @@ import React, { useEffect, useState, useLayoutEffect } from 'react'
 import './style.scss'
 import { Collapse } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
-import { CheckOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { CheckOutlined, PlayCircleOutlined, FileTextOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import * as actions from '../../Store/Actions/course'
@@ -70,22 +70,33 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
         <div className="detailLeftContent">
           <h3>Nội dung khóa học</h3>
           {
-            (selectVideos.length===0) ? (
+            (selectVideos.length === 0) ? (
               <p>Chưa cập nhật video</p>
             ) : (
               <Collapse >
                 {
                   selectVideos.map((item, index) => {
                     return (
-                      <Panel header={item.lecture} key={index}>
-                        <div className="itemVideoCourse">
-                          <span>
-                            <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                            {item.title}
-                          </span>
-                          <span>{formatTime(item.duration)}</span>
-                        </div>
-                      </Panel>
+                      item.role === 'exercise' ? (
+                        <Panel header={`Lecture ${item.lecture}`} key={index}>
+                          <div className="itemVideoCourse">
+                            <span>
+                              <FileTextOutlined />
+                              {item.title}
+                            </span>
+                          </div>
+                        </Panel>
+                      ) : (
+                        <Panel header={`Lecture ${item.lecture}`} key={index}>
+                          <div className="itemVideoCourse">
+                            <span>
+                              <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                              {item.title}
+                            </span>
+                            <span>{formatTime(item.duration)}</span>
+                          </div>
+                        </Panel>
+                      )
                     )
                   })
 

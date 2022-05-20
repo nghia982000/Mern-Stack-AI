@@ -2,13 +2,20 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
 import axios from 'axios'
+import { Howl, Howler } from 'howler'
 // import Webcam from 'react-webcam'
 // import { loadGraphModel } from '@tensorflow/tfjs-converter'
 // // tf.setBackend('webgl')
 import {
-    DollarCircleOutlined
+    DollarCircleOutlined,
+    SearchOutlined,
+    ReadOutlined,
+    HeartOutlined,
+    CheckCircleOutlined,
+    CloseCircleOutlined
 } from "@ant-design/icons"
 import { DatePicker, TimePicker, Select, Space, Input, Form, Button } from 'antd'
+import { notification } from 'antd'
 import imgFrame from '../../Assets/img/cameraFrame.jpg'
 import imgMonitor from '../../Assets/img/monitor.png'
 import LogoAD from '../../Assets/img/logoUser.png'
@@ -19,7 +26,14 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { selectIsAuthenticated, selectUser } from '../../Store/Selectors/auth'
 
-const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
+import soundUrl from '../../Assets/mp3/CENSORBEEP.mp3'
+var sound = new Howl({
+    src: [soundUrl]
+})
+
+// sound.play()
+
+const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
     const class_Name = { 0: 'Leaving', 1: 'Tired', 2: 'Turn around', 3: 'Using Phone', 4: 'Working' }
     const video = useRef()
     const [step1, setStep1] = useState(false)
@@ -32,6 +46,7 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
     const [timer, setTimer] = useState(0)
     const [isActive, setIsActive] = useState(false)
     const [isPaused, setIsPaused] = useState(false)
+    const [remind, setRemind] = useState('')
     const countRef = useRef(null)
     const result = useRef({
         'Leaving': 0,
@@ -41,8 +56,30 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
         'Working': 0
     })
     // console.log(result.current)
-
-
+    const arrRemind = useRef([])
+    const addItemRemind = (value) => {
+        // console.log(arrRemind.current.some((item)=>item!==value))
+        if (arrRemind.current.some((item) => item !== value)) {
+            arrRemind.current = []
+        }
+        if (arrRemind.current.length >= 10) {
+            // console.log(arrRemind.current[0])
+            if (remind !== arrRemind.current[0]) {
+                setRemind(arrRemind.current[0])
+            }
+        }
+        arrRemind.current.push(value)
+        // console.log(arrRemind.current)
+    }
+    useEffect(() => {
+        if (remind && remind !== 'Working') {
+            sound.play()
+            notification.open({
+                message: remind,
+                icon: <CloseCircleOutlined style={{ color: "red" }} />,
+            })
+        }
+    }, [remind])
     const loadModel = async () => {
         const model = await tf.loadLayersModel('https://raw.githubusercontent.com/nghia982000/tfjs-model/main/model.json')
         return model
@@ -73,8 +110,24 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
             }
         })
     }
+    useEffect(() => {
+        console.log("Component Did Mount")
+
+        return function cleanup() {
+            // handlePause()
+            // offWebcam()
+            // loop.current = false
+            // alert("Component Will Unmount")
+            console.log("Component Will Unmount")
+            if (mediaStream) {
+                mediaStream.getTracks().forEach((track) => {
+                    track.stop()
+                })
+            }
+        }
+    }, [])
     // const onFinish = (values) => {
-    //     addResult(values.test)
+    //     addItemRemind(values.test)
     // }
     const addResult = (value) => {
         result.current[value] = result.current[value] + 1
@@ -96,6 +149,7 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
                 return b.probability - a.probability
             })
         console.log(kq[0].className)
+        addItemRemind(kq[0].className)
         addResult(kq[0].className)
         setState(kq[0].className)
         requestAnimationFrame(() => {
@@ -128,8 +182,6 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
                 .catch(error => {
                     console.error(error)
                 })
-        }
-        return () => {
         }
     }, [step1])
     const offWebcam = () => {
@@ -183,12 +235,15 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
     }
     useEffect(() => {
         if (time === timer) {
-            handlePause()
+            clearInterval(countRef.current)
+            setTimer(0)
+            setIsPaused(false)
             offWebcam()
             setIsActive(false)
             setStep2(false)
             setStep1(false)
             loop.current = false
+            arrRemind.current = []
             console.log(result.current)
             alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
         }
@@ -237,8 +292,8 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
             'Using Phone': 0,
             'Working': 0
         }
-        return () => {
-        }
+        // return () => {
+        // }
     }, [loop.current])
     useEffect(() => {
         if (isActive && model) {
@@ -247,6 +302,7 @@ const Monitoring = ({ selectIsAuthenticated,selectUser }) => {
             detectFrame(video.current, model)
         }
         return () => {
+            loop.current = false
         }
     }, [isActive])
 

@@ -1,14 +1,20 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const VideoSchema = new Schema({
+const VideoExerciseSchema = new Schema({
     lecture:{
-        type: String,
+        type: Number,
         required: true,
     },
     title: {
         type: String,
         required: true,
+    },
+    role:{
+        type:String
+    },
+    content: {
+        type: String,
     },
     url: {
         type: String,
@@ -22,4 +28,4 @@ const VideoSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('videos', VideoSchema)
+module.exports = mongoose.model('videoExercises', VideoExerciseSchema)

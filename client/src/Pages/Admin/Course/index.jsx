@@ -32,8 +32,6 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
   }
   const columns = [
     { title: 'Title', dataIndex: 'title', key: '1', ellipsis: true },
-    { title: 'Desciption', dataIndex: 'description', key: '2', ellipsis: true },
-    { title: 'Benefit', dataIndex: 'benefit', key: '3', ellipsis: true },
     { title: 'Point', dataIndex: 'point', key: '4', ellipsis: true },
     {
       title: 'Action',
@@ -47,7 +45,7 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
             createState(false),
             navigate('/admin/cuCourse')
           )}>Update</button>
-          <button onClick={() => navigate(`/admin/editVideo/${record._id}`)}>Video</button>
+          <button onClick={() => navigate(`/admin/editVideo/${record._id}`)}>Video and exercise</button>
           <Popconfirm
             title="Sinh viên này sẽ bị xóa vĩnh viễn"
             onConfirm={() => handleDelete(record._id)}

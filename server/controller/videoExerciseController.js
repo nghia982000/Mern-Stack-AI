@@ -1,7 +1,7 @@
-const Video = require('../models/Video')
+const VideoExercise = require('../models/VideoExercise')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
-const { findOneAndUpdate } = require('../models/Video')
+const { findOneAndUpdate } = require('../models/VideoExercise')
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -14,12 +14,12 @@ const removeTmp = (path) =>{
         if(err) throw err
     })
 }
-class VideoController {
+class VideoExerciseController {
 
     async getVideo(req, res) {
         const id = req.params.id
         try {
-            const data = await Video.find({ course: id })
+            const data = await VideoExercise.find({ course: id })
             res.json({ success: true, data })
         } catch (error) {
             console.log(error)
@@ -30,7 +30,7 @@ class VideoController {
         }
     }
     async createVideo(req, res) {
-        const { title, lecture, id } = req.body
+        const { title, lecture, id,role } = req.body
         const video = req.files.video
         try {
             const urlVideo = await cloudinary.uploader.upload(
@@ -42,9 +42,10 @@ class VideoController {
                 }
             )
             console.log(urlVideo)
-            const newVideo = new Video({
+            const newVideo = new VideoExercise({
                 title,
                 lecture,
+                role,
                 url: urlVideo.url,
                 course: id,
                 duration:urlVideo.duration
@@ -90,7 +91,7 @@ class VideoController {
         const videoUpdateCondition = {
             _id: id,
         }
-        updateVideo = await Video.findOneAndUpdate(
+        updateVideo = await VideoExercise.findOneAndUpdate(
             videoUpdateCondition,
             updateVideo,
             { new: true }
@@ -121,7 +122,7 @@ class VideoController {
             const videoDeleteCondition = {
                 _id: req.params.id
             }
-            const deletedVideo = await Video.findOneAndDelete(videoDeleteCondition)
+            const deletedVideo = await VideoExercise.findOneAndDelete(videoDeleteCondition)
             console.log(deletedVideo)
             //User not authorised to update Course or Course not found
             if (!deletedVideo) {
@@ -154,6 +155,31 @@ class VideoController {
     //             console.log(result)
     //         })
     // }
+    async createExercise(req, res) {
+        const {content,id ,title, lecture, role} = req.body
+        try {
+            console.log(content,id ,title, lecture, role)
+            const newExercise = new VideoExercise({
+                title,
+                lecture,
+                content:content,
+                course:id,
+                role
+            })
+            await newExercise.save()
+            res.json({
+                success: true,
+                message: 'Successfully!!!',
+                exercise: newExercise
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 }
 
-module.exports = new VideoController()
+module.exports = new VideoExerciseController()

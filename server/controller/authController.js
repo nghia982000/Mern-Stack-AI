@@ -12,6 +12,12 @@ class AuthController {
                 success: false
             })
         }
+        if(role==='manager'){
+            return res.status(400).json({
+                message: 'Create fail',
+                success: false
+            })
+        }
         try {
             //check for existing user
             const user = await User.findOne({ username: username })
@@ -27,7 +33,8 @@ class AuthController {
             const newUser = new User({
                 username,
                 password: hashedPassword,
-                role
+                role,
+                point:0
             })
             await newUser.save()
             //Return token

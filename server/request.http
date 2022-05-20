@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "username":"admin1",
+    "username":"admin",
     "password":"123456789",
     "role":"user"
 }
@@ -11,7 +11,7 @@ POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"admin1",
+    "username":"admin",
     "password":"123456789"
 }
 
@@ -142,4 +142,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1N
 
 {
     "videoId":"626a65b23515c4ac1963dd1b"
+}
+
+###
+POST      http://localhost:5000/videoExercise/createExercise
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTI5MzAwOTN9.FAqNnejnptygtoyyxi3XnyNQPzF9URGIdvq6ut7tvb4
+
+{
+    "lecture":4,
+    "title":"Bài tập",
+    "content":"gsvkbjslfavhnfda"
 }

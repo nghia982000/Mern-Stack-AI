@@ -19,6 +19,10 @@ const ItemComment = ({ videoId, createComment, getComment, selectListComment }) 
             getComment({ videoId })
         }
     }, [videoId])
+    const formatDatetime=(Datetime)=>{
+        var date = new Date(Datetime)
+        return (`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`)
+      }
     return (
         <div className='ItemComment'>
             <h1>Comment</h1>
@@ -52,8 +56,11 @@ const ItemComment = ({ videoId, createComment, getComment, selectListComment }) 
                                         <p>{item.content}</p>
                                     </div>
                                     <div className="itemCommentAction">
-                                        <p>Thích - </p>
-                                        <p>Trả lời</p>
+                                        {
+                                            formatDatetime(item.createdAt)
+                                        }
+                                        {/* <p>Thích - </p>
+                                        <p>Trả lời</p> */}
                                     </div>
                                 </div>
                             </div>
