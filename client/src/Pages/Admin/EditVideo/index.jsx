@@ -19,6 +19,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import './style.scss'
 
 import * as actions from '../../../Store/Actions/video'
+import * as actionsExercise from '../../../Store/Actions/exercise'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -27,7 +28,7 @@ import { selectIsLoading, selectVideos, selectDetailVideo } from '../../../Store
 
 const { TextArea } = Input
 
-const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, deleteVideo, selectDetailVideo, detailVideo, updateVideo }) => {
+const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo,detailExercise, deleteVideo, updateState, createState, selectDetailVideo, detailVideo, updateVideo }) => {
     const { id } = useParams()
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [statusForm, setStatusForm] = useState(true)
@@ -106,14 +107,23 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
             key: '5',
             render: (text, record) => (
                 <Space size="middle">
-                    <button onClick={() => modalUpdate(record._id)} >Update</button>
+                    <button onClick={() => {
+                        modalUpdate(record._id)
+                        console.log(record.role)
+                        if(record.role==='exercise'){
+                            detailExercise(record._id)
+                            updateState(true)
+                            createState(false)
+                            navigate(`/admin/exercise/${id}`)
+                        }
+                    }} >Update</button>
                     <Popconfirm
                         title="Sinh viên này sẽ bị xóa vĩnh viễn"
                         onConfirm={() => handleDelete(record._id)}
                     >
                         <button>Delete</button>
                     </Popconfirm>
-                </Space>
+                </Space >
 
             )
         },
@@ -123,7 +133,9 @@ const EditVideo = ({ createVideo, selectIsLoading, selectVideos, getVideo, delet
             <div className='editVideo'>
                 <button onClick={() => modalCreate()}>Create video</button>
                 <button onClick={() => (
-                    navigate(`/admin/exercise/${id}`)
+                    navigate(`/admin/exercise/${id}`),
+                    updateState(false),
+                    createState(true)
                 )}>Create exercise</button>
                 <Table
                     columns={columns}
@@ -225,6 +237,9 @@ const mapDispatchToProps = (dispatch) => ({
     getVideo: (payload) => dispatch(actions.getVideo(payload)),
     deleteVideo: (payload) => dispatch(actions.deleteVideo(payload)),
     detailVideo: (payload) => dispatch(actions.detailVideo(payload)),
+    createState: (payload) => dispatch(actionsExercise.createState(payload)),
+    updateState: (payload) => dispatch(actionsExercise.updateState(payload)),
+    detailExercise: (payload) => dispatch(actionsExercise.detailExercise(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

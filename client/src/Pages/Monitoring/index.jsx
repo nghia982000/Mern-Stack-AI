@@ -72,6 +72,11 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         // console.log(arrRemind.current)
     }
     useEffect(() => {
+        // if (remind) {
+        //     switch(remind)
+        //     case 'Tired':
+
+        // }
         if (remind && remind !== 'Working') {
             sound.play()
             notification.open({
@@ -265,15 +270,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         for (var key in result) {
             newResult[key] = (result[key] / total) * 100
         }
-        // axios.post(`https://server-mern-stack-ai.herokuapp.com/monitor/createActive`, {
-        //     result,
-        //     precent: newResult,
-        //     time
-        // })
-        //     .then(res => {
-        //         console.log(res.data.Active)
-        //     })
-        axios.post(` http://localhost:5000/monitor/createActive`, {
+        axios.post(`https://server-mern-stack-ai.herokuapp.com/monitor/createActive`, {
             result,
             precent: newResult,
             time
@@ -281,6 +278,14 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             .then(res => {
                 console.log(res.data.Active)
             })
+        // axios.post(` http://localhost:5000/monitor/createActive`, {
+        //     result,
+        //     precent: newResult,
+        //     time
+        // })
+        //     .then(res => {
+        //         console.log(res.data.Active)
+        //     })
         return newResult
     }
     useEffect(() => {

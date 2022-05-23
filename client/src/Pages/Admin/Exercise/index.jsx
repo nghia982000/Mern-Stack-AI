@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import "react-quill/dist/quill.snow.css"
 import {
@@ -13,10 +13,12 @@ import * as actions from '../../../Store/Actions/exercise'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-// import { } from '../../../Store/Selectors/course'
+import { selectUpdateState, selectCreateState } from '../../../Store/Selectors/exercise'
+import { selectDetailExercise } from '../../../Store/Selectors/video'
 
-const Exercise = ({ createExercise }) => {
+const Exercise = ({ createExercise, selectUpdateState, selectCreateState, selectDetailExercise, updateExercise }) => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [formModal] = Form.useForm()
   const [data, setData] = useState({
     'content': ''
@@ -24,6 +26,19 @@ const Exercise = ({ createExercise }) => {
   const onSubmit = () => {
     createExercise(data)
   }
+  useEffect(() => {
+    console.log(selectDetailExercise)
+    if (selectCreateState) {
+      formModal.resetFields()
+    }
+    if (selectUpdateState) {
+      formModal.setFieldsValue({
+        title: selectDetailExercise.title,
+        lecture: selectDetailExercise.lecture,
+      })
+      setData({ ...data, content: selectDetailExercise.content })
+    }
+  }, [selectUpdateState, selectCreateState])
   const onFinish = (values) => {
     const formData = new FormData()
     formData.append('title', values.title)
@@ -31,8 +46,19 @@ const Exercise = ({ createExercise }) => {
     formData.append('lecture', values.lecture)
     formData.append('role', 'exercise')
     formData.append('content', data.content)
-    createExercise(formData)
+    if (selectCreateState) {
+      createExercise(formData)
+    }
+    if (selectUpdateState) {
+      const newExercise = {
+        _id: selectDetailExercise._id,
+        data: formData
+      }
+      updateExercise(newExercise)
+      handleCancel()
+    }
   }
+  const handleCancel = () => navigate(`/admin/editVideo/${id}`)
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -54,9 +80,12 @@ const Exercise = ({ createExercise }) => {
     "link",
     "image"
   ]
-  const handleProcedureContentChange = (content, delta, source, editor) => {
-    setData({ ...data, content: content })
+  const handleProcedureContentChange = (value) => {
+    setData({ ...data, content: value })
   }
+  // const handleProcedureContentChange = (content, delta, source, editor) => {
+  //   setData({ ...data, content: content })
+  // }
   return (
     <div className='Exercire'>
       <Form
@@ -90,6 +119,7 @@ const Exercise = ({ createExercise }) => {
             modules={modules}
             formats={formats}
             placeholder='Enter...'
+            value={data.content}
             onChange={handleProcedureContentChange}
           >
           </ReactQuill>
@@ -111,9 +141,13 @@ const Exercise = ({ createExercise }) => {
 
 
 const mapStateToProps = createStructuredSelector({
+  selectUpdateState,
+  selectCreateState,
+  selectDetailExercise
 })
 const mapDispatchToProps = (dispatch) => ({
   createExercise: (payload) => dispatch(actions.createExercise(payload)),
+  updateExercise: (payload) => dispatch(actions.updateExerciseRequest(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

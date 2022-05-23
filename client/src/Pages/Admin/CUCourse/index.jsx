@@ -16,11 +16,11 @@ import * as actions from '../../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { selectDetailCourse,selectCreateState,selectUpdateState } from '../../../Store/Selectors/course'
+import { selectDetailCourse, selectCreateState, selectUpdateState } from '../../../Store/Selectors/course'
 
 const { TextArea } = Input
 
-const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCreateState,updateCourse }) => {
+const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectCreateState,  updateCourse }) => {
     const [formModal] = Form.useForm()
     const [avatar, setAvatar] = useState()
     const [fileImg, setFileImg] = useState()
@@ -40,11 +40,11 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
                 description: selectDetailCourse.description,
                 benefit: selectDetailCourse.benefit.join('\n'),
                 image: selectDetailCourse.image,
-                point:selectDetailCourse.point,
-                field:selectDetailCourse.field,
+                point: selectDetailCourse.point,
+                field: selectDetailCourse.field,
             })
         }
-    }, [selectUpdateState,selectCreateState])
+    }, [selectUpdateState, selectCreateState])
     const onFinish = (values) => {
         console.log(values)
         if (selectCreateState) {
@@ -59,7 +59,7 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
         }
         handleCancel()
     }
-    const handleCancel=()=>navigate('/admin/course')
+    const handleCancel = () => navigate('/admin/course')
     const getBase64 = file => {
         return new Promise(resolve => {
             let baseURL = ""
@@ -160,7 +160,7 @@ const CUCourse = ({ createCourse,selectDetailCourse,selectUpdateState,selectCrea
                 >
                     <Button type="primary" htmlType="submit" >
                         {
-                            (selectCreateState)?'Create':"Update"
+                            (selectCreateState) ? 'Create' : "Update"
                         }
                     </Button>
                 </Form.Item>
@@ -177,6 +177,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
     createCourse: (payload) => dispatch(actions.createCourse(payload)),
     updateCourse: (payload) => dispatch(actions.updateCourseRequest(payload)),
+    
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

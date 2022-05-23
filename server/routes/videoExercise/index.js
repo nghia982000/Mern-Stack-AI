@@ -11,5 +11,6 @@ router.put('/updateVideo', verifyToken,decentralization, videoExerciseController
 router.delete('/deleteVideo/:id',verifyToken,decentralization, videoExerciseController.deleteVideo)
 // router.get('/model',videoController.getModel)
 router.post('/createExercise',verifyToken,decentralization, videoExerciseController.createExercise)
+router.put('/updateExercise/:id',verifyToken,decentralization, videoExerciseController.updateExercise)
 
 module.exports = router

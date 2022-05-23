@@ -180,6 +180,46 @@ class VideoExerciseController {
             })
         }
     }
+    async updateExercise(req, res) {
+        const {content,id ,title, lecture, role} = req.body
+        console.log(req.params.id)
+        try {
+            let updateExercise = {
+                title,
+                lecture,
+                content:content,
+                course:id,
+                role
+            }
+            const exerciseUpdateCondition = {
+                _id: req.params.id,
+                // user: req.userId
+            }
+            updateExercise = await VideoExercise.findOneAndUpdate(
+                exerciseUpdateCondition,
+                updateExercise,
+                { new: true }
+            )
+            //User not authorised to update Course or Course not found
+            if (!updateExercise) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Exercise not found or user not authorised '
+                })
+            }
+            res.json({
+                success: true,
+                message: 'Excellent progress',
+                exercise: updateExercise
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 }
 
 module.exports = new VideoExerciseController()

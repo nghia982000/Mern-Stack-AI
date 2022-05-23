@@ -33,5 +33,6 @@ export default function* () {
     Comment.sagaGetComment(),
 
     Exercise.sagaCreateExercise(),
+    Exercise.sagaUpdateExercise()
   ])
 }
