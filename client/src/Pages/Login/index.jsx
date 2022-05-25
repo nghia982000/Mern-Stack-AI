@@ -50,12 +50,12 @@ const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthentica
           <img className="loginImagePic" src={imgLogin}>
           </img>
           <div className="loginImageCreate">
-            <Link to="/Register" style={{color: '#222222', fontWeight: 'bold' }}>Create an account</Link>
+            <Link to="/Register" style={{color: '#222222', fontWeight: 'bold' }}>Bạn chưa có tài khoản</Link>
           </div>
         </div>
         <div className="loginForm">
           <div className="loginFormTitle">
-            Sign up
+            Đăng nhập
           </div>
           <Form
             name="basic"
@@ -81,7 +81,7 @@ const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthentica
             <hr style={{ marginBottom: '15px' }} />
             <Form.Item >
               <Button type="primary" htmlType="submit" style={{ marginTop: '20px' }}>
-                Login
+                Đăng nhập
               </Button>
             </Form.Item>
           </Form>

@@ -48,10 +48,10 @@ const Home = ({ listCourse, dataCourse }) => {
             </div>
             <div className="homeCourse">
                 <div className="homeTitle">
-                    All course
+                    Tất cả khóa học
                 </div>
                 <div className="homeCourseQuote">
-                    If you fall asleep now, you will dream. If you study now, you will live your dream!
+                    Nếu bạn ngủ quên bây giờ, bạn sẽ mơ. Nếu bạn học ngay bây giờ, bạn sẽ sống với ước mơ của mình!
                 </div>
                 <div className="homeCourseContent">
                     <Slider {...settingsCourse}>
@@ -66,7 +66,7 @@ const Home = ({ listCourse, dataCourse }) => {
             </div>
             <div className="homeBxh">
                 <div className="homeTitle">
-                    RANK
+                    Bảng xếp hạng
                 </div>
                 <div className="homeBxhContent">
                     <div className="homeBxhLeft">
@@ -74,7 +74,7 @@ const Home = ({ listCourse, dataCourse }) => {
                     </div>
                     <div className="homeBxhRight">
                         <div className="homeBxhRighttitle">
-                            Set your target and keep trying until you reach it
+                            Đặt mục tiêu của bạn và tiếp tục cố gắng cho đến khi bạn đạt được nó
                         </div>
                         <div className="homeBxhRightList">
                             <p> <TrophyOutlined /> Top</p>

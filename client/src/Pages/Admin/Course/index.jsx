@@ -31,10 +31,10 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
     deleteCourse(id)
   }
   const columns = [
-    { title: 'Title', dataIndex: 'title', key: '1', ellipsis: true },
-    { title: 'Point', dataIndex: 'point', key: '4', ellipsis: true },
+    { title: 'Tiêu đề', dataIndex: 'title', key: '1', ellipsis: true },
+    { title: 'Điểm', dataIndex: 'point', key: '4', ellipsis: true },
     {
-      title: 'Action',
+      title: 'Thao tác',
       dataIndex: '',
       key: '5',
       render: (text, record) => (
@@ -44,13 +44,13 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
             updateState(true),
             createState(false),
             navigate('/admin/cuCourse')
-          )}>Update</button>
-          <button onClick={() => navigate(`/admin/editVideo/${record._id}`)}>Video and exercise</button>
+          )}>Cập nhật</button>
+          <button onClick={() => navigate(`/admin/editVideo/${record._id}`)}>Video bài giảng</button>
           <Popconfirm
             title="Sinh viên này sẽ bị xóa vĩnh viễn"
             onConfirm={() => handleDelete(record._id)}
           >
-            <button>Delete</button>
+            <button>Xóa</button>
           </Popconfirm>
         </Space>
 
@@ -63,7 +63,7 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
         updateState(false),
         createState(true),
         navigate('/admin/cuCourse')
-      )}>CreateUpdate</button>
+      )}>Tạo khóa học mới</button>
       <Table
         columns={columns}
         dataSource={dataCourse}

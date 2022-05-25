@@ -79,22 +79,22 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
           >
             <Menu.Item key="1" icon={<ReadOutlined />}>
               <Link to="/admin/course">
-                Course
+                Quản lý khóa học
               </Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<TeamOutlined />}>
               <Link to="/admin/account">
-                Account
+                Quản lý tài khoản
               </Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<CommentOutlined />}>
               <Link to="/admin/comment">
-                Comment
+                Quản lý comment
               </Link>
             </Menu.Item>
             <Menu.Item key="4" icon={<BarChartOutlined />}>
               <Link to="/admin/statistical">
-                Statistical
+                Thống kê
               </Link>
             </Menu.Item>
           </Menu>

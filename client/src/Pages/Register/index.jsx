@@ -16,8 +16,8 @@ const Register = ({ register }) => {
   const onFinish = async (values) => {
     if (values.password !== values.confirmPassword) {
       notification.open({
-        message: 'Fail register',
-        description: 'Passwords do not match',
+        message: 'Đăng ký thất bại',
+        description: 'Mật khẩu không khớp',
         icon: <CloseCircleOutlined style={{ color: "red" }} />,
       })
       return
@@ -38,7 +38,7 @@ const Register = ({ register }) => {
     <div className='register'>
       <div className="registerForm">
         <div className="registerFormTitle">
-          Sign up
+          Đăng ký 
         </div>
         <Form
           name="basic"
@@ -48,7 +48,7 @@ const Register = ({ register }) => {
         >
           <Form.Item
             name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
             style={{ marginBottom: '0px' }}
           >
             <Input size="large" style={{ paddingLeft: '0px' }} placeholder="User Name" prefix={<UserOutlined />} bordered={false} />
@@ -56,7 +56,7 @@ const Register = ({ register }) => {
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
             style={{ marginBottom: '0px' }}
           >
             <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Password" prefix={<LockOutlined />} bordered={false} />
@@ -64,7 +64,7 @@ const Register = ({ register }) => {
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item
             name="confirmPassword"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Vui lòng xác nhận lại mật khẩu!' }]}
             style={{ marginBottom: '0px' }}
           >
             <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Confirm password" prefix={<LockOutlined />} bordered={false} />
@@ -72,7 +72,7 @@ const Register = ({ register }) => {
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item >
             <Button type="primary" htmlType="submit" style={{ marginTop: '20px' }}>
-              Register
+              Đăng ký
             </Button>
           </Form.Item>
         </Form>
@@ -81,7 +81,7 @@ const Register = ({ register }) => {
         <img className="registerImagePic" src={imgRegister}>
         </img>
         <div className="registerImageCreate">
-          <Link to="/login" style={{ color: '#222222', fontWeight: 'bold' }}>I am already register</Link>
+          <Link to="/login" style={{ color: '#222222', fontWeight: 'bold' }}>Tôi đã đăng có tài khoản</Link>
         </div>
       </div>
     </div>

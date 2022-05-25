@@ -1,10 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
+
 import './style.scss'
 import { Collapse } from 'antd'
 import { PlayCircleOutlined, FileTextOutlined } from '@ant-design/icons'
 import imgCourse from '../../Assets/img/desk.png'
 import { useParams } from 'react-router-dom'
 import ItemComment from '../../Components/ItemComment'
+import ItemDraggable from '../../Components/ItemDraggable'
 
 import * as actions from '../../Store/Actions/course'
 import * as actionsVideo from '../../Store/Actions/video'
@@ -44,13 +46,24 @@ const Learning = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, cr
 
     return `${getHours} : ${getMinutes} : ${getSeconds}`
   }
+  const endVideo = () => {
+    console.log('end video')
+  }
+  const loadStart = () => {
+    console.log('start video')
+    setOnclose(true)
+  }
+  const [onclose, setOnclose]=useState(false)
   return (
     <div className='learing'>
+      {
+        onclose&&<ItemDraggable onclose={setOnclose}/>
+      }
       <div className="learingLeft">
         {
           role === 'video' ? (
             <>
-              <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url} controls>
+              <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url} onLoadStart={() => loadStart()} onEnded={() => endVideo()} controls>
               </video>
               <div className="learingLeftTitle">
                 {video.title}

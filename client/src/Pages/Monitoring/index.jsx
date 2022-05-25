@@ -62,7 +62,31 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         if (arrRemind.current.some((item) => item !== value)) {
             arrRemind.current = []
         }
-        if (arrRemind.current.length >= 10) {
+        if (arrRemind.current.length >= 5 && arrRemind.current[0]==='Working') {
+            // console.log(arrRemind.current[0])
+            if (remind !== arrRemind.current[0]) {
+                setRemind(arrRemind.current[0])
+            }
+        }
+        if (arrRemind.current.length >= 10 && arrRemind.current[0]==='Using Phone') {
+            // console.log(arrRemind.current[0])
+            if (remind !== arrRemind.current[0]) {
+                setRemind(arrRemind.current[0])
+            }
+        }
+        if (arrRemind.current.length >= 50 && arrRemind.current[0]==='Tired') {
+            // console.log(arrRemind.current[0])
+            if (remind !== arrRemind.current[0]) {
+                setRemind(arrRemind.current[0])
+            }
+        }
+        if (arrRemind.current.length >= 10 && arrRemind.current[0]==='Turn around') {
+            // console.log(arrRemind.current[0])
+            if (remind !== arrRemind.current[0]) {
+                setRemind(arrRemind.current[0])
+            }
+        }
+        if (arrRemind.current.length >= 20 && arrRemind.current[0]==='Leaving') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
@@ -72,18 +96,47 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         // console.log(arrRemind.current)
     }
     useEffect(() => {
-        // if (remind) {
-        //     switch(remind)
-        //     case 'Tired':
+        if (remind) {
+            switch (remind) {
+                case 'Tired':
+                    sound.play()
+                    notification.open({
+                        message: remind,
+                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+                    })
+                    break
+                case 'Using Phone':
+                    // sound.play()
+                    notification.open({
+                        message: 'Nếu không có việc gì khẩn cấp bạn hãy tập trung vào công việc và không sử dụng điện thoại sẽ làm xao nhãng',
+                        // message:remind,
+                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+                    })
+                    break
+                case 'Turn around':
+                    // sound.play()
+                    notification.open({
+                        message: remind,
+                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+                    })
+                    break
+                case 'Leaving':
+                    // sound.play()
+                    notification.open({
+                        message: remind,
+                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+                    })
+                    break
+            }
 
-        // }
-        if (remind && remind !== 'Working') {
-            sound.play()
-            notification.open({
-                message: remind,
-                icon: <CloseCircleOutlined style={{ color: "red" }} />,
-            })
         }
+        // if (remind && remind !== 'Working') {
+        //     sound.play()
+        //     notification.open({
+        //         message: remind,
+        //         icon: <CloseCircleOutlined style={{ color: "red" }} />,
+        //     })
+        // }
     }, [remind])
     const loadModel = async () => {
         const model = await tf.loadLayersModel('https://raw.githubusercontent.com/nghia982000/tfjs-model/main/model.json')
@@ -134,6 +187,13 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
     // const onFinish = (values) => {
     //     addItemRemind(values.test)
     // }
+    const adjust=(value) => {
+        if(value[0].className==='Using Phone'&&value[0].probability<=0.8){
+            return 'Working'
+        }else{
+            return value[0].className
+        }
+    }
     const addResult = (value) => {
         result.current[value] = result.current[value] + 1
         console.log(result.current)
@@ -153,10 +213,13 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             }).sort(function (a, b) {
                 return b.probability - a.probability
             })
-        console.log(kq[0].className)
-        addItemRemind(kq[0].className)
-        addResult(kq[0].className)
-        setState(kq[0].className)
+
+        let newKq=adjust(kq)
+        console.log(newKq)
+        // console.log(kq)
+        addItemRemind(newKq)
+        addResult(newKq)
+        setState(newKq)
         requestAnimationFrame(() => {
             detectFrame(video, model)
         })

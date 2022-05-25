@@ -28,7 +28,7 @@ const Account = ({ selectBoughtCourse,selectUser }) => {
             <div className="accountContent">
                 <div className="accountRecent">
                     <div className="accountRecentTitle">
-                        Recent Action
+                        Hoạt động gần đây
                     </div>
                     <div className="accountRecentContent">
 
@@ -36,7 +36,7 @@ const Account = ({ selectBoughtCourse,selectUser }) => {
                 </div>
                 <div className="accountMycourse">
                     <div className="accountMycourseTitle">
-                        My Course
+                        Khóa học của tôi
                     </div>
                     <div className="accountMycourseContent">
                         {

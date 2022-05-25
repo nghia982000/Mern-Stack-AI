@@ -9,10 +9,10 @@ const ItemMonitoring = () => {
     <div className='itemMonitoring' >
       <div className="itemMonitoringLeft">
         <div className="itemMonitoringTitle">
-          Monitor your work performance
+          Giám sát hiệu suất làm việc của bạn
         </div>
         <div className="itemMonitoringBtn" onClick={()=>navigate('/monitoring')} >
-          Go Monitoring
+          Bắt đầu giám sát
         </div>
       </div>
       <div className="itemMonitoringRight">

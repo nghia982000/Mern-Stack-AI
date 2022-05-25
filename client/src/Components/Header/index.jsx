@@ -72,13 +72,13 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
         </div>
         <div className="headerMenu">
           <NavLink to="/">
-            Home
+            Trang chủ
           </NavLink>
           <NavLink to="/monitoring" >
-            Monitoring
+            Giám sát
           </NavLink>
           <NavLink to="/course" >
-            Course
+            Các khóa học
           </NavLink>
         </div>
       </div>
@@ -88,7 +88,7 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
             <SearchOutlined style={{ fontSize: '20px' }} />
           </div>
           <form action="" onSubmit={(e) => onSubmit(e)}>
-            <input type="text" ref={search} onFocus={() => onFocus()} placeholder='Search course ...' >
+            <input type="text" ref={search} onFocus={() => onFocus()} placeholder='Tìm kiếm khóa học' >
             </input>
           </form>
         </div>
@@ -97,7 +97,7 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
         {
           !selectIsAuthenticated && (
             <div className="headerAuth" onClick={() => navigate('/login')}>
-              <p>Login</p>
+              <p>Đăng nhập</p>
             </div>
           )
         }
