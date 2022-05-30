@@ -4,6 +4,7 @@ import * as Course from './course'
 import * as Video from './video'
 import * as Comment from './comment'
 import * as Exercise from './exercise'
+import * as Quizzes from './quizzes'
 
 
 export default function* () {
@@ -11,6 +12,8 @@ export default function* () {
     Auth.sagaLogin(),
     Auth.sagaRegister(),
     Auth.sagaCheckLogin(),
+    Auth.sagaGetAccount(),
+    Auth.sagaDeleteAccount(),
 
     Course.sagaListCourse(),
     Course.sagaDeleteCourse(),    
@@ -31,8 +34,19 @@ export default function* () {
 
     Comment.sagaCreateComment(),
     Comment.sagaGetComment(),
+    Comment.sagaGetListComment(),
+    Comment.sagaDeleteComment(),
 
     Exercise.sagaCreateExercise(),
-    Exercise.sagaUpdateExercise()
+    Exercise.sagaUpdateExercise(),
+
+    Quizzes.sagaCreateQuizzes(),
+    Quizzes.sagaUpdateQuizzes(),
+    Quizzes.sagaCreateQuestion(),
+    Quizzes.sagaUpdateQuestion(),
+    Quizzes.sagaDeleteQuestion(),
+    Quizzes.sagaGetQuestion(),
+    Quizzes.sagaTestResult(),
+
   ])
 }

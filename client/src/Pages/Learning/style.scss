@@ -26,7 +26,16 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+        .videoFrameTest{
+            position: relative;
 
+        }
+        .testNoti{
+            position: absolute;
+            z-index: 100;
+            top:0;
+            left: 0;
+        }
         .learingLeftTitle {
             font-size: 30px;
             font-weight: bold;
@@ -46,6 +55,10 @@
         }
         .learingLeftExercise{
             // background-color: #bbbbbb;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .learingLeftQuestion{
             width: 80%;
             margin: 0 auto;
         }

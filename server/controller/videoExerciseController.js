@@ -220,6 +220,69 @@ class VideoExerciseController {
             })
         }
     }
+    async createQuizzes(req, res) {
+        const {id,title, lecture, role} = req.body
+        try {
+            console.log(id ,title, lecture, role)
+            const newQuizzes = new VideoExercise({
+                title,
+                lecture,
+                course:id,
+                role
+            })
+            await newQuizzes.save()
+            res.json({
+                success: true,
+                message: 'Successfully!!!',
+                quizzes: newQuizzes
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async updateQuizzes(req, res) {
+        const {id ,title, lecture, role} = req.body
+        console.log(req.params.id)
+        try {
+            let updateQuizzes = {
+                title,
+                lecture,
+                course:id,
+                role
+            }
+            const quizzesUpdateCondition = {
+                _id: req.params.id,
+                // user: req.userId
+            }
+            updateQuizzes = await VideoExercise.findOneAndUpdate(
+                quizzesUpdateCondition,
+                updateQuizzes,
+                { new: true }
+            )
+            //User not authorised to update Course or Course not found
+            if (!updateQuizzes) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Quizzes not found or user not authorised '
+                })
+            }
+            res.json({
+                success: true,
+                message: 'Excellent progress',
+                quizzes: updateQuizzes
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 }
 
 module.exports = new VideoExerciseController()

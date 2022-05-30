@@ -3,4 +3,9 @@ export const INIT_STATE={
     isLoading:true,
     detailVideo:{},
     detailExercise:{},
+    quizzes:{},
+    editState:{
+        create:false,
+        update:false
+    }
 }

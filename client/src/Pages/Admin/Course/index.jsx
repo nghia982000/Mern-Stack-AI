@@ -45,7 +45,7 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
             createState(false),
             navigate('/admin/cuCourse')
           )}>Cập nhật</button>
-          <button onClick={() => navigate(`/admin/editVideo/${record._id}`)}>Video bài giảng</button>
+          <button onClick={() => navigate(`/admin/lesson/${record._id}`)}>Bài giảng</button>
           <Popconfirm
             title="Sinh viên này sẽ bị xóa vĩnh viễn"
             onConfirm={() => handleDelete(record._id)}

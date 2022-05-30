@@ -4,6 +4,7 @@ import {
     Form,
     Input,
     notification,
+    InputNumber
 } from 'antd'
 import {
     UploadOutlined,
@@ -107,16 +108,16 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                 <Form.Item
                     label='Description'
                     name="description"
-                    rules={[{ required: true, message: 'Please input your description!' }]}
+                    rules={[{ required: true, message: 'Please input your description!'}]}
                 >
                     <Input size="large" placeholder="Description" />
                 </Form.Item>
                 <Form.Item
                     label='Point'
                     name="point"
-                    rules={[{ required: true, message: 'Please input your point!' }]}
+                    rules={[{ required: true, message: 'Please input your point!',type:'number'  }]}
                 >
-                    <Input size="large" placeholder="Point" />
+                    <InputNumber size="large" placeholder="Point" />
                 </Form.Item>
                 <Form.Item
                     label='Field'
@@ -144,7 +145,7 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                     name="image"
                     rules={[{ required: true, message: 'Please input your url image!' }]}
                 >
-                    <Input size="large" placeholder="Url image" />
+                    <Input disabled size="large" placeholder="Url image" />
                 </Form.Item>
                 <Form.Item wrapperCol={{
                     offset: 3,

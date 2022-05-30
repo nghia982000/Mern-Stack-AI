@@ -19,7 +19,8 @@ import {
     deleteFavoriteSuccess,
     favoriteCourseSuccess,
     buyCourseSuccess,
-    saveBoughtCourse
+    saveBoughtCourse,
+    createCourseSuccess
 } from '../Actions/course'
 import * as apiCourse from '../../Api/course'
 
@@ -107,7 +108,8 @@ export function* sagaDeleteCourse() {
 function* fetchCreateCourse(Actions) {
     try {
         const response = yield call(apiCourse.apiCreateCourse,Actions.payload)
-        // console.log(response)
+        console.log(response)
+        yield put(createCourseSuccess(response.data.Course))
     } catch (err) {
         console.log(err)
         if(err.response){

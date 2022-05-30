@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { initNotifications, notify } from '@mycv/f8-notification'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
 import axios from 'axios'
@@ -14,8 +15,7 @@ import {
     CheckCircleOutlined,
     CloseCircleOutlined
 } from "@ant-design/icons"
-import { DatePicker, TimePicker, Select, Space, Input, Form, Button } from 'antd'
-import { notification } from 'antd'
+import { DatePicker, TimePicker, Select, Space, Input, Form, Button, Modal, notification } from 'antd'
 import imgFrame from '../../Assets/img/cameraFrame.jpg'
 import imgMonitor from '../../Assets/img/monitor.png'
 import LogoAD from '../../Assets/img/logoUser.png'
@@ -27,6 +27,7 @@ import { compose } from 'redux'
 import { selectIsAuthenticated, selectUser } from '../../Store/Selectors/auth'
 
 import soundUrl from '../../Assets/mp3/CENSORBEEP.mp3'
+const { Option } = Select
 var sound = new Howl({
     src: [soundUrl]
 })
@@ -62,31 +63,31 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         if (arrRemind.current.some((item) => item !== value)) {
             arrRemind.current = []
         }
-        if (arrRemind.current.length >= 5 && arrRemind.current[0]==='Working') {
+        if (arrRemind.current.length >= 3 && arrRemind.current[0] === 'Working') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
-        if (arrRemind.current.length >= 10 && arrRemind.current[0]==='Using Phone') {
+        if (arrRemind.current.length >= 5 && arrRemind.current[0] === 'Using Phone') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
-        if (arrRemind.current.length >= 50 && arrRemind.current[0]==='Tired') {
+        if (arrRemind.current.length >= 10 && arrRemind.current[0] === 'Tired') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
-        if (arrRemind.current.length >= 10 && arrRemind.current[0]==='Turn around') {
+        if (arrRemind.current.length >= 5 && arrRemind.current[0] === 'Turn around') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
-        if (arrRemind.current.length >= 20 && arrRemind.current[0]==='Leaving') {
+        if (arrRemind.current.length >= 10 && arrRemind.current[0] === 'Leaving') {
             // console.log(arrRemind.current[0])
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
@@ -96,32 +97,40 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         // console.log(arrRemind.current)
     }
     useEffect(() => {
+        console.log(remind)
         if (remind) {
             switch (remind) {
                 case 'Tired':
                     sound.play()
+                    notify('Cảnh báo', { body: 'Bạn đang mệt' })
                     notification.open({
                         message: remind,
                         icon: <CloseCircleOutlined style={{ color: "red" }} />,
                     })
                     break
                 case 'Using Phone':
-                    // sound.play()
+                    sound.play()
+                    notify('Cảnh báo', { body: 'Bạn đang dùng điện thoại' })
                     notification.open({
                         message: 'Nếu không có việc gì khẩn cấp bạn hãy tập trung vào công việc và không sử dụng điện thoại sẽ làm xao nhãng',
                         // message:remind,
+                        style: {
+                            width: 600,
+                        },
                         icon: <CloseCircleOutlined style={{ color: "red" }} />,
                     })
                     break
                 case 'Turn around':
-                    // sound.play()
+                    sound.play()
+                    notify('Cảnh báo', { body: 'Bạn đang không tập trung' })
                     notification.open({
                         message: remind,
                         icon: <CloseCircleOutlined style={{ color: "red" }} />,
                     })
                     break
                 case 'Leaving':
-                    // sound.play()
+                    sound.play()
+                    notify('Cảnh báo', { body: 'Bạn đã rời khỏi nơi làm việc' })
                     notification.open({
                         message: remind,
                         icon: <CloseCircleOutlined style={{ color: "red" }} />,
@@ -149,25 +158,64 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
     // }
     const setUpCamera = () => {
         return new Promise((resolve, reject) => {
-            navigator.getUserMedia = navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.MozGetUserMedia ||
-                navigator.msGetUserMedia
-            if (navigator.getUserMedia) {
-                navigator.getUserMedia(
-                    { video: true },
-                    stream => {
-                        setMediaStream(stream)
-                        video.current.srcObject = stream
-                        video.current.addEventListener('loadeddata', resolve)
-                    },
-                    error => reject(error)
-                )
-            } else {
-                reject()
-            }
+            navigator.getUserMedia(
+                {
+                    audio: false,
+                    video: {
+                        facingMode: "user"
+                    }
+                },
+                stream => {
+                    window.stream = stream
+                    setMediaStream(stream)
+                    video.current.srcObject = window.stream
+                    video.current.onloadedmetadata = () => {
+                        resolve()
+                    }
+                },
+                error => reject(error)
+            )
         })
+        // return new Promise((resolve, reject) => {
+        //     navigator.getUserMedia = navigator.getUserMedia ||
+        //         navigator.webkitGetUserMedia ||
+        //         navigator.MozGetUserMedia ||
+        //         navigator.msGetUserMedia
+        //     if (navigator.getUserMedia) {
+        //         navigator.getUserMedia(
+        //             { video: true },
+        //             stream => {
+        //                 window.stream = stream
+        //                 setMediaStream(stream)
+        //                 video.current.srcObject = window.stream
+        //                 video.current.onloadedmetadata = () => {
+        //                     resolve()
+        //                 }
+        //             },
+        //             error => reject(error)
+        //         )
+        //     } else {
+        //         reject()
+        //     }
+        // })
     }
+    // const webCamPromise = navigator.mediaDevices
+    //     .getUserMedia({
+    //         audio: false,
+    //         video: {
+    //             facingMode: "user"
+    //         }
+    //     })
+    //     .then(stream => {
+    //         setMediaStream(stream)
+    //         window.stream = stream
+    //         video.current.srcObject = window.stream
+    //         return new Promise((resolve, reject) => {
+    //             video.current.onloadedmetadata = () => {
+    //                 resolve()
+    //             }
+    //         })
+    //     })
     useEffect(() => {
         console.log("Component Did Mount")
 
@@ -187,10 +235,10 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
     // const onFinish = (values) => {
     //     addItemRemind(values.test)
     // }
-    const adjust=(value) => {
-        if(value[0].className==='Using Phone'&&value[0].probability<=0.8){
+    const adjust = (value) => {
+        if (value[0].className === 'Using Phone' && value[0].probability <= 0.8) {
             return 'Working'
-        }else{
+        } else {
             return value[0].className
         }
     }
@@ -214,16 +262,25 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
                 return b.probability - a.probability
             })
 
-        let newKq=adjust(kq)
+        let newKq = adjust(kq)
         console.log(newKq)
         // console.log(kq)
         addItemRemind(newKq)
         addResult(newKq)
         setState(newKq)
-        requestAnimationFrame(() => {
-            detectFrame(video, model)
-        })
+        // requestAnimationFrame(() => {
+        //     detectFrame(video, model)
+        // })
+        await sleep(1000)
+        detectFrame(video, model)
+        // setInterval(() => {
+        //     // console.log(video)
+        //     detectFrame(video, model)
+        // },1000/60)
         tf.engine().endScope()
+    }
+    const sleep = (ms = 0) => {
+        return new Promise(resolve => setTimeout(resolve, ms))
     }
     const process_input = (video) => {
         var inputImage = tf.browser.fromPixels(video)
@@ -240,18 +297,47 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         // init()
         // console.log(model)
         if (step1) {
-            Promise.all([loadModel(), setUpCamera()])
-                .then(values => {
-                    console.log(values[0])
-                    setModel(values[0])
-                    setStep2(true)
-                    // detectFrame(video.current, values[0])
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+            // Promise.all([loadModel(), setUpCamera()])
+            if (
+                navigator.mediaDevices &&
+                navigator.mediaDevices.getUserMedia &&
+                navigator.mediaDevices.getDisplayMedia
+            ) {
+                const webCamPromise = navigator.mediaDevices
+                    .getUserMedia({
+                        audio: false,
+                        video: {
+                            facingMode: "user"
+                        }
+                    })
+                    .then(stream => {
+                        setMediaStream(stream)
+                        window.stream = stream
+                        video.current.srcObject = window.stream
+                        return new Promise((resolve, reject) => {
+                            video.current.onloadedmetadata = () => {
+                                resolve()
+                            }
+                        })
+                    })
+                Promise.all([loadModel(), webCamPromise])
+                    .then(values => {
+                        // initNotifications({ cooldown: 3000 })
+                        console.log(values[0])
+                        setModel(values[0])
+                        setStep2(true)
+                        // detectFrame(video.current, values[0])
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+            }
         }
     }, [step1])
+    useEffect(() => {
+        // request after 3 seconds
+        initNotifications({ cooldown: 3000 });
+    }, [])
     const offWebcam = () => {
         // console.log(mediaStream)
         mediaStream.getTracks().forEach((track) => {
@@ -373,10 +459,46 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             loop.current = false
         }
     }, [isActive])
+    const info = () => {
+        Modal.info({
+            title: 'Lời khuyên',
+            width: '700px',
+            content: (
+                <div>
+                    <h3>Để có một năng suất làm việc hiểu quả và tốt cho sức khỏe bạn cần thực hiện các điều sau đây:</h3>
+                    <p>Bạn hãy điều chỉnh độ sâu của ghế sao cho phù hợp với chiều dài hông của mình.</p>
+                    <p>Hãy gập cánh tay vuông góc 90 độ khi đánh máy tính, tuyệt đối không tì tay vào bàn phím khi đánh máy.</p>
+                    <p>Điều chỉnh lại ghế ngồi sao cho phần đầu ghế và cạnh ghế không vuông góc với nhau.</p>
+                    <p>Bạn hãy vận động bài tập nhẹ cho cổ như lắc, gập, ngửa cổ để cổ không bị cứng</p>
+                    <p>Đặt màn hình máy tính vừa ngang tầm nhìn của mắt sao cho khoảng cách từ mắt đến máy tính là khoảng 50 cm</p>
+                </div>
+            ),
 
+            onOk() {
+                setStep1(!step1)
+            },
+        })
+    }
+    const handleChange = (value) => {
+        setTime(value)
+    }
+    const showNotification = (permission) => {
+        console.log('noti')
+        if (permission !== 'granted') return;
+
+        let notification = new Notification('My Title', {
+            body: "Hi, how are you today?",
+            icon: 'icon.png'
+        })
+
+        notification.onclick = () => {
+            // window.open('https://google.com')
+
+            window.location.href = "https://www.google.com"
+        }
+    }
     return (
         <div className='monitorMain'>
-
             <div className="monitorVideoFrame" style={{ backgroundImage: `url(${imgFrame})` }}>
                 <video
                     ref={video}
@@ -391,7 +513,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
                 {
                     !step1 && (
                         <div className="monitorHandleTitle">
-                            Monitor your work performance
+                            Đánh giá quá trình học tập và làm việc của bạn
                         </div>
                     )
                 }
@@ -416,7 +538,8 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
                 {
                     !step1 && (
                         <div className="monitorHandleAction">
-                            <p onClick={() => setStep1(!step1)}>Start monitoring</p>
+                            <p onClick={info}>Bắt đầu giám sát</p>
+                            {/* <p onClick={() => setStep1(!step1)}>Start monitoring</p> */}
                             {/* <Form
                                 onFinish={onFinish}
                                 >
@@ -432,8 +555,23 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
                     step2 && (
                         <div className="watch">
                             <div className='stopwatch-card'>
-                                <p>Choose monitoring time</p>
-                                <TimePicker className='selectTime' onChange={value => setTime(value._d.getHours() * 60 * 60 + value._d.getMinutes() * 60 + value._d.getSeconds())} />
+                                <p>Chọn thời gian giám sát</p>
+                                <Select
+                                    placeholder='Chọn thời gian'
+                                    style={{
+                                        width: 120,
+                                    }}
+                                    onChange={handleChange}
+                                >
+                                    <Option value={60}>1 phút</Option>
+                                    <Option value={300}>5 phút</Option>
+                                    <Option value={600}>10 phút</Option>
+                                    <Option value={900}>15 phút</Option>
+                                    <Option value={1200}>20 phút</Option>
+                                    <Option value={1500}>25 phút</Option>
+                                    <Option value={1800}>30 phút</Option>
+                                </Select>
+                                {/* <TimePicker className='selectTime' onChange={value => setTime(value._d.getHours() * 60 * 60 + value._d.getMinutes() * 60 + value._d.getSeconds())} /> */}
                                 {
                                     time && (
                                         <>
@@ -443,7 +581,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
                                                     !isActive && !isPaused ?
                                                         <button onClick={handleStart}>Start</button>
                                                         : (
-                                                            isPaused ? <button onClick={handlePause}>Pause</button> :
+                                                            isPaused ? <button onClick={handlePause}>Dừng</button> :
                                                                 <button onClick={handleReset} disabled={!isActive}>Reset</button>
                                                         )
                                                 }

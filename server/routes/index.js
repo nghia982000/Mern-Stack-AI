@@ -3,7 +3,7 @@ const course = require('./course')
 const videoExercise = require('./videoExercise')
 const monitor = require('./monitor')
 const comment=require('./comment')
-const exercise=require('./exercise')
+const quizzes=require('./quizzes')
 
 function route(app) {
 
@@ -12,7 +12,7 @@ function route(app) {
     app.use('/videoExercise', videoExercise)
     app.use('/monitor', monitor)
     app.use('/comment', comment)
-    app.use('/exercise', exercise)
+    app.use('/quizzes', quizzes)
 
 }
 

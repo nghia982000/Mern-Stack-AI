@@ -1,34 +1,62 @@
 import React, { useEffect } from 'react'
+import {
+  Table,
+  Popconfirm,
+  Space
+} from 'antd'
 
-const Comment = () => {
-  const result = {
-    'Leaving': 100,
-    'Tired': 300,
-    'Turn around': 90,
-    'Using Phone': 80,
-    'Working': 4000
+import * as actions from '../../../Store/Actions/comment'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { selectListCommentAll } from '../../../Store/Selectors/comment'
+
+const Comment = ({selectListCommentAll,getListComment,deleteComment}) => {
+  const columns = [
+    { title: 'Tên tài khoản', dataIndex: 'name', key: '1', ellipsis: true },
+    { title: 'Nội dung', dataIndex: 'content', key: '2', ellipsis: true },
+    {
+      title: 'Thao tác',
+      dataIndex: '',
+      key: '5',
+      render: (text, record) => (
+        <Space size="middle">
+          <button>Xem bình luận</button>
+          <Popconfirm
+            title="Bình luận này sẽ bị xóa vĩnh viễn"
+            onConfirm={() => handleDelete(record._id)}
+          >
+            <button>Xóa</button>
+          </Popconfirm>
+        </Space>
+
+      )
+    },
+  ]
+  useEffect(()=>{
+    getListComment()
+  },[])
+  const handleDelete=(id)=>{
+    deleteComment(id)
   }
-  const percent = (result) => {
-    const arrResult = Object.values(result)
-    const total = arrResult.reduce((total, item) => {
-      return total + item
-    }, 0)
-    let newResult = {
-      'Leaving': 0,
-      'Tired': 0,
-      'Turn around': 0,
-      'Using Phone': 0,
-      'Working': 0
-    }
-    for (var key in result) {
-      newResult[key]=(result[key] / total) *100
-    }
-    return newResult
-  }
-  console.log( percent(result))
   return (
-    <div>Comment</div>
+    <div className='AdComment'>
+      <Table
+        columns={columns}
+        dataSource={selectListCommentAll}
+        rowKey={record => record._id}
+      />
+    </div>
   )
 }
 
-export default Comment
+const mapStateToProps = createStructuredSelector({
+  selectListCommentAll
+})
+const mapDispatchToProps = (dispatch) => ({
+  getListComment: () => dispatch(actions.getListComment()),
+  deleteComment: (payload) => dispatch(actions.deleteComment(payload)),
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+export default compose(withConnect)(Comment)

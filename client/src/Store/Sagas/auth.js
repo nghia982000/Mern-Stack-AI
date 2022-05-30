@@ -3,10 +3,14 @@ import {
     LOGIN,
     REGISTER,
     CHECKLOGINREQUEST,
+    GET_ACCOUNT,
+    DELETE_ACCOUNT,
 } from '../Constants/auth'
 import {
     checkLoginFailure,
-    checkLoginSuccess
+    checkLoginSuccess,
+    getAccountSuccess,
+    deleteAccountSuccess
 } from '../Actions/auth'
 import * as apiAuth from '../../Api/auth'
 import setAuthToken from '../../Api/until'
@@ -87,4 +91,45 @@ function* fetchCheckLoginSaga() {
 }
 export function* sagaCheckLogin() {
     yield takeLatest(CHECKLOGINREQUEST, fetchCheckLoginSaga)
+}
+
+function* fetchGetAccount() {
+    try {
+        const response = yield call(apiAuth.getAccount)
+        console.log(response)
+        yield put(getAccountSuccess(response.data.data))
+    } catch (err) {
+        console.error(err)
+        if(err.response){
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else{
+            console.log({success:false,message:err.message})
+            alert(err.message)
+        }
+    }
+}
+export function* sagaGetAccount() {
+    yield takeLatest(GET_ACCOUNT, fetchGetAccount)
+}
+function* fetchDeleteAccount(action) {
+    try {
+        const response = yield call(apiAuth.deleteAccount,action.payload)
+        console.log(response)
+        yield put(deleteAccountSuccess(response.data.user))
+    } catch (err) {
+        console.error(err)
+        if(err.response){
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else{
+            console.log({success:false,message:err.message})
+            alert(err.message)
+        }
+    }
+}
+export function* sagaDeleteAccount() {
+    yield takeLatest(DELETE_ACCOUNT, fetchDeleteAccount)
 }

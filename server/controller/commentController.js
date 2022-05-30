@@ -53,7 +53,54 @@ class CommentController {
             })
         }
     }
-
+    async getListComment(req, res) {
+        try {
+            Comment.find({ })
+                .then(data => {
+                    res.json({
+                        success: true,
+                        data: data
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        success: false,
+                        message: 'Internal server error'
+                    })
+                })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async deleteComment(req, res) {
+        try {
+            const commentDeleteCondition = {
+                _id: req.params.id
+            }
+            const deletedComment = await Comment.findOneAndDelete(commentDeleteCondition)
+            //User not authorised to update Account or Course not found
+            if (!deletedComment) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Comment not found '
+                })
+            }
+            res.json({
+                success: true,
+                comment: deletedComment
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 
 }
 

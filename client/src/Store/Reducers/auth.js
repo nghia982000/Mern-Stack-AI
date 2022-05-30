@@ -2,7 +2,9 @@ import { INIT_STATE } from "../States/auth"
 import {
     CHECKLOGINREQUEST,
     CHECKLOGINSUCCESS,
-    CHECKLOGINFAILURE
+    CHECKLOGINFAILURE,
+    GET_ACCOUNT_SUCCESS,
+    DELETE_ACCOUNT_SUCCESS
 } from '../Constants/auth'
 import {
     BUY_COURSE_SUCCESS
@@ -34,6 +36,16 @@ export default function authReducers(state=INIT_STATE.auth,action){
                 authLoading:true,
                 isAuthenticated:false,
                 user:null
+            }
+        case GET_ACCOUNT_SUCCESS:
+            return {
+                ...state,
+                listAccount:action.payload
+            }
+        case DELETE_ACCOUNT_SUCCESS:
+            return {
+                ...state,
+                listAccount:state.listAccount.filter(account => account._id !== action.payload._id)
             }
         default:
             return state

@@ -64,7 +64,7 @@ const Home = ({ listCourse, dataCourse }) => {
 
                 </div>
             </div>
-            <div className="homeBxh">
+            {/* <div className="homeBxh">
                 <div className="homeTitle">
                     Bảng xếp hạng
                 </div>
@@ -92,7 +92,7 @@ const Home = ({ listCourse, dataCourse }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

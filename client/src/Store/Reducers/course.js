@@ -10,7 +10,8 @@ import {
     DELETE_FAVORITE_SUCCESS,
     FAVORITE_COURSE_SUCCESS,
     SAVE_BOUGHT_COURSE,
-    BUY_COURSE_SUCCESS
+    BUY_COURSE_SUCCESS,
+    CREATE_COURSE_SUCCESS
 } from '../Constants/course'
 import {
     CHECKLOGINFAILURE
@@ -63,6 +64,11 @@ export default function courseReducers(state = INIT_STATE, action) {
                 const newArrCourse = [...state.course]
                 newArrCourse.push(action.payload.data)
                 draft.course = newArrCourse
+                break
+            case CREATE_COURSE_SUCCESS:
+                const newCourse = [action.payload,...state.data]
+                console.log(newCourse)
+                draft.data = newCourse
                 break
             default:
                 return state

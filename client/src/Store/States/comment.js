@@ -1,3 +1,4 @@
 export const INIT_STATE={
-    listComment:[]
+    listComment:[],
+    listCommentAll:[]
 }

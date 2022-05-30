@@ -19,7 +19,8 @@ import {
     GET_BOUGHT_COURSE,
     SAVE_BOUGHT_COURSE,
     SELECT_FIELD,
-    SEARCH_COURSE
+    SEARCH_COURSE,
+    CREATE_COURSE_SUCCESS
 } from '../Constants/course'
 export function listCourse(){
     return{
@@ -41,6 +42,12 @@ export function deleteCourse(payload){
 export function createCourse(payload){
     return{
         type: CREATE_COURSE,
+        payload
+    }
+}
+export function createCourseSuccess(payload){
+    return{
+        type: CREATE_COURSE_SUCCESS,
         payload
     }
 }

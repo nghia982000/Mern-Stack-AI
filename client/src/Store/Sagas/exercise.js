@@ -4,7 +4,8 @@ import {
     UPDATE_EXERCISE_REQUEST
 } from '../Constants/exercise'
 import {
-    updateExerciseSuccess
+    updateExerciseSuccess,
+    createExerciseSuccess
 } from '../Actions/exercise'
 import * as apiExercise from '../../Api/exercise'
 
@@ -12,7 +13,7 @@ function* fetchCreateExercise(action) {
     try {
         const response = yield call(apiExercise.createExercise, action.payload)
         console.log(response)
-        // yield put(createCommentSuccess(response.data.comment))
+        yield put(createExerciseSuccess(response.data.exercise))
     } catch (err) {
         console.error(err)
         if(err.response){

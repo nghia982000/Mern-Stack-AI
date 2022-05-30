@@ -6,9 +6,23 @@ import {
     DELETE_VIDEO,
     DETAIL_VIDEO,
     UPDATE_VIDEO_REQUEST,
-    UPDATE_VIDEO_SUCCESS
+    UPDATE_VIDEO_SUCCESS,
+    CREATE_STATE,
+    UPDATE_STATE,
 } from '../Constants/video'
 
+export function updateState(payload){
+    return{
+        type: UPDATE_STATE,
+        payload
+    }
+}
+export function createState(payload){
+    return{
+        type: CREATE_STATE,
+        payload
+    }
+}
 export function createVideoRequest(payload){
     return{
         type: CREATE_VIDEO_REQUEST,
@@ -17,7 +31,7 @@ export function createVideoRequest(payload){
 }
 export function updateVideoSuccess(payload){
     return{
-        type: UPDATE_VIDEO_REQUEST,
+        type: UPDATE_VIDEO_SUCCESS,
         payload
     }
 }

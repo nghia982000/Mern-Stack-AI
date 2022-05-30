@@ -2,6 +2,7 @@ const LIST_COURSE='list course'
 const SAVE_COURSE='save course'
 const DELETE_COURSE='delete course'
 const CREATE_COURSE='create course'
+const CREATE_COURSE_SUCCESS='create course success'
 const UPDATE_COURSE_REQUEST='update course request'
 const UPDATE_COURSE_SUCCESS='update course succses'
 const DETAIL_COURSE='detail course'
@@ -40,5 +41,6 @@ export {
     GET_BOUGHT_COURSE,
     SAVE_BOUGHT_COURSE,
     SELECT_FIELD,
-    SEARCH_COURSE
+    SEARCH_COURSE,
+    CREATE_COURSE_SUCCESS
 }

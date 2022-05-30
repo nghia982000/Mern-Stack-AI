@@ -1,6 +1,7 @@
 import axios from 'axios'
-const URL = ' http://localhost:5000'
-// const URL = 'https://server-mern-stack-ai.herokuapp.com'
+import{
+    URL
+} from './url'
 
 export const apiGetVideo = (payload) => axios.get(`${URL}/videoExercise/getVideo/${payload}`)
 export const apiDeleteVideo = (id) => axios.delete(`${URL}/videoExercise/deleteVideo/${id}`)

@@ -115,6 +115,45 @@ class AuthController {
             res.status(500).json({ success: false, message: 'Internal server error' })
         }
     }
+    async getAccount(req, res) {
+        try {
+            User.find({role:'user'})
+                .then(data => {
+                    res.json({ success: true, data })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ success: false, message: 'Internal server error' })
+        }
+    }
+    async deleteAccount(req, res) {
+        try {
+            const userDeleteCondition = {
+                _id: req.params.id
+            }
+            const deletedUser = await User.findOneAndDelete(userDeleteCondition)
+            //User not authorised to update Account or Course not found
+            if (!deletedUser) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Account not found '
+                })
+            }
+            res.json({
+                success: true,
+                user: deletedUser
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 }
 
 module.exports = new AuthController()

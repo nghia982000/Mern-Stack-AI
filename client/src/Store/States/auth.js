@@ -3,5 +3,6 @@ export const INIT_STATE={
         authLoading:true,
         isAuthenticated:false,
         user:null,
-    }
+        listAccount:[]
+    },
 }

@@ -5,6 +5,7 @@ import {
   Button,
   Form,
   Input,
+  InputNumber,
   notification,
 } from 'antd'
 import { useNavigate, useParams } from "react-router-dom"
@@ -48,6 +49,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
     formData.append('content', data.content)
     if (selectCreateState) {
       createExercise(formData)
+      handleCancel()
     }
     if (selectUpdateState) {
       const newExercise = {
@@ -58,7 +60,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
       handleCancel()
     }
   }
-  const handleCancel = () => navigate(`/admin/editVideo/${id}`)
+  const handleCancel = () => navigate(`/admin/lesson/${id}`)
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -102,7 +104,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
           name="lecture"
           rules={[{ required: true, message: 'Please input your lecture!' }]}
         >
-          <Input size="large" placeholder="Lecture" />
+          <InputNumber size="large" placeholder="Lecture" />
         </Form.Item>
         <Form.Item
           label='Title'

@@ -76,7 +76,7 @@ function* fetchUpdateVideo(Actions) {
     try {
         const response = yield call(apiVideo.apiUpdateVideo,Actions.payload)
         console.log(response)
-        // yield put(updateVideoSuccess(response.data.video))
+        yield put(updateVideoSuccess(response.data.video))
     } catch (err) {
         console.log(err)
         if(err.response){

@@ -6,7 +6,7 @@ const decentralization = (req, res, next) => {
     try {
         User.findOne({ _id: userId,role:'manager'})
             .then((data) => {
-                console.log(data)
+                // console.log(data)
                 if(data){
                     next()
                 }else{

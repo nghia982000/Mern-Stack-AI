@@ -1,5 +1,6 @@
 import axios from 'axios'
-const URL = ' http://localhost:5000'
-// const URL = 'https://server-mern-stack-ai.herokuapp.com'
+import{
+    URL
+} from './url'
 
 export const createActive = (payload) => axios.post(`${URL}/monitor/createActive`,payload)

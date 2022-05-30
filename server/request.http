@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "username":"admin",
+    "username":"admin8",
     "password":"123456789",
     "role":"user"
 }
@@ -11,7 +11,7 @@ POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"admin",
+    "username":"admin1",
     "password":"123456789"
 }
 
@@ -154,3 +154,108 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjO
     "title":"Bài tập",
     "content":"gsvkbjslfavhnfda"
 }
+###
+GET http://localhost:5000/auth/getAccount
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+###
+DELETE  http://localhost:5000/auth/deleteAccount/627f285b5aaeeac4f306d570
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+###
+GET http://localhost:5000/comment/getListComment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+###
+DELETE  http://localhost:5000/comment/deleteComment/627d3a511472586e8e8129ae
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+###
+POST   http://localhost:5000/quizzes/createQuizzes/626a656e3515c4ac1963dd12
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+{
+    "question":"Câu 1: 1+5=?",
+    "answer":{
+        "A":"3",
+        "B":"4",
+        "C":"5",
+        "D":"6"
+    },
+    "correctAnswer":"D"
+}
+
+###
+DELETE  http://localhost:5000/quizzes/deleteQuizzes/6292ebead4f9c8027e527f1f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+###
+GET http://localhost:5000/quizzes/getQuizzes/62933ccb1ca1390d51e2640b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTM5MDI4Mzl9.ivopqK15t4chSSgQoi2jm7g8ywSLXmUNkwAYlCx-f-c
+
+###
+PUT    http://localhost:5000/quizzes/updateQuizzes/6294516184a76b2bb0843f47
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+{
+    "question":"Câu 1: 1+2=?",
+    "answer":{
+        "A":"3",
+        "B":"4",
+        "C":"5",
+        "D":"6"
+    },
+    "correctAnswer":"D"
+}
+
+###
+POST  http://localhost:5000/quizzes/testResult/627d3a511472586e8e8129ae
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+{
+    "listAnswer":[
+        {
+            "id":"6292efcccd3d559d3f3e8c2f",
+            "correctAnswer":"A"
+        },
+        {
+            "id":"6292efd2cd3d559d3f3e8c32",
+            "correctAnswer":"B"
+        },
+        {
+            "id":"6292eff9cd3d559d3f3e8c35",
+            "correctAnswer":"C"
+        },
+        {
+            "id":"6292f001cd3d559d3f3e8c38",
+            "correctAnswer":"D"
+        }
+    ]
+}
+###
+POST   http://localhost:5000/videoExercise/createQuizzes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+{
+    "lecture":"5",
+    "title":"Bài tập trắc nghiệm",
+    "id":"626a65b23515c4ac1963dd1b",
+    "role":"quizzes"
+}
+
+###
+PUT    http://localhost:5000/videoExercise/updateQuizzes/62932f735c3a96322b916424
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+{
+    "lecture":"5",
+    "title":"Bài tập trắc nghiệm test",
+    "id":"626a65b23515c4ac1963dd1b",
+    "role":"quizzes"
+}
+

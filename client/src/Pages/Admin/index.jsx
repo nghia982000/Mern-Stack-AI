@@ -19,8 +19,12 @@ import Account from './Account'
 import Comment from './Comment'
 import Statistical from './Statistical'
 import CUCourse from './CUCourse'
-import EditVideo from './EditVideo'
+import Lesson from './Lesson'
 import Exercise from './Exercise'
+import Quizzes from './Quizzes'
+import Video from './Video'
+import Questions from './Questions'
+import CUQuestion from './CUQuestion'
 
 import * as actions from '../../Store/Actions/auth'
 import { createStructuredSelector } from 'reselect'
@@ -126,8 +130,12 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
               <Route path="/comment" element={<Comment />} />
               <Route path="/statistical" element={<Statistical />} />
               <Route path="/cuCourse" element={<CUCourse />} />
-              <Route path="/editVideo/:id" element={<EditVideo />} />
+              <Route path="/lesson/:id" element={<Lesson />} />
               <Route path="/exercise/:id" element={<Exercise />} />
+              <Route path="/quizzes/:id" element={<Quizzes />} />
+              <Route path="/video/:id" element={<Video />} />
+              <Route path="/questions/:id" element={<Questions />} />
+              <Route path="/cuQuestion/:id" element={<CUQuestion />} />
             </Routes>
           </Content>
         </Layout>
