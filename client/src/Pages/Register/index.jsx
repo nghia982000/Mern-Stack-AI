@@ -3,7 +3,7 @@ import './style.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import imgRegister from '../../Assets/img/register (1).png'
 import { Form, Input, Button } from 'antd'
-import { UserOutlined, LockOutlined, CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import { UserOutlined, LockOutlined, CloseCircleOutlined, CheckCircleOutlined,MailOutlined,IdcardOutlined } from '@ant-design/icons'
 import { notification } from 'antd'
 
 import * as actions from '../../Store/Actions/auth'
@@ -31,6 +31,11 @@ const Register = ({ register }) => {
         icon: <CheckCircleOutlined style={{ color: "green" }} />,
       })
       navigate("/login")
+    }else{
+      notification.open({
+        message: 'Tài khoản đã tồn tại',
+        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+      })
     }
 
   }
@@ -51,7 +56,23 @@ const Register = ({ register }) => {
             rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
             style={{ marginBottom: '0px' }}
           >
-            <Input size="large" style={{ paddingLeft: '0px' }} placeholder="User Name" prefix={<UserOutlined />} bordered={false} />
+            <Input size="large" style={{ paddingLeft: '0px' }} placeholder="Tên đăng nhập" prefix={<UserOutlined />} bordered={false} />
+          </Form.Item>
+          <hr style={{ marginBottom: '15px' }} />
+          <Form.Item
+            name="nameAccount"
+            rules={[{ required: true, message: 'Vui lòng nhập tên hiển thị!' }]}
+            style={{ marginBottom: '0px' }}
+          >
+            <Input size="large" style={{ paddingLeft: '0px' }} placeholder="Tên hiển thị" prefix={<IdcardOutlined />} bordered={false} />
+          </Form.Item>
+          <hr style={{ marginBottom: '15px' }} />
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: 'Vui lòng nhập email!',type:'email' }]}
+            style={{ marginBottom: '0px' }}
+          >
+            <Input size="large" style={{ paddingLeft: '0px' }} placeholder="Email" prefix={<MailOutlined />} bordered={false} />
           </Form.Item>
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item
@@ -59,7 +80,7 @@ const Register = ({ register }) => {
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
             style={{ marginBottom: '0px' }}
           >
-            <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Password" prefix={<LockOutlined />} bordered={false} />
+            <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Mật khẩu" prefix={<LockOutlined />} bordered={false} />
           </Form.Item>
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item
@@ -67,7 +88,7 @@ const Register = ({ register }) => {
             rules={[{ required: true, message: 'Vui lòng xác nhận lại mật khẩu!' }]}
             style={{ marginBottom: '0px' }}
           >
-            <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Confirm password" prefix={<LockOutlined />} bordered={false} />
+            <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Nhập lại mật khẩu" prefix={<LockOutlined />} bordered={false} />
           </Form.Item>
           <hr style={{ marginBottom: '15px' }} />
           <Form.Item >

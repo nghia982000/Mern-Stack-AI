@@ -14,10 +14,6 @@ const QuizzesSchema = new Schema({
         type: String,
         // required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
     lectureId: {
         type:Schema.Types.ObjectId
     },
@@ -25,5 +21,5 @@ const QuizzesSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'courses'
     }
-})
+},{timestamps:true})
 module.exports = mongoose.model('quizzes', QuizzesSchema)

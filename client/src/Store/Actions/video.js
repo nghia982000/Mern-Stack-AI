@@ -23,24 +23,26 @@ export function createState(payload){
         payload
     }
 }
-export function createVideoRequest(payload){
-    return{
-        type: CREATE_VIDEO_REQUEST,
-        payload
-    }
-}
+export const createVideoRequest = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CREATE_VIDEO_REQUEST,
+            payload, resolve
+        })
+    )
 export function updateVideoSuccess(payload){
     return{
         type: UPDATE_VIDEO_SUCCESS,
         payload
     }
 }
-export function updateVideoRequest(payload){
-    return{
-        type: UPDATE_VIDEO_REQUEST,
-        payload
-    }
-}
+export const updateVideoRequest = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: UPDATE_VIDEO_REQUEST,
+            payload, resolve
+        })
+    )
 export function createVideoSuccess(payload){
     return{
         type: CREATE_VIDEO_SUCCESS,

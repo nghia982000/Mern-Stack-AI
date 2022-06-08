@@ -7,6 +7,8 @@ import {
   Input,
   InputNumber,
   notification,
+  Spin,
+  PageHeader
 } from 'antd'
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -40,7 +42,8 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
       setData({ ...data, content: selectDetailExercise.content })
     }
   }, [selectUpdateState, selectCreateState])
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    setLoading(true)
     const formData = new FormData()
     formData.append('title', values.title)
     formData.append('id', id)
@@ -48,16 +51,22 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
     formData.append('role', 'exercise')
     formData.append('content', data.content)
     if (selectCreateState) {
-      createExercise(formData)
-      handleCancel()
+      const rep = await createExercise(formData)
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
     if (selectUpdateState) {
       const newExercise = {
         _id: selectDetailExercise._id,
         data: formData
       }
-      updateExercise(newExercise)
-      handleCancel()
+      const rep = await updateExercise(newExercise)
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
   }
   const handleCancel = () => navigate(`/admin/lesson/${id}`)
@@ -85,11 +94,24 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
   const handleProcedureContentChange = (value) => {
     setData({ ...data, content: value })
   }
-  // const handleProcedureContentChange = (content, delta, source, editor) => {
-  //   setData({ ...data, content: content })
-  // }
+  const [loading, setLoading] = useState(false)
   return (
     <div className='Exercire'>
+      <PageHeader
+        onBack={() => navigate(`/admin/lesson/${id}`)}
+        title="Quay lại"
+        style={{
+          padding: '10px 0 '
+        }}
+      >
+      </PageHeader>
+      {
+        loading && (
+          <div className="loadingSpin">
+            <Spin size='large' />
+          </div>
+        )
+      }
       <Form
         labelCol={{ span: 3 }}
         wrapperCol={{ span: 20 }}
@@ -100,27 +122,27 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
         form={formModal}
       >
         <Form.Item
-          label='Lecture'
+          label='Chương'
           name="lecture"
-          rules={[{ required: true, message: 'Please input your lecture!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập chương!' }]}
         >
-          <InputNumber size="large" placeholder="Lecture" />
+          <InputNumber size="large" placeholder="Chương" />
         </Form.Item>
         <Form.Item
-          label='Title'
+          label='Tiêu đề'
           name="title"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
         >
-          <Input size="large" placeholder="Title" />
+          <Input size="large" placeholder="Tiêu đề" />
         </Form.Item>
         <Form.Item
-          label='Content'
+          label='Nội dung'
         >
           <ReactQuill
             theme="snow"
             modules={modules}
             formats={formats}
-            placeholder='Enter...'
+            placeholder='Nhập...'
             value={data.content}
             onChange={handleProcedureContentChange}
           >
@@ -133,7 +155,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
           }}
         >
           <Button type="primary" htmlType="submit" >
-            Submit
+            Nộp
           </Button>
         </Form.Item>
       </Form>
@@ -148,8 +170,8 @@ const mapStateToProps = createStructuredSelector({
   selectDetailExercise
 })
 const mapDispatchToProps = (dispatch) => ({
-  createExercise: (payload) => dispatch(actions.createExercise(payload)),
-  updateExercise: (payload) => dispatch(actions.updateExerciseRequest(payload)),
+  createExercise: (payload) => actions.createExercise(dispatch)(payload),
+  updateExercise: (payload) => actions.updateExerciseRequest(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

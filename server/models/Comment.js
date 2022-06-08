@@ -8,15 +8,17 @@ const CommentSchema = new Schema({
     content: {
         type: String,
     },
+    report:{
+        type:Boolean
+    },
+    reply:{
+        type:Array
+    },
     userId:{
         type:Schema.Types.ObjectId,
     },
     videoId:{
         type:Schema.Types.ObjectId,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now()
     }
-})
+},{timestamps:true})
 module.exports = mongoose.model('comments', CommentSchema)

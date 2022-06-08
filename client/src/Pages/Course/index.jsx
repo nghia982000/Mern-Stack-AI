@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
+import { Radio, Space } from 'antd'
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -15,18 +16,22 @@ const Course = ({ listCourse, dataCourse, selectListField, selectField }) => {
   return (
     <div className='course'>
       <div className="catagoryCourse">
-        <div className="itemCatagory" onClick={()=>{listCourse()}}>
-          Tất cả
-        </div>
-        {
-          selectListField.map((item, index) => {
-            return (
-              <div className="itemCatagory" key={index} onClick={()=>{selectField({field:item})}}>
-                {item}
-              </div>
-            )
-          })
-        }
+        <Radio.Group defaultValue={0} buttonStyle="solid" size="large">
+          <Space wrap size="middle">
+            <Radio.Button style={{borderRadius:'10px'}} value={0} key={0} onClick={() => { listCourse() }}>
+              Tất cả
+            </Radio.Button>
+            {
+              selectListField.map((item, index) => {
+                return (
+                  <Radio.Button style={{borderRadius:'10px'}} value={index+1} key={index+1} onClick={() => { selectField({ field: item }) }}>
+                    {item}
+                  </Radio.Button>
+                )
+              })
+            }
+          </Space>
+        </Radio.Group>
       </div>
       <div className="allCourse">
         {

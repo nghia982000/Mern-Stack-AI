@@ -1,3 +1,14 @@
 .container{
     padding: 80px 100px;
 }
+@media (min-width:768px) and (max-width     : 1199.98px) {
+    .container{
+        padding: 80px 40px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .container{
+        padding: 80px 20px;
+    }
+}

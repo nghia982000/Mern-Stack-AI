@@ -9,7 +9,8 @@ import {
     Form,
     Input,
     Upload,
-    Spin
+    Spin,
+    PageHeader
 } from 'antd'
 import {
     UploadOutlined,
@@ -52,15 +53,15 @@ const Lesson = ({
         getVideo(id)
     }, [])
     const columns = [
-        { title: 'Lecture', dataIndex: 'lecture', key: '0', ellipsis: true },
-        { title: 'Title', dataIndex: 'title', key: '1', ellipsis: true },
+        { title: 'Chương', dataIndex: 'lecture', key: '0', ellipsis: true },
+        { title: 'Tiêu đề', dataIndex: 'title', key: '2', ellipsis: true },
         {
             title: 'Action',
             dataIndex: '',
             key: '5',
             render: (text, record) => (
                 <Space size="middle">
-                    <button onClick={() => {
+                     <Button type="primary" onClick={() => {
                         // modalUpdate(record._id)
                         console.log(record.role)
                         if (record.role === 'exercise') {
@@ -80,17 +81,17 @@ const Lesson = ({
                             updateStateVideo(true)
                             navigate(`/admin/video/${id}`)
                         }
-                    }} >Cập nhật</button>
+                    }} >Xem và cập nhật</Button>
                     {
-                        (record.role === 'quizzes')?(
-                            <button onClick={()=> navigate(`/admin/questions/${record._id}`)}>Câu hỏi</button>
-                        ):''
+                        (record.role === 'quizzes') ? (
+                             <Button type="primary" onClick={() => navigate(`/admin/questions/${record._id}`)}>Câu hỏi</Button>
+                        ) : ''
                     }
                     <Popconfirm
-                        title="Sinh viên này sẽ bị xóa vĩnh viễn"
+                        title="Bài này sẽ bị xóa vĩnh viễn"
                         onConfirm={() => handleDelete(record._id)}
                     >
-                        <button>Xóa</button>
+                         <Button type="primary">Xóa</Button>
                     </Popconfirm>
                 </Space >
 
@@ -100,20 +101,30 @@ const Lesson = ({
     return (
         <div>
             <div className='lesson'>
-                <button onClick={() => (
+                <PageHeader
+                    onBack={() =>navigate('/admin/course') }
+                    title="Quay lại"
+                    style={{
+                        padding:'10px 0 '
+                    }}
+                >
+                </PageHeader>
+                <Space size="middle" style={{paddingBottom:'10px'}}>
+                 <Button type="primary" onClick={() => (
                     navigate(`/admin/video/${id}`),
                     createStateVideo(true)
-                )}>Tạo bài học bằng video</button>
-                <button onClick={() => (
+                )}>Tạo bài học bằng video</Button>
+                 <Button type="primary" onClick={() => (
                     navigate(`/admin/exercise/${id}`),
                     updateState(false),
                     createState(true)
-                )}>Tạo bài học bằng văn bản</button>
-                <button onClick={() => (
+                )}>Tạo bài học bằng văn bản</Button>
+                 <Button type="primary" onClick={() => (
                     navigate(`/admin/quizzes/${id}`),
                     updateStateQuizzes(false),
                     createStateQuizzes(true)
-                )}>Tạo bài tập trắc nghiệm</button>
+                )}>Tạo bài tập trắc nghiệm</Button>
+                </Space>
                 <Table
                     columns={columns}
                     dataSource={selectVideos}

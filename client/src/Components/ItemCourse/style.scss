@@ -1,12 +1,14 @@
-.itemCourseHome{
+.itemCourseHome {
     margin: 10px;
-    
+
     transition: transform linear 0.2s;
     will-change: transform;
-    &:hover{
+
+    &:hover {
         transform: translateY(-2px)
     }
-    .itemCoursePicture{
+
+    .itemCoursePicture {
         padding-top: 60%;
         background-position: top center;
         background-repeat: no-repeat;
@@ -17,36 +19,42 @@
         border-radius: 10px;
         position: relative;
         border: 1px solid #c7b9b9;
-        &:hover .itemCoursePictureAc{
+
+        &:hover .itemCoursePictureAc {
             display: block;
         }
-        .itemCoursePictureAc{
+
+        .itemCoursePictureAc {
             position: absolute;
             top: 50%;
             background-color: #fff;
-            padding:10px 15px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            padding: 10px 15px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             display: none;
             border-radius: 25px;
             color: #222222;
             cursor: pointer;
         }
     }
-    .itemCourseTitle{
+
+    .itemCourseTitle {
         font-size: 18px;
         font-weight: 600;
     }
 }
-.itemCourse{
+
+.itemCourse {
     margin: 10px;
     flex: 22.5%;
     max-width: 23%;
     transition: transform linear 0.2s;
     will-change: transform;
-    &:hover{
+
+    &:hover {
         transform: translateY(-2px)
     }
-    .itemCoursePicture{
+
+    .itemCoursePicture {
         padding-top: 60%;
         background-position: top center;
         background-repeat: no-repeat;
@@ -58,23 +66,46 @@
         position: relative;
         border: 1px solid #c7b9b9;
         cursor: pointer;
-        &:hover .itemCoursePictureAc{
+
+        &:hover .itemCoursePictureAc {
             display: block;
         }
-        .itemCoursePictureAc{
+
+        .itemCoursePictureAc {
             position: absolute;
             top: 50%;
             background-color: #fff;
-            padding:5px 10px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            padding: 5px 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             display: none;
             border-radius: 15px;
             color: #222222;
             cursor: pointer;
         }
     }
-    .itemCourseTitle{
+
+    .itemCourseTitle {
         font-size: 18px;
         font-weight: 600;
+    }
+}
+
+@media (min-width:768px) and (max-width : 1199.98px) {
+    .itemCourse {
+        flex: 30%;
+        max-width: 31%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .itemCourse {
+        flex: 46%;
+        max-width: 46%;
+    }
+}
+@media (max-width: 500px) {
+    .itemCourse {
+        flex: 95%;
+        max-width: 95%;
     }
 }

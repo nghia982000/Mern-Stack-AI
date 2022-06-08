@@ -5,14 +5,14 @@ const jwt = require('jsonwebtoken')
 class AuthController {
 
     async register(req, res) {
-        const { username, password, role} = req.body
+        const { username, password, role, email, nameAccount } = req.body
         if (!username || !password) {
             return res.status(400).json({
                 message: 'Missing username and/or password',
                 success: false
             })
         }
-        if(role==='manager'){
+        if (role === 'manager') {
             return res.status(400).json({
                 message: 'Create fail',
                 success: false
@@ -34,7 +34,9 @@ class AuthController {
                 username,
                 password: hashedPassword,
                 role,
-                point:0
+                point: 0,
+                nameAccount,
+                email
             })
             await newUser.save()
             //Return token
@@ -87,11 +89,11 @@ class AuthController {
                 success: true,
                 message: 'User logged in successfully',
                 accessToken,
-                role:user.role,
-                user:{
-                    _id:user._id,
-                    username:user.username,
-                    role:user.role
+                role: user.role,
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    role: user.role
                 }
             })
 
@@ -103,7 +105,7 @@ class AuthController {
             })
         }
     }
-    
+
     async checkLogin(req, res) {
         try {
             const user = await User.findById(req.userId).select('-password')
@@ -117,7 +119,7 @@ class AuthController {
     }
     async getAccount(req, res) {
         try {
-            User.find({role:'user'})
+            User.find({ role: 'user' })
                 .then(data => {
                     res.json({ success: true, data })
                 })
@@ -145,6 +147,117 @@ class AuthController {
             res.json({
                 success: true,
                 user: deletedUser
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async changePassword(req, res) {
+        const { username, email, oldPassword, newPassword } = req.body
+        try {
+            const user = await User.findOne({
+                username,
+                email
+            })
+            if (!user) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Incorrect email or username '
+                })
+            }
+            const passwordValid = await argon2.verify(user.password, oldPassword)
+            if (!passwordValid) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Incorrect password '
+                })
+            }
+            const hashedPassword = await argon2.hash(newPassword)
+            const updatePassword = await User.findOneAndUpdate(
+                {
+                    username,
+                    email
+                },
+                {
+                    password:hashedPassword
+                },
+                { new: true }
+            )
+            if(updatePassword){
+                res.json({
+                    success: true,
+                    message: 'Change password in successfully',
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async fogotPassword(req, res) {
+        const { username, email, oldPassword, newPassword } = req.body
+        try {
+            const user = await User.findOne({
+                username,
+                email
+            })
+            if (!user) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Incorrect email or username '
+                })
+            }
+            const passwordValid = await argon2.verify(user.password, oldPassword)
+            if (!passwordValid) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Incorrect password '
+                })
+            }
+            const hashedPassword = await argon2.hash(newPassword)
+            const updatePassword = await User.findOneAndUpdate(
+                {
+                    username,
+                    email
+                },
+                {
+                    password:hashedPassword
+                },
+                { new: true }
+            )
+            if(updatePassword){
+                res.json({
+                    success: true,
+                    message: 'Change password in successfully',
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async detailAccount(req, res) {
+
+        try {
+            User.findOne({_id:req.params.id})
+            .then(data=>{
+                res.json({
+                    success: true,
+                    detail:data
+                })
+            })
+            .catch(err=>{
+                console.log(err)
             })
         } catch (error) {
             console.log(error)

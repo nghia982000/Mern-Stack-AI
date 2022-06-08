@@ -9,7 +9,8 @@ import {
     Input,
     Upload,
     Spin,
-    InputNumber
+    InputNumber,
+    PageHeader
 } from 'antd'
 import { useNavigate, useParams } from "react-router-dom"
 import {
@@ -41,16 +42,21 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
             })
         }
     }, [selectUpdateState, selectCreateState])
-    const onFinish = (values) => {
+    const onFinish = async(values) => {
+        setLoading(true)
         if (selectCreateState) {
             const formData = new FormData()
             formData.append('title', values.title)
             formData.append('id', id)
             formData.append('lecture', values.lecture)
             formData.append('video', values.video.file)
+            formData.append('role', 'video')
             console.log(formData)
-            createVideo(formData)
-            handleCancel()
+            const rep=await createVideo(formData)
+            if(rep.success){
+                setLoading(false)
+                handleCancel()
+            }
         }
         if (selectUpdateState) {
             const formData = new FormData()
@@ -67,14 +73,33 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
                 formData.append('duration', selectDetailVideo.duration)
                 console.log('có url')
             }
-            updateVideo(formData)
-            handleCancel()
+            const rep=await updateVideo(formData)
+            if(rep.success){
+                setLoading(false)
+                handleCancel()
+            }
         }
 
     }
     const handleCancel = () => navigate(`/admin/lesson/${id}`)
+    const [loading, setLoading] = useState(false)
     return (
         <div className='AdVideo'>
+            <PageHeader
+                    onBack={() =>navigate(`/admin/lesson/${id}`) }
+                    title="Quay lại"
+                    style={{
+                        padding:'10px 0 '
+                    }}
+                >
+                </PageHeader>
+            {
+                loading && (
+                    <div className="loadingSpin">
+                        <Spin size='large' />
+                    </div>
+                )
+            }
             <Form
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 18 }}
@@ -82,20 +107,20 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
                 name="formModal"
                 onFinish={onFinish}
             >
-                <Form.Item name="lecture" label="Lecture" rules={[
+                <Form.Item name="lecture" label="Chương" rules={[
                     {
                         required: true,
-                        message: 'Please input your lecture!'
+                        message: 'Vui lòng nhập chương!'
                     }
                 ]}
                     hasFeedback
                 >
                     <InputNumber />
                 </Form.Item>
-                <Form.Item name="title" label="Title" rules={[
+                <Form.Item name="title" label="Tiêu đề" rules={[
                     {
                         required: true,
-                        message: 'Please input your title!'
+                        message: 'Vui lòng nhập tiêu đề!'
                     }
                 ]}
                     hasFeedback
@@ -148,7 +173,7 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
                     }}
                 >
                     <Button type="primary" htmlType="submit" >
-                        Submit
+                        Nộp
                     </Button>
                 </Form.Item>
             </Form>
@@ -163,8 +188,8 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    createVideo: (payload) => dispatch(actions.createVideoRequest(payload)),
-    updateVideo: (payload) => dispatch(actions.updateVideoRequest(payload)),
+    createVideo: (payload) => actions.createVideoRequest(dispatch)(payload),
+    updateVideo: (payload) => actions.updateVideoRequest(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

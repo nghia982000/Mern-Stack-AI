@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect,useMemo } from 'react'
 import './style.scss'
-import { Collapse } from 'antd'
+import { Collapse, notification } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
-import { CheckOutlined, PlayCircleOutlined, FileTextOutlined } from '@ant-design/icons'
+import { CheckOutlined, PlayCircleOutlined, FileTextOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import * as actions from '../../Store/Actions/course'
@@ -46,6 +46,27 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
 
     return `${getHours} : ${getMinutes} : ${getSeconds}`
   }
+  const noti = (message) => {
+    notification.open({
+      message: `${message}`,
+      icon: <CloseCircleOutlined style={{ color: "red" }} />,
+    })
+  }
+  const [lessons, setLessons] = useState([])
+  useMemo(() => {
+    const newArr = selectVideos.reduce((arr, lesson, index) => {
+      const arrSort = selectVideos.filter((item) => {
+        return item.lecture === lesson.lecture
+      })
+      arr.push({
+        lecture: lesson.lecture,
+        lesson: arrSort
+      })
+      return arr
+    }, [])
+    const listLesson = Array.from(new Set(newArr.map(JSON.stringify))).map(JSON.parse)
+    setLessons([...listLesson])
+  }, [selectVideos])
   return (
     <div className='detail'>
       <div className="detailLeft">
@@ -75,31 +96,42 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             ) : (
               <Collapse >
                 {
-                  selectVideos.map((item, index) => {
+                  lessons.map((item, index) => {
                     return (
-                      item.role === 'exercise' ? (
-                        <Panel header={`Lecture ${item.lecture}`} key={index}>
-                          <div className="itemVideoCourse">
-                            <span>
-                              <FileTextOutlined />
-                              {item.title}
-                            </span>
-                          </div>
-                        </Panel>
-                      ) : (
-                        <Panel header={`Lecture ${item.lecture}`} key={index}>
-                          <div className="itemVideoCourse">
-                            <span>
-                              <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                              {item.title}
-                            </span>
-                            <span>{formatTime(item.duration)}</span>
-                          </div>
-                        </Panel>
-                      )
+                      <Panel  header={`Chương ${item.lecture}`} key={index}>
+                        {
+                          item.lesson.map((lesson, indexArr) => {
+                            return (
+                              lesson.role === 'exercise' ? (
+                                <div key={indexArr} className="itemVideoCourse" >
+                                  <span>
+                                    <FileTextOutlined />
+                                    {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                  </span>
+                                </div>
+
+                              ) : lesson.role === 'video' ? (
+                                <div key={indexArr} className="itemVideoCourse" >
+                                  <span>
+                                    <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                                    {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                  </span>
+                                  <span>{formatTime(lesson.duration)}</span>
+                                </div>
+                              ) : (
+                                <div key={indexArr} className="itemVideoCourse" >
+                                  <span>
+                                    <FileDoneOutlined />
+                                    {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                  </span>
+                                </div>
+                              )
+                            )
+                          })
+                        }
+                      </Panel>
                     )
                   })
-
                 }
               </Collapse>
             )
@@ -118,8 +150,11 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
 
           {
             !btnFavorite && (
-              <div className="detailRightActionBtn" onClick={() => {
-                favoriteCourse({ id })
+              <div className="detailRightActionBtn" onClick={async () => {
+                const rep = await favoriteCourse({ id })
+                if (rep) {
+                  noti(rep)
+                }
               }}>
                 Thêm vào yêu thích
               </div>
@@ -134,7 +169,12 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
           }
           {
             !btnBuyCourse && (
-              <div className="detailRightActionBtn" onClick={() => buyCourseRequest({ id })} >
+              <div className="detailRightActionBtn" onClick={async () => {
+                const rep = await buyCourseRequest({ id })
+                if (rep) {
+                  noti(rep)
+                }
+              }} >
                 Mua khóa học
               </div>
             )
@@ -161,9 +201,11 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
   detailCourse: (payload) => dispatch(actions.detailCourse(payload)),
   deleteFavorite: (payload) => dispatch(actions.deleteFavorite(payload)),
-  favoriteCourse: (payload) => dispatch(actions.favoriteCourse(payload)),
-  buyCourseRequest: (payload) => dispatch(actions.buyCourseRequest(payload)),
+  // favoriteCourse: (payload) => dispatch(actions.favoriteCourse(payload)),
+  // buyCourseRequest: (payload) => dispatch(actions.buyCourseRequest(payload)),
   getVideo: (payload) => dispatch(actionsVideo.getVideo(payload)),
+  favoriteCourse: (payload) => actions.favoriteCourse(dispatch)(payload),
+  buyCourseRequest: (payload) => actions.buyCourseRequest(dispatch)(payload),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

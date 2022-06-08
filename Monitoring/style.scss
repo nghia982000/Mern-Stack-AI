@@ -1,0 +1,153 @@
+.monitorMain {
+    padding-top: 50px;
+    // text-align: center;
+    display: flex;
+
+    .monitorVideoFrame {
+        flex: 1;
+        width: 667px;
+        height: 500px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        // position: relative;
+        .monitorVideo {
+            width: 667px;
+            height: 500px;
+            // background-color: #f5f5f5;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .state {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+        }
+    }
+
+    .monitorHandle {
+        padding-left: 50px;
+        flex: 1;
+
+        .monitorHandleTitle {
+            font-size: 60px;
+            font-weight: 600;
+        }
+
+        .monitorHandleUser {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #c2b9b9;
+            padding: 10px;
+            border-radius: 20px;
+
+            .monitorProfile {
+                display: flex;
+                align-items: center;
+
+                .monitorProfileLogo {
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 40px;
+                    overflow: hidden;
+                    border: 1px solid #c2b9b9;
+
+                    img {
+                        width: 80px;
+                    }
+                }
+
+                .monitorProfileName {
+                    padding-left: 20px;
+                    font-size: 35px;
+                    font-weight: 600;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+
+            .monitorPoint {
+                padding-left: 20px;
+                font-size: 35px;
+                font-weight: 600;
+            }
+        }
+
+        .monitorHandleAction {
+            margin: 20px 0;
+
+            p {
+                border: 1px solid #c2b9b9;
+                display: inline;
+                padding: 10px 20px;
+                border-radius: 10px;
+                cursor: pointer;
+                font-weight: 600;
+
+                &:hover {
+                    border: 1px solid #222222;
+                    background-color: #ebe3e3;
+                }
+            }
+        }
+
+        .watch {
+            background-color: #ebe3e3;
+            width: 100%;
+            height: 280px;
+            position: relative;
+            border-radius: 10px;
+
+            p {
+                font-size: 28px;
+                margin: 0;
+            }
+
+            .stopwatch-card {
+                position: absolute;
+                text-align: center;
+                background-color: white;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                width: 350px;
+                height: 200px;
+                top: 140px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                .selectTime {
+                    border-radius: 7px;
+                    border: 1px solid blue;
+
+                }
+
+                .buttons {
+                    display: flex;
+                    justify-content: space-evenly;
+                    width: 150px;
+                    margin: 0 auto;
+                    margin-top: 5px;
+
+                    button {
+                        outline: none;
+                        background: transparent;
+                        border: 1px solid blue;
+                        padding: 5px 10px;
+                        border-radius: 7px;
+                        color: blue;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+}

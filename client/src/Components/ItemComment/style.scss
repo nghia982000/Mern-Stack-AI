@@ -110,6 +110,10 @@
                     padding: 14px 0;
                     p{
                         margin: 0;
+                        cursor: pointer;
+                        &:hover{
+                            color: #de3f0f;
+                        }
                     }
                 }
             }

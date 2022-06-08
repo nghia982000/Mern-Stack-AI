@@ -18,10 +18,10 @@ import {
 } from '../Actions/quizzes'
 import * as apiQuizzes from '../../Api/quizzes'
 
-function* fetchCreateQuizzes(action) {
+function* fetchCreateQuizzes({payload,resolve}) {
     try {
-        const response = yield call(apiQuizzes.createQuizzes, action.payload)
-        console.log(response)
+        const response = yield call(apiQuizzes.createQuizzes, payload)
+        resolve(response.data)
         yield put(createQuizzesSuccess(response.data.quizzes))
     } catch (err) {
         console.error(err)
@@ -38,11 +38,10 @@ function* fetchCreateQuizzes(action) {
 export function* sagaCreateQuizzes() {
     yield takeLatest(CREATE_QUIZZES, fetchCreateQuizzes)
 }
-function* fetchUpdateQuizzes(Actions) {
+function* fetchUpdateQuizzes({payload,resolve}) {
     try {
-        console.log(Actions.payload)
-        const response = yield call(apiQuizzes.updateQuizzes,Actions.payload)
-        console.log(response)
+        const response = yield call(apiQuizzes.updateQuizzes,payload)
+        resolve(response.data)
         yield put(updateQuizzesSuccess(response.data.quizzes))
     } catch (err) {
         console.log(err)
@@ -59,10 +58,10 @@ function* fetchUpdateQuizzes(Actions) {
 export function* sagaUpdateQuizzes() {
     yield takeLatest(UPDATE_QUIZZES_REQUEST, fetchUpdateQuizzes)
 }
-function* fetchCreateQuestion(action) {
+function* fetchCreateQuestion({payload,resolve}) {
     try {
-        const response = yield call(apiQuizzes.createQuestion, action.payload)
-        console.log(response)
+        const response = yield call(apiQuizzes.createQuestion, payload)
+        resolve(response.data)
         yield put(createQuestionSuccess(response.data.quizzes))
     } catch (err) {
         console.error(err)
@@ -79,11 +78,10 @@ function* fetchCreateQuestion(action) {
 export function* sagaCreateQuestion() {
     yield takeLatest(CREATE_QUESTION, fetchCreateQuestion)
 }
-function* fetchUpdateQuestion(Actions) {
+function* fetchUpdateQuestion({payload,resolve}) {
     try {
-        console.log(Actions.payload)
-        const response = yield call(apiQuizzes.updateQuestion,Actions.payload)
-        console.log(response)
+        const response = yield call(apiQuizzes.updateQuestion,payload)
+        resolve(response.data)
         yield put(updateQuestionSuccess(response.data.quizzes))
     } catch (err) {
         console.log(err)

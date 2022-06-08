@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './style.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import imgLogin from '../../Assets/img/login.png'
-import { Form, Input, Button, Spin } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { Form, Input, Button, Spin,notification } from 'antd'
+import { UserOutlined, LockOutlined,CloseCircleOutlined } from '@ant-design/icons'
 
 import * as actions from '../../Store/Actions/auth'
 import { createStructuredSelector } from 'reselect'
@@ -17,9 +17,15 @@ import {
 
 const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthenticated,selectUser }) => {
   const [token,setToken]=useState()
-  const onFinish = (values) => {
-    // console.log('Success:', values)
-    login(values)
+  const onFinish =async (values) => {
+    const response=await login(values)
+    console.log(response)
+    if(!response.success){
+      notification.open({
+        message: 'Sai tài khoản hoặc mật khẩu',
+        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+      })
+    }
   }
   // console.log(selectIsAuthenticated)
   const navigate = useNavigate()
@@ -65,18 +71,18 @@ const Login = ({ login, checkLoginRequest, selectAuthLoading, selectIsAuthentica
           >
             <Form.Item
               name="username"
-              rules={[{ required: true, message: 'Please input your username!' }]}
+              rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
               style={{ marginBottom: '0px' }}
             >
-              <Input size="large" style={{ paddingLeft: '0px' }} placeholder="User Name" prefix={<UserOutlined />} bordered={false} />
+              <Input size="large" style={{ paddingLeft: '0px' }} placeholder="Tên đăng nhập" prefix={<UserOutlined />} bordered={false} />
             </Form.Item>
             <hr style={{ marginBottom: '15px' }} />
             <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu của bạn!' }]}
               style={{ marginBottom: '0px' }}
             >
-              <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Password" prefix={<LockOutlined />} bordered={false} />
+              <Input.Password size="large" style={{ paddingLeft: '0px' }} placeholder="Mật khẩu" prefix={<LockOutlined />} bordered={false} />
             </Form.Item>
             <hr style={{ marginBottom: '15px' }} />
             <Form.Item >
@@ -105,7 +111,8 @@ const mapStateToProps = createStructuredSelector({
 })
 const mapDispatchToProps = (dispatch) => ({
   checkLoginRequest: () => dispatch(actions.checkLoginRequest()),
-  login: (payload) => dispatch(actions.login(payload))
+  // login: (payload) => dispatch(actions.login(payload))
+  login: (payload) => actions.login(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

@@ -18,10 +18,14 @@ const UserSchema = new Schema({
     point:{
         type: Number,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
+    email:{
+        type:String,
+        required: true
+    },
+    nameAccount:{
+        type:String,
+        required: true
     }
-})
+},{timestamps:true})
 
 module.exports = mongoose.model('users', UserSchema)

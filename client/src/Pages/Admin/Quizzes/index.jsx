@@ -4,7 +4,9 @@ import {
   Form,
   Input,
   notification,
-  InputNumber
+  InputNumber,
+  Spin,
+  PageHeader
 } from 'antd'
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -31,29 +33,53 @@ const Quizzes = ({ createQuizzes, selectUpdateState, selectCreateState, selectDe
       })
     }
   }, [selectUpdateState, selectCreateState])
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    setLoading(true)
     const formData = new FormData()
     formData.append('title', values.title)
     formData.append('id', id)
     formData.append('lecture', values.lecture)
     formData.append('role', 'quizzes')
     if (selectCreateState) {
-      createQuizzes(formData)
-      handleCancel()
+
+      const rep = await createQuizzes(formData)
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
     if (selectUpdateState) {
       const newQuizzes = {
         _id: selectDetailQuizzes._id,
         data: formData
       }
-      updateQuizzes(newQuizzes)
-      handleCancel()
+
+      const rep = await updateQuizzes(newQuizzes)
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
   }
   const handleCancel = () => navigate(`/admin/lesson/${id}`)
-
+  const [loading, setLoading] = useState(false)
   return (
     <div className='Quizzes'>
+      <PageHeader
+        onBack={() => navigate(`/admin/lesson/${id}`)}
+        title="Quay lại"
+        style={{
+          padding: '10px 0 '
+        }}
+      >
+      </PageHeader>
+      {
+        loading && (
+          <div className="loadingSpin">
+            <Spin size='large' />
+          </div>
+        )
+      }
       <Form
         labelCol={{ span: 3 }}
         wrapperCol={{ span: 20 }}
@@ -64,18 +90,18 @@ const Quizzes = ({ createQuizzes, selectUpdateState, selectCreateState, selectDe
         form={formModal}
       >
         <Form.Item
-          label='Lecture'
+          label='Chương'
           name="lecture"
-          rules={[{ required: true, message: 'Please input your lecture!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập chương!' }]}
         >
-          <InputNumber size="large" placeholder="Lecture" />
+          <InputNumber size="large" placeholder="Chương" />
         </Form.Item>
         <Form.Item
-          label='Title'
+          label='Tiêu đề'
           name="title"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
         >
-          <Input size="large" placeholder="Title" />
+          <Input size="large" placeholder="Tiêu đề" />
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -84,7 +110,7 @@ const Quizzes = ({ createQuizzes, selectUpdateState, selectCreateState, selectDe
           }}
         >
           <Button type="primary" htmlType="submit" >
-            Submit
+            Nộp
           </Button>
         </Form.Item>
       </Form>
@@ -99,8 +125,8 @@ const mapStateToProps = createStructuredSelector({
   selectDetailQuizzes
 })
 const mapDispatchToProps = (dispatch) => ({
-  createQuizzes: (payload) => dispatch(actions.createQuizzes(payload)),
-  updateQuizzes: (payload) => dispatch(actions.updateQuizzesRequest(payload)),
+  createQuizzes: (payload) => actions.createQuizzes(dispatch)(payload),
+  updateQuizzes: (payload) => actions.updateQuizzesRequest(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

@@ -4,7 +4,9 @@ import {
     Form,
     Input,
     notification,
-    InputNumber
+    InputNumber,
+    Spin,
+    PageHeader
 } from 'antd'
 import {
     UploadOutlined,
@@ -21,7 +23,7 @@ import { selectDetailCourse, selectCreateState, selectUpdateState } from '../../
 
 const { TextArea } = Input
 
-const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectCreateState,  updateCourse }) => {
+const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectCreateState, updateCourse }) => {
     const [formModal] = Form.useForm()
     const [avatar, setAvatar] = useState()
     const [fileImg, setFileImg] = useState()
@@ -46,19 +48,28 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
             })
         }
     }, [selectUpdateState, selectCreateState])
-    const onFinish = (values) => {
-        console.log(values)
+    const onFinish = async (values) => {
+        setLoading(true)
         if (selectCreateState) {
-            createCourse(values)
+
+            const rep=await createCourse(values)
+            if(rep.success){
+                setLoading(false)
+                handleCancel()
+            }
         }
         if (selectUpdateState) {
             const newCourse = {
                 _id: selectDetailCourse._id,
                 data: values
             }
-            updateCourse(newCourse)
+            const rep=await updateCourse(newCourse)
+            if(rep.success){
+                setLoading(false)
+                handleCancel()
+            }
         }
-        handleCancel()
+       
     }
     const handleCancel = () => navigate('/admin/course')
     const getBase64 = file => {
@@ -87,8 +98,25 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                 console.log(err)
             })
     }
+    const [loading, setLoading] = useState(false)
     return (
         <div className='cuCourse'>
+            <PageHeader
+                    onBack={() =>navigate('/admin/course') }
+                    title="Quay lại"
+                    style={{
+                        padding:'10px 0 '
+                    }}
+                >
+                </PageHeader>
+
+            {
+                loading && (
+                    <div className="loadingSpin">
+                        <Spin size='large' />
+                    </div>
+                )
+            }
             <Form
                 labelCol={{ span: 3 }}
                 wrapperCol={{ span: 20 }}
@@ -99,41 +127,41 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                 form={formModal}
             >
                 <Form.Item
-                    label='Title'
+                    label='Tiêu đề'
                     name="title"
-                    rules={[{ required: true, message: 'Please input your title!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhậ tiêu đề!' }]}
                 >
-                    <Input size="large" placeholder="Title" />
+                    <Input size="large" placeholder="Tiêu đề" />
                 </Form.Item>
                 <Form.Item
-                    label='Description'
+                    label='Mô tả'
                     name="description"
-                    rules={[{ required: true, message: 'Please input your description!'}]}
+                    rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
                 >
-                    <Input size="large" placeholder="Description" />
+                    <Input size="large" placeholder="Mô tả" />
                 </Form.Item>
                 <Form.Item
-                    label='Point'
+                    label='Điểm'
                     name="point"
-                    rules={[{ required: true, message: 'Please input your point!',type:'number'  }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập điểm!', type: 'number' }]}
                 >
-                    <InputNumber size="large" placeholder="Point" />
+                    <InputNumber size="large" placeholder="Điểm" />
                 </Form.Item>
                 <Form.Item
-                    label='Field'
+                    label='Lĩnh vực'
                     name="field"
-                    rules={[{ required: true, message: 'Please input your field!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập lĩnh vực!' }]}
                 >
-                    <Input size="large" placeholder="Field" />
+                    <Input size="large" placeholder="Lĩnh vực" />
                 </Form.Item>
                 <Form.Item
-                    label='Benefit'
+                    label='Lợi ích'
                     name="benefit"
-                    rules={[{ required: true, message: 'Please input your benefit!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập lợi ích!' }]}
                 >
                     <TextArea rows={4} />
                 </Form.Item>
-                <Form.Item label="Upload">
+                <Form.Item label="Tải lên">
                     <Input type="file" name="file" id="file" onChange={(e) => handleFileInputChange(e)} hidden />
                     <label htmlFor="file" style={{ border: '1px solid #dddddd', padding: '5px', cursor: 'pointer' }}>
                         <UploadOutlined />
@@ -141,17 +169,20 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                     </label>
                 </Form.Item>
                 <Form.Item
-                    label='Url Image'
+                    label='Url hình ảnh'
                     name="image"
-                    rules={[{ required: true, message: 'Please input your url image!' }]}
+                    rules={[{ required: true, message: 'Chưa có url!' }]}
                 >
-                    <Input disabled size="large" placeholder="Url image" />
+                    <Input disabled size="large" placeholder="Url hình ảnh" />
                 </Form.Item>
                 <Form.Item wrapperCol={{
                     offset: 3,
                     span: 20,
                 }}>
-                    {avatar && <img src={avatar.preview} alt="" width="100px" />}
+                    {avatar && <img src={avatar.preview} alt="" width="300px" />}
+                    {
+                        !selectCreateState && <img src={selectDetailCourse.image} alt="" width="300px" />
+                    }
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
@@ -161,7 +192,7 @@ const CUCourse = ({ createCourse, selectDetailCourse, selectUpdateState, selectC
                 >
                     <Button type="primary" htmlType="submit" >
                         {
-                            (selectCreateState) ? 'Create' : "Update"
+                            (selectCreateState) ? 'Tạo' : "Cập nhật"
                         }
                     </Button>
                 </Form.Item>
@@ -176,9 +207,9 @@ const mapStateToProps = createStructuredSelector({
     selectUpdateState
 })
 const mapDispatchToProps = (dispatch) => ({
-    createCourse: (payload) => dispatch(actions.createCourse(payload)),
-    updateCourse: (payload) => dispatch(actions.updateCourseRequest(payload)),
-    
+    createCourse: (payload) => actions.createCourse(dispatch)(payload),
+    updateCourse: (payload) => actions.updateCourseRequest(dispatch)(payload)
+
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

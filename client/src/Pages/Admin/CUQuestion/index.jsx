@@ -5,6 +5,8 @@ import {
   Input,
   Select,
   notification,
+  Spin,
+  PageHeader
 } from 'antd'
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -35,7 +37,8 @@ const CUQuestion = ({ createQuestion, selectUpdateStateQuestion, selectCreateSta
       })
     }
   }, [selectUpdateStateQuestion, selectCreateStateQuestion])
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    setLoading(true)
     // console.log(values)
     const formData = {
       question: values.question,
@@ -47,27 +50,49 @@ const CUQuestion = ({ createQuestion, selectUpdateStateQuestion, selectCreateSta
       },
       correctAnswer: values.correctAnswer
     }
-    console.log(selectCreateStateQuestion)
     if (selectCreateStateQuestion) {
-      createQuestion({
+
+      const rep = await createQuestion({
         formData,
         id: id
       })
-      handleCancel()
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
-    
+
     if (selectUpdateStateQuestion) {
-      updateQuestion({
+
+      const rep = await updateQuestion({
         formData,
         id: selectDetailQuestion._id
       })
-      handleCancel()
+      if (rep.success) {
+        setLoading(false)
+        handleCancel()
+      }
     }
   }
   const handleCancel = () => navigate(`/admin/questions/${id}`)
-
+  const [loading, setLoading] = useState(false)
   return (
     <div className='Question'>
+      <PageHeader
+        onBack={() => navigate(`/admin/questions/${id}`)}
+        title="Quay lại"
+        style={{
+          padding: '10px 0 '
+        }}
+      >
+      </PageHeader>
+      {
+        loading && (
+          <div className="loadingSpin">
+            <Spin size='large' />
+          </div>
+        )
+      }
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
@@ -78,46 +103,46 @@ const CUQuestion = ({ createQuestion, selectUpdateStateQuestion, selectCreateSta
         form={formModal}
       >
         <Form.Item
-          label='Question'
+          label='Câu hỏi'
           name="question"
-          rules={[{ required: true, message: 'Please input your lecture!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập câu hỏi!' }]}
         >
-          <Input size="large" placeholder="Content" />
+          <Input size="large" placeholder="Nội dung" />
         </Form.Item>
         <Form.Item
-          label='Answer A'
+          label='Câu A'
           name="answerA"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập đáp án A!' }]}
         >
-          <Input size="large" placeholder="Content" />
+          <Input size="large" placeholder="Nội dung" />
         </Form.Item>
         <Form.Item
-          label='Answer B'
+          label='Câu B'
           name="answerB"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập đáp án B!' }]}
         >
-          <Input size="large" placeholder="Content" />
+          <Input size="large" placeholder="Nội dung" />
         </Form.Item>
         <Form.Item
-          label='Answer C'
+          label='Câu C'
           name="answerC"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập đáp án C!' }]}
         >
-          <Input size="large" placeholder="Content" />
+          <Input size="large" placeholder="Nội dung" />
         </Form.Item>
         <Form.Item
-          label='Answer D'
+          label='Câu D'
           name="answerD"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập đáp án D!' }]}
         >
-          <Input size="large" placeholder="Content" />
+          <Input size="large" placeholder="Nội dung" />
         </Form.Item>
         <Form.Item
-          label='Corect answwer'
+          label='Đáp án đúng'
           name="correctAnswer"
-          rules={[{ required: true, message: 'Please input your title!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập đáp án đúng!' }]}
         >
-          <Select size="large" placeholder="Content" >
+          <Select size="large" placeholder="Đáp án" >
             <Option value="A">A</Option>
             <Option value="B">B</Option>
             <Option value="C">C</Option>
@@ -131,7 +156,7 @@ const CUQuestion = ({ createQuestion, selectUpdateStateQuestion, selectCreateSta
           }}
         >
           <Button type="primary" htmlType="submit" >
-            Submit
+            Nộp
           </Button>
         </Form.Item>
       </Form>
@@ -146,8 +171,8 @@ const mapStateToProps = createStructuredSelector({
   selectDetailQuestion
 })
 const mapDispatchToProps = (dispatch) => ({
-  createQuestion: (payload) => dispatch(actions.createQuestion(payload)),
-  updateQuestion: (payload) => dispatch(actions.updateQuestionRequest(payload)),
+  createQuestion: (payload) => actions.createQuestion(dispatch)(payload),
+  updateQuestion: (payload) => actions.updateQuestionRequest(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

@@ -20,12 +20,14 @@ import {
     DELETE_QUESTION
 } from '../Constants/quizzes'
 
-export function createQuizzes(payload){
-    return{
-        type: CREATE_QUIZZES,
-        payload
-    }
-}
+
+export const createQuizzes = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CREATE_QUIZZES,
+            payload, resolve
+        })
+    )
 export function createQuizzesSuccess(payload){
     return{
         type: CREATE_QUIZZES_SUCCESS,
@@ -50,12 +52,13 @@ export function createStateQuestion(payload){
         payload
     }
 }
-export function updateQuizzesRequest(payload){
-    return{
-        type: UPDATE_QUIZZES_REQUEST,
-        payload
-    }
-}
+export const updateQuizzesRequest = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: UPDATE_QUIZZES_REQUEST,
+            payload, resolve
+        })
+    )
 export function updateQuizzesSuccess(payload){
     return{
         type: UPDATE_QUIZZES_SUCCESS,
@@ -63,12 +66,13 @@ export function updateQuizzesSuccess(payload){
     }
 }
 
-export function createQuestion(payload){
-    return{
-        type: CREATE_QUESTION,
-        payload
-    }
-}
+export const createQuestion = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CREATE_QUESTION,
+            payload, resolve
+        })
+    )
 export function createQuestionSuccess(payload){
     return{
         type: CREATE_QUESTION_SUCCESS,
@@ -93,12 +97,14 @@ export function createState(payload){
         payload
     }
 }
-export function updateQuestionRequest(payload){
-    return{
-        type: UPDATE_QUESTION_REQUEST,
-        payload
-    }
-}
+
+export const updateQuestionRequest = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: UPDATE_QUESTION_REQUEST,
+            payload, resolve
+        })
+    )
 export function updateQuestionSuccess(payload){
     return{
         type: UPDATE_QUESTION_SUCCESS,

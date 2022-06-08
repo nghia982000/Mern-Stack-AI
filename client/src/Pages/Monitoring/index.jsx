@@ -1,26 +1,27 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { initNotifications, notify } from '@mycv/f8-notification'
+import { Link, useNavigate } from 'react-router-dom'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
 import axios from 'axios'
 import { Howl, Howler } from 'howler'
-// import Webcam from 'react-webcam'
-// import { loadGraphModel } from '@tensorflow/tfjs-converter'
-// // tf.setBackend('webgl')
 import {
     DollarCircleOutlined,
     SearchOutlined,
     ReadOutlined,
     HeartOutlined,
     CheckCircleOutlined,
-    CloseCircleOutlined
+    CloseCircleOutlined,
+    ArrowLeftOutlined
 } from "@ant-design/icons"
-import { DatePicker, TimePicker, Select, Space, Input, Form, Button, Modal, notification } from 'antd'
+import { DatePicker, TimePicker, Spin, Select, Space, Input, Form, Button, Modal, notification } from 'antd'
 import imgFrame from '../../Assets/img/cameraFrame.jpg'
 import imgMonitor from '../../Assets/img/monitor.png'
 import LogoAD from '../../Assets/img/logoUser.png'
+import backgroundMonitor from '../../Assets/img/backgroundgif.webp'
 
 import * as actionsAuth from '../../Store/Actions/auth'
+import * as actionsHistory from '../../Store/Actions/history'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -34,12 +35,13 @@ var sound = new Howl({
 
 // sound.play()
 
-const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
+const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
     const class_Name = { 0: 'Leaving', 1: 'Tired', 2: 'Turn around', 3: 'Using Phone', 4: 'Working' }
     const video = useRef()
     const [step1, setStep1] = useState(false)
     const [step2, setStep2] = useState(false)
     const [model, setModel] = useState()
+    const navigate = useNavigate()
     const [time, setTime] = useState()
     const [state, setState] = useState()
     const [mediaStream, setMediaStream] = useState()
@@ -56,185 +58,72 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         'Using Phone': 0,
         'Working': 0
     })
-    // console.log(result.current)
+    useEffect(() => {
+        if (!selectIsAuthenticated) {
+            navigate('/')
+        }
+    }, [selectIsAuthenticated])
     const arrRemind = useRef([])
     const addItemRemind = (value) => {
-        // console.log(arrRemind.current.some((item)=>item!==value))
         if (arrRemind.current.some((item) => item !== value)) {
             arrRemind.current = []
         }
-        if (arrRemind.current.length >= 3 && arrRemind.current[0] === 'Working') {
-            // console.log(arrRemind.current[0])
-            if (remind !== arrRemind.current[0]) {
-                setRemind(arrRemind.current[0])
-            }
-        }
-        if (arrRemind.current.length >= 5 && arrRemind.current[0] === 'Using Phone') {
-            // console.log(arrRemind.current[0])
-            if (remind !== arrRemind.current[0]) {
-                setRemind(arrRemind.current[0])
-            }
-        }
-        if (arrRemind.current.length >= 10 && arrRemind.current[0] === 'Tired') {
-            // console.log(arrRemind.current[0])
-            if (remind !== arrRemind.current[0]) {
-                setRemind(arrRemind.current[0])
-            }
-        }
-        if (arrRemind.current.length >= 5 && arrRemind.current[0] === 'Turn around') {
-            // console.log(arrRemind.current[0])
-            if (remind !== arrRemind.current[0]) {
-                setRemind(arrRemind.current[0])
-            }
-        }
-        if (arrRemind.current.length >= 10 && arrRemind.current[0] === 'Leaving') {
-            // console.log(arrRemind.current[0])
+        if (arrRemind.current.length % 5 == 0) {
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
         arrRemind.current.push(value)
-        // console.log(arrRemind.current)
     }
+    const [stateRemind, setStateRemind] = useState(false)
     useEffect(() => {
         console.log(remind)
         if (remind) {
             switch (remind) {
                 case 'Tired':
-                    sound.play()
-                    notify('Cảnh báo', { body: 'Bạn đang mệt' })
-                    notification.open({
-                        message: remind,
-                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
-                    })
+                    showNotification('Bạn có vẻ đang mệt', LogoAD, 'Nhắc nhở')
                     break
                 case 'Using Phone':
-                    sound.play()
-                    notify('Cảnh báo', { body: 'Bạn đang dùng điện thoại' })
-                    notification.open({
-                        message: 'Nếu không có việc gì khẩn cấp bạn hãy tập trung vào công việc và không sử dụng điện thoại sẽ làm xao nhãng',
-                        // message:remind,
-                        style: {
-                            width: 600,
-                        },
-                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
-                    })
+                    showNotification('Bạn đang dùng điện thoại hãy tập trung vào công việc', LogoAD, 'Nhắc nhở')
                     break
                 case 'Turn around':
-                    sound.play()
-                    notify('Cảnh báo', { body: 'Bạn đang không tập trung' })
-                    notification.open({
-                        message: remind,
-                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
-                    })
+                    showNotification('Bạn đang không tập trung', LogoAD, 'Nhắc nhở')
                     break
                 case 'Leaving':
                     sound.play()
-                    notify('Cảnh báo', { body: 'Bạn đã rời khỏi nơi làm việc' })
-                    notification.open({
-                        message: remind,
-                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
-                    })
+                    showNotification('Bạn đã rời khỏi nơi làm việc', LogoAD, 'Nhắc nhở')
                     break
             }
-
         }
-        // if (remind && remind !== 'Working') {
-        //     sound.play()
-        //     notification.open({
-        //         message: remind,
-        //         icon: <CloseCircleOutlined style={{ color: "red" }} />,
-        //     })
-        // }
     }, [remind])
     const loadModel = async () => {
         const model = await tf.loadLayersModel('https://raw.githubusercontent.com/nghia982000/tfjs-model/main/model.json')
         return model
     }
-    // const init = async () => {
-    //     console.log('init...')
-    //     await setUpCamera()
-    //     console.log('set up camrea success')
-    // }
     const setUpCamera = () => {
         return new Promise((resolve, reject) => {
-            navigator.getUserMedia(
-                {
-                    audio: false,
-                    video: {
-                        facingMode: "user"
-                    }
-                },
-                stream => {
-                    window.stream = stream
-                    setMediaStream(stream)
-                    video.current.srcObject = window.stream
-                    video.current.onloadedmetadata = () => {
-                        resolve()
-                    }
-                },
-                error => reject(error)
-            )
-        })
-        // return new Promise((resolve, reject) => {
-        //     navigator.getUserMedia = navigator.getUserMedia ||
-        //         navigator.webkitGetUserMedia ||
-        //         navigator.MozGetUserMedia ||
-        //         navigator.msGetUserMedia
-        //     if (navigator.getUserMedia) {
-        //         navigator.getUserMedia(
-        //             { video: true },
-        //             stream => {
-        //                 window.stream = stream
-        //                 setMediaStream(stream)
-        //                 video.current.srcObject = window.stream
-        //                 video.current.onloadedmetadata = () => {
-        //                     resolve()
-        //                 }
-        //             },
-        //             error => reject(error)
-        //         )
-        //     } else {
-        //         reject()
-        //     }
-        // })
-    }
-    // const webCamPromise = navigator.mediaDevices
-    //     .getUserMedia({
-    //         audio: false,
-    //         video: {
-    //             facingMode: "user"
-    //         }
-    //     })
-    //     .then(stream => {
-    //         setMediaStream(stream)
-    //         window.stream = stream
-    //         video.current.srcObject = window.stream
-    //         return new Promise((resolve, reject) => {
-    //             video.current.onloadedmetadata = () => {
-    //                 resolve()
-    //             }
-    //         })
-    //     })
-    useEffect(() => {
-        console.log("Component Did Mount")
-
-        return function cleanup() {
-            // handlePause()
-            // offWebcam()
-            // loop.current = false
-            // alert("Component Will Unmount")
-            console.log("Component Will Unmount")
-            if (mediaStream) {
-                mediaStream.getTracks().forEach((track) => {
-                    track.stop()
-                })
+            navigator.getUserMedia = navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.MozGetUserMedia ||
+                navigator.msGetUserMedia
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia(
+                    { video: true },
+                    stream => {
+                        window.stream = stream
+                        setMediaStream(stream)
+                        video.current.srcObject = window.stream
+                        video.current.onloadedmetadata = () => {
+                            resolve()
+                        }
+                    },
+                    error => reject(error)
+                )
+            } else {
+                reject()
             }
-        }
-    }, [])
-    // const onFinish = (values) => {
-    //     addItemRemind(values.test)
-    // }
+        })
+    }
     const adjust = (value) => {
         if (value[0].className === 'Using Phone' && value[0].probability <= 0.8) {
             return 'Working'
@@ -264,7 +153,6 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
 
         let newKq = adjust(kq)
         console.log(newKq)
-        // console.log(kq)
         addItemRemind(newKq)
         addResult(newKq)
         setState(newKq)
@@ -273,10 +161,6 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         // })
         await sleep(1000)
         detectFrame(video, model)
-        // setInterval(() => {
-        //     // console.log(video)
-        //     detectFrame(video, model)
-        // },1000/60)
         tf.engine().endScope()
     }
     const sleep = (ms = 0) => {
@@ -290,56 +174,25 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             .toFloat()
             .div(normalizationOffset)
             .expandDims()
-        // console.log(tensor)
         return tensor
     }
     useEffect(() => {
-        // init()
-        // console.log(model)
         if (step1) {
-            // Promise.all([loadModel(), setUpCamera()])
-            if (
-                navigator.mediaDevices &&
-                navigator.mediaDevices.getUserMedia &&
-                navigator.mediaDevices.getDisplayMedia
-            ) {
-                const webCamPromise = navigator.mediaDevices
-                    .getUserMedia({
-                        audio: false,
-                        video: {
-                            facingMode: "user"
-                        }
-                    })
-                    .then(stream => {
-                        setMediaStream(stream)
-                        window.stream = stream
-                        video.current.srcObject = window.stream
-                        return new Promise((resolve, reject) => {
-                            video.current.onloadedmetadata = () => {
-                                resolve()
-                            }
-                        })
-                    })
-                Promise.all([loadModel(), webCamPromise])
-                    .then(values => {
-                        // initNotifications({ cooldown: 3000 })
-                        console.log(values[0])
-                        setModel(values[0])
-                        setStep2(true)
-                        // detectFrame(video.current, values[0])
-                    })
-                    .catch(error => {
-                        console.error(error)
-                    })
-            }
+            Promise.all([loadModel(), setUpCamera()])
+                .then(values => {
+                    console.log(values[0])
+                    setModel(values[0])
+                    setStep2(true)
+                    handleStart()
+                    setLoading(false)
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+
         }
     }, [step1])
-    useEffect(() => {
-        // request after 3 seconds
-        initNotifications({ cooldown: 3000 });
-    }, [])
     const offWebcam = () => {
-        // console.log(mediaStream)
         mediaStream.getTracks().forEach((track) => {
             track.stop()
         })
@@ -359,20 +212,15 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         setIsPaused(false)
         offWebcam()
         setIsActive(false)
+        setUnit1(true)
+        setUnit4(false)
         setStep2(false)
         setStep1(false)
         loop.current = false
         console.log(result.current)
-        alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
+        info()
+        // alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
     }
-
-    // const handleResume = () => {
-    //     setIsPaused(true)
-    //     countRef.current = setInterval(() => {
-    //         setTimer((timer) => timer + 1)
-    //     }, 1000)
-    // }
-
     const handleReset = () => {
         clearInterval(countRef.current)
         setIsActive(false)
@@ -387,19 +235,34 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
 
         return `${getHours} : ${getMinutes} : ${getSeconds}`
     }
-    useEffect(() => {
+    useEffect(async () => {
         if (time === timer) {
+            sound.play()
+            setLoading(true)
+            const point = selectUser.point
             clearInterval(countRef.current)
-            setTimer(0)
-            setIsPaused(false)
-            offWebcam()
-            setIsActive(false)
-            setStep2(false)
-            setStep1(false)
-            loop.current = false
-            arrRemind.current = []
-            console.log(result.current)
-            alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
+            const rep = await createActive({
+                result: result.current,
+                precent: percent(result.current),
+                time,
+                userId: selectUser._id,
+                role:'monitor'
+            })
+            if (rep.data.success) {
+                setTimer(0)
+                setIsPaused(false)
+                offWebcam()
+                setIsActive(false)
+                setStep2(false)
+                setStep1(false)
+                setUnit1(true)
+                setUnit4(false)
+                loop.current = false
+                arrRemind.current = []
+                setLoading(false)
+                info(rep.data.newPoint - point)
+            }
+            // alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
         }
         return () => {
         }
@@ -419,26 +282,10 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
         for (var key in result) {
             newResult[key] = (result[key] / total) * 100
         }
-        axios.post(`https://server-mern-stack-ai.herokuapp.com/monitor/createActive`, {
-            result,
-            precent: newResult,
-            time
-        })
-            .then(res => {
-                console.log(res.data.Active)
-            })
-        // axios.post(` http://localhost:5000/monitor/createActive`, {
-        //     result,
-        //     precent: newResult,
-        //     time
-        // })
-        //     .then(res => {
-        //         console.log(res.data.Active)
-        //     })
         return newResult
     }
     useEffect(() => {
-        console.log('reset')
+        // console.log('reset')
         result.current = {
             'Leaving': 0,
             'Tired': 0,
@@ -446,8 +293,6 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             'Using Phone': 0,
             'Working': 0
         }
-        // return () => {
-        // }
     }, [loop.current])
     useEffect(() => {
         if (isActive && model) {
@@ -455,146 +300,176 @@ const Monitoring = ({ selectIsAuthenticated, selectUser }) => {
             loop.current = true
             detectFrame(video.current, model)
         }
-        return () => {
-            loop.current = false
-        }
     }, [isActive])
-    const info = () => {
+
+    const [unit2, setUnit2] = useState(false)
+    const [unit3, setUnit3] = useState(false)
+    const [unit4, setUnit4] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const handleChange = (value) => {
+        setTime(value)
+        setUnit3(true)
+
+    }
+    const showNotification = (text, icon, head1) => {
+        const permission = Notification.permission;
+        if (permission == "default") {
+            Notification.requestPermission()
+        } else if (permission == "denied") {
+            alert('We cannot display notifs. Please enables notifs.')
+        } else if (permission == "granted") {
+            const notification = new Notification(head1, {
+                body: text,
+                icon: icon
+            })
+        }
+    }
+    const [unit1, setUnit1] = useState(true)
+    const info = (point) => {
+        const focusWorking = Math.floor(percent(result.current).Working)
         Modal.info({
-            title: 'Lời khuyên',
-            width: '700px',
+            title: 'Kết quả giám sát của bạn',
             content: (
                 <div>
-                    <h3>Để có một năng suất làm việc hiểu quả và tốt cho sức khỏe bạn cần thực hiện các điều sau đây:</h3>
-                    <p>Bạn hãy điều chỉnh độ sâu của ghế sao cho phù hợp với chiều dài hông của mình.</p>
-                    <p>Hãy gập cánh tay vuông góc 90 độ khi đánh máy tính, tuyệt đối không tì tay vào bàn phím khi đánh máy.</p>
-                    <p>Điều chỉnh lại ghế ngồi sao cho phần đầu ghế và cạnh ghế không vuông góc với nhau.</p>
-                    <p>Bạn hãy vận động bài tập nhẹ cho cổ như lắc, gập, ngửa cổ để cổ không bị cứng</p>
-                    <p>Đặt màn hình máy tính vừa ngang tầm nhìn của mắt sao cho khoảng cách từ mắt đến máy tính là khoảng 50 cm</p>
+                    <p>Bạn tập đã trung vào công việc là:{focusWorking}%</p>
+                    {
+                        point && (
+                            <p>Bạn được cộng {point} xu vào tài khoản</p>
+                        )
+                    }
+                    {
+                        focusWorking >= 80 ? (
+                            <>
+                                <p> Độ tập trung của bạn ở đang ở mức tốt bạn có gắng duy trì để hình thành thói 1 thói quên tốt cho bản thân. </p>
+                                <p>Bạn nên tập trung làm việc trong 20 phút và dành 5 phút nghỉ để tránh hại mắt và gây mệt mỏi .</p>
+                            </>
+                        ) : (
+                            focusWorking >= 60 && focusWorking < 80 ? (
+                                <>
+                                    <p> Bạn nên tập trung hơn vào công việc để có một năng xuất làm việc hiểu quả và chất lượng.</p>
+                                    <p>Bạn nên tập trung làm việc trong 20 phút và dành 5 phút nghỉ để tránh hại mắt và gây mệt mỏi .</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p> Có vẻ như bạn đang không thực sự tập trung rồi . Hãy tạm gác những việc khác sau khi hoàn thành công việc đã nhé.Hạn chế sử dụng điện thoại , rời mắt khỏi màn hình và có thể dành thời gian nghỉ ngắn nếu mệt mỏi , việc giữ tư thế ngồi thẳng cũng sẽ cải thiện năng suất làm việc và sức khỏe cột sống.Hơi khó khăn nhưng sớm thôi bạn sẽ hình thành thói quen và bất ngờ về năng suất công việc của mình , nó sẽ giúp bạn tiết kiệm được rất nhiều thời gian .</p>
+                                    <p>Bạn nên tập trung làm việc trong 20 phút và dành 5 phút nghỉ để tránh hại mắt và gây mệt mỏi .</p>
+                                </>
+                            )
+                        )
+                    }
                 </div>
             ),
 
             onOk() {
-                setStep1(!step1)
+
             },
         })
     }
-    const handleChange = (value) => {
-        setTime(value)
-    }
-    const showNotification = (permission) => {
-        console.log('noti')
-        if (permission !== 'granted') return;
+    const confirm = () => {
+        Modal.confirm({
+            title: 'Thông báo',
+            content: (
+                <div>
+                    <p>Nếu bạn dừng đột ngột sẽ không được cộng xu</p>
+                </div>
+            ),
 
-        let notification = new Notification('My Title', {
-            body: "Hi, how are you today?",
-            icon: 'icon.png'
+            onOk() {
+                handlePause()
+            },
+            onCancel() {
+                return
+            }
         })
-
-        notification.onclick = () => {
-            // window.open('https://google.com')
-
-            window.location.href = "https://www.google.com"
-        }
     }
     return (
-        <div className='monitorMain'>
-            <div className="monitorVideoFrame" style={{ backgroundImage: `url(${imgFrame})` }}>
-                <video
-                    ref={video}
-                    className='monitorVideo'
-                    autoPlay
-                    style={{ backgroundImage: `url(${imgMonitor})`, borderRadius: '20px' }}
-                >
-                </video>
-                <p className='state'>{state}</p>
-            </div>
+        <div className='monitorMain' style={{ backgroundImage: `url(${backgroundMonitor})` }}>
+
             <div className="monitorHandle">
                 {
-                    !step1 && (
-                        <div className="monitorHandleTitle">
-                            Đánh giá quá trình học tập và làm việc của bạn
+                    unit1 && (
+                        <div className="monitorHandleTitle" onClick={() => (
+                            setUnit1(false),
+                            setUnit2(true)
+                        )}>
+                            bắt đầu giám sát
                         </div>
                     )
                 }
                 {
-                    selectIsAuthenticated && (
-                        <div className="monitorHandleUser">
-                            <div className="monitorProfile">
-                                <div className="monitorProfileLogo">
-                                    <img src={LogoAD} alt="" />
-                                </div>
-                                <div className="monitorProfileName">
-                                    <p>{selectUser.username}</p>
-                                    {/* <p>999đ</p> */}
-                                </div>
-                            </div>
-                            <div className="monitorPoint">
-                                {selectUser.poin} Coin
-                            </div>
+                    unit2 && (
+                        <div className="monitorHandleTime">
+                            <p className='monitorHandleTimeTitle'>Chọn thời gian muốn giám sát</p>
+                            <Select
+                                placeholder='Chọn thời gian'
+                                size='large'
+                                style={{
+                                    width: 150,
+                                    color: '#222222'
+                                }}
+                                onChange={handleChange}
+                            >
+                                <Option value={60}>1 phút</Option>
+                                <Option value={300}>5 phút</Option>
+                                <Option value={600}>10 phút</Option>
+                                <Option value={900}>15 phút</Option>
+                                <Option value={1200}>20 phút</Option>
+                                <Option value={1500}>25 phút</Option>
+                                <Option value={1800}>30 phút</Option>
+                            </Select>
+                            {
+                                unit3 && (
+                                    <div className="monitorHandleAction">
+                                        <p onClick={() => (
+                                            setUnit3(false),
+                                            setUnit2(false),
+                                            setUnit4(true),
+                                            setStep1(!step1),
+                                            setLoading(true)
+                                        )}>Bắt đầu</p>
+                                    </div>
+                                )
+                            }
                         </div>
                     )
                 }
                 {
-                    !step1 && (
-                        <div className="monitorHandleAction">
-                            <p onClick={info}>Bắt đầu giám sát</p>
-                            {/* <p onClick={() => setStep1(!step1)}>Start monitoring</p> */}
-                            {/* <Form
-                                onFinish={onFinish}
+                    unit4 && (
+                        <>
+                            <div className="monitorVideoFrame" style={{ backgroundImage: `url(${imgFrame})` }}>
+                                <video
+                                    ref={video}
+                                    className='monitorVideo'
+                                    autoPlay
+                                    style={{ backgroundImage: `url(${imgMonitor})`, borderRadius: '20px' }}
                                 >
-                                <Form.Item name="test">
-                                    <Input />
-                                </Form.Item>
-                                <Button htmlType="submit">Test</Button>
-                            </Form> */}
-                        </div>
-                    )
-                }
-                {
-                    step2 && (
-                        <div className="watch">
-                            <div className='stopwatch-card'>
-                                <p>Chọn thời gian giám sát</p>
-                                <Select
-                                    placeholder='Chọn thời gian'
-                                    style={{
-                                        width: 120,
-                                    }}
-                                    onChange={handleChange}
-                                >
-                                    <Option value={60}>1 phút</Option>
-                                    <Option value={300}>5 phút</Option>
-                                    <Option value={600}>10 phút</Option>
-                                    <Option value={900}>15 phút</Option>
-                                    <Option value={1200}>20 phút</Option>
-                                    <Option value={1500}>25 phút</Option>
-                                    <Option value={1800}>30 phút</Option>
-                                </Select>
-                                {/* <TimePicker className='selectTime' onChange={value => setTime(value._d.getHours() * 60 * 60 + value._d.getMinutes() * 60 + value._d.getSeconds())} /> */}
-                                {
-                                    time && (
-                                        <>
-                                            <p>{formatTime(timer)}</p>
-                                            <div className='buttons'>
-                                                {
-                                                    !isActive && !isPaused ?
-                                                        <button onClick={handleStart}>Start</button>
-                                                        : (
-                                                            isPaused ? <button onClick={handlePause}>Dừng</button> :
-                                                                <button onClick={handleReset} disabled={!isActive}>Reset</button>
-                                                        )
-                                                }
-                                                {/* <button onClick={handleReset} disabled={!isActive}>Reset</button> */}
-                                            </div>
-                                        </>
-                                    )
-                                }
+                                </video>
                             </div>
-                        </div>
+                            <div className='monitorHandleBtn'>
+                                <p>{formatTime(timer)}</p>
+                                <div className="monitorHandleAction">
+                                    <p onClick={confirm}>Dừng</p>
+                                </div>
+                            </div>
+                        </>
                     )
                 }
+
             </div>
+            {
+                !unit4 && (
+                    <div className="returnHome" onClick={() => navigate('/')}>
+                        <ArrowLeftOutlined /><span>Quay lại trang chủ</span>
+                    </div>
+                )
+            }
+            {
+                loading && (
+                    <div className="loadingSpin">
+                        <Spin size='large' />
+                    </div>
+                )
+            }
         </div>
     )
 }
@@ -605,6 +480,7 @@ const mapStateToProps = createStructuredSelector({
 })
 const mapDispatchToProps = (dispatch) => ({
     checkLoginRequest: () => dispatch(actionsAuth.checkLoginRequest()),
+    createActive: (payload) => actionsHistory.createActive(dispatch)(payload)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

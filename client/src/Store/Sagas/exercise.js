@@ -9,10 +9,10 @@ import {
 } from '../Actions/exercise'
 import * as apiExercise from '../../Api/exercise'
 
-function* fetchCreateExercise(action) {
+function* fetchCreateExercise({payload,resolve}) {
     try {
-        const response = yield call(apiExercise.createExercise, action.payload)
-        console.log(response)
+        const response = yield call(apiExercise.createExercise, payload)
+        resolve(response.data)
         yield put(createExerciseSuccess(response.data.exercise))
     } catch (err) {
         console.error(err)
@@ -29,11 +29,10 @@ function* fetchCreateExercise(action) {
 export function* sagaCreateExercise() {
     yield takeLatest(CREATE_EXERCISE, fetchCreateExercise)
 }
-function* fetchUpdateExercise(Actions) {
+function* fetchUpdateExercise({payload,resolve}) {
     try {
-        console.log(Actions.payload)
-        const response = yield call(apiExercise.updateExercise,Actions.payload)
-        console.log(response)
+        const response = yield call(apiExercise.updateExercise,payload)
+        resolve(response.data)
         yield put(updateExerciseSuccess(response.data.exercise))
     } catch (err) {
         console.log(err)

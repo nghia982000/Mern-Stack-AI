@@ -9,12 +9,13 @@ import {
     UPDATE_EXERCISE_SUCCESS
 } from '../Constants/exercise'
 
-export function createExercise(payload){
-    return{
-        type: CREATE_EXERCISE,
-        payload
-    }
-}
+export const createExercise = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CREATE_EXERCISE,
+            payload, resolve
+        })
+    )
 export function createExerciseSuccess(payload){
     return{
         type: CREATE_EXERCISE_SUCCESS,
@@ -39,12 +40,13 @@ export function createState(payload){
         payload
     }
 }
-export function updateExerciseRequest(payload){
-    return{
-        type: UPDATE_EXERCISE_REQUEST,
-        payload
-    }
-}
+export const updateExerciseRequest = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: UPDATE_EXERCISE_REQUEST,
+            payload, resolve
+        })
+    )
 export function updateExerciseSuccess(payload){
     return{
         type: UPDATE_EXERCISE_SUCCESS,

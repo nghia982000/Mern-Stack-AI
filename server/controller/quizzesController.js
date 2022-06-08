@@ -1,5 +1,6 @@
 const Quizzes = require('../models/Quizzes')
 const User = require('../models/User')
+const History =require('../models/History')
 
 class QuizzesController {
 
@@ -114,8 +115,9 @@ class QuizzesController {
         }
     }
     async testResult(req, res) {
-        const { listAnswer } = req.body
+        const { listAnswer,role } = req.body
         const lectureId = req.params.id
+        const userId = req.userId
         // console.log(listAnswer)
         try {
             const arrResult = await Quizzes.find({ lectureId }).select('correctAnswer')
@@ -130,6 +132,13 @@ class QuizzesController {
                 })
                 return arr
             }, [])
+            const historyAnswer = new History({
+                lectureId,
+                testResult:result,
+                userId,
+                role
+            })
+            await historyAnswer.save()
             res.json({
                 success: true,
                 result: result

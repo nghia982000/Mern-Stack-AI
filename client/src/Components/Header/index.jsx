@@ -6,11 +6,18 @@ import {
   SearchOutlined,
   ReadOutlined,
   HeartOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  MenuOutlined,
+  HomeOutlined,
+  KeyOutlined,
+  LogoutOutlined,
+  IdcardOutlined,
+  ProfileOutlined,
+  UserOutlined
 } from "@ant-design/icons"
 import { Link, NavLink, useNavigate } from "react-router-dom"
 import imgBxh from '../../Assets/img/manwork.jpg'
-import { notification } from 'antd'
+import { notification, Drawer } from 'antd'
 
 
 import * as actions from '../../Store/Actions/course'
@@ -47,7 +54,9 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
     // console.log(search.current.value)
     search.current.value = ''
   }
-
+  const ChangePassword = () => {
+    navigate('/password')
+  }
   useEffect(() => {
     if (btnFavorite) {
       getFavorite()
@@ -64,8 +73,94 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
       getBoughtCourse()
     }
   }, [btnCourse])
+  const [visible, setVisible] = useState(false);
+
+  const showDrawer = () => {
+    setVisible(true)
+  };
+
+  const onClose = () => {
+    setVisible(false)
+  }
   return (
     <div className='header'>
+      <Drawer placement="left" className='headerDrawer' closable={false} onClose={onClose} visible={visible}>
+        {
+          selectIsAuthenticated ? (
+            <div className="headerAccountDrawer">
+              <div className="UserAuthProfile">
+                <div className="AuthProfileLogo">
+                  <img src={LogoAD} alt="" />
+                </div>
+                <div className="AuthProfileName">
+                  <p>{selectUser.nameAccount}</p>
+                  <p>{selectUser.point} coin</p>
+                </div>
+              </div>
+              <div className="UserAuthContent">
+                <div className="headerAccountDrawerItem" onClick={() => (
+                  navigate('/myCourse'),
+                  setVisible(false)
+                )}>
+                  <ReadOutlined />
+                  <span>  Các khóa học đã mua</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+
+            <div className="headerLogoDrawer">
+              <img src={Logo} alt="" />
+            </div>
+          )
+        }
+        <div className="headerMenuDrawer">
+          <div className="headerMenuDrawerItem" onClick={() => (
+            navigate('/'),
+            setVisible(false)
+          )}>
+            <HomeOutlined />
+            <span>  Trang chủ</span>
+          </div>
+          <div className="headerMenuDrawerItem" onClick={() => (
+            navigate('/course'),
+            setVisible(false)
+          )}>
+            <ProfileOutlined />
+            <span>  Các khóa học</span>
+          </div>
+        </div>
+        {
+          selectIsAuthenticated && (
+            <div className="headerDrawerFooter">
+              <div className="headerAccountDrawerItem" onClick={() => (
+                navigate('/account'),
+                setVisible(false)
+              )}>
+                <IdcardOutlined />
+                <span>  Trang cá nhân</span>
+              </div>
+              <div className="headerAccountDrawerItem" onClick={() => (
+                ChangePassword(),
+                setVisible(false)
+              )}>
+                <KeyOutlined />
+                <span>  Đổi mật khẩu</span>
+              </div>
+              <div className="headerAccountDrawerItem" onClick={() => (
+                SignOut(),
+                setVisible(false)
+              )}>
+                <LogoutOutlined />
+                <span>  Đăng xuất</span>
+              </div>
+            </div>
+          )
+        }
+      </Drawer>
+      <div className="headerMenuResp">
+        <MenuOutlined onClick={showDrawer} />
+      </div>
       <div className="headerLeft">
         <div className="headerLogo">
           <img src={Logo} alt="" />
@@ -74,9 +169,9 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
           <NavLink to="/">
             Trang chủ
           </NavLink>
-          <NavLink to="/monitoring" >
+          {/* <NavLink to="/monitoring" >
             Giám sát
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/course" >
             Các khóa học
           </NavLink>
@@ -104,6 +199,9 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
         {
           selectIsAuthenticated && (
             <div className="headerUser">
+              <div className="headerUserResp">
+                <UserOutlined onClick={showDrawer} />
+              </div>
               <div className="headerUserIcon" >
                 <ReadOutlined onClick={() => {
                   setBtnCourse(!btnCourse)
@@ -111,45 +209,45 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
                   setBtnUser(false)
                 }
                 } />
-                  {
-                    btnCourse && (
-                      <div className="headerUserCourse">
-                        {
-                          (selectBoughtCourse.length === 0) ? (
-                            <div className="userCourseHeader">
-                              Chưa có khóa học nào
+                {
+                  btnCourse && (
+                    <div className="headerUserCourse">
+                      {
+                        (selectBoughtCourse.length === 0) ? (
+                          <div className="userCourseHeader">
+                            Chưa có khóa học nào
+                          </div>
+                        ) : (
+                          <>
+                            <div className="userCourseHeader" onClick={() => navigate('/myCourse')}>
+                              Khóa học của tôi
                             </div>
-                          ) : (
-                            <>
-                              <div className="userCourseHeader" onClick={() => navigate('/myCourse')}>
-                                Khóa học của tôi
-                              </div>
-                              <div className="userCourseContent">
-                                {
-                                  selectBoughtCourse.map((item, index) => {
-                                    return (
-                                      <div className="userCourseItem" key={index} onClick={() => {
-                                        setBtnCourse(!btnCourse)
-                                        navigate(`/learning/${item._id}`)
-                                      }}>
-                                        <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
-                                        </div>
-                                        <div className="CourseItemTitle">
-                                          {item.title}
-                                        </div>
+                            <div className="userCourseContent">
+                              {
+                                selectBoughtCourse.map((item, index) => {
+                                  return (
+                                    <div className="userCourseItem" key={index} onClick={() => {
+                                      setBtnCourse(!btnCourse)
+                                      navigate(`/learning/${item._id}`)
+                                    }}>
+                                      <div className="CourseItemImg" style={{ backgroundImage: `url(${item.image})` }}>
                                       </div>
-                                    )
-                                  })
-                                }
+                                      <div className="CourseItemTitle">
+                                        {item.title}
+                                      </div>
+                                    </div>
+                                  )
+                                })
+                              }
 
-                              </div>
-                            </>
-                          )
-                        }
+                            </div>
+                          </>
+                        )
+                      }
 
-                      </div>
-                    )
-                  }
+                    </div>
+                  )
+                }
 
               </div>
               <div className="headerUserIcon">
@@ -217,7 +315,8 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
                           <img src={LogoAD} alt="" />
                         </div>
                         <div className="AuthProfileName">
-                          {selectUser.username}
+                          <p>{selectUser.nameAccount}</p>
+                          <p>{selectUser.point} coin</p>
                         </div>
                       </div>
                       <div className="UserAuthContent">
@@ -225,6 +324,7 @@ const Header = ({ selectIsAuthenticated, selectUser, getFavorite, selectFavorite
                           navigate('/account')
                           setBtnUser(!btnUser)
                         }}>Trang cá nhân</p>
+                        <p onClick={() => ChangePassword()}>Đổi mật khẩu</p>
                         <p onClick={() => SignOut()}>Đăng xuất</p>
                       </div>
                     </div>

@@ -2,28 +2,28 @@
     padding-top: 20px;
     padding-bottom: 200px;
     .catagoryCourse{
-        display: flex;
-        width: 50%;
-        flex-wrap: wrap;
-        margin: 0 -10px;
-        .active{
-            color: aliceblue;
-            background-color: #ab7c24;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .itemCatagory{
-            font-size: 25px;
-            border: 1px solid #decfcf;
-            padding: 5px 10px;
-            border-radius: 15px;
-            margin: 10px 10px;
-            cursor: pointer;
-            &:hover{
-                color: aliceblue;
-                background-color: #ab7c24;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            }
-        }
+        padding-bottom: 20px;
+        // display: flex;
+        // width: 50%;
+        // flex-wrap: wrap;
+        // .active{
+        //     color: aliceblue;
+        //     background-color: #ab7c24;
+        //     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        // }
+        // .itemCatagory{
+        //     font-size: 25px;
+        //     border: 1px solid #decfcf;
+        //     padding: 5px 10px;
+        //     border-radius: 15px;
+        //     margin: 10px 10px;
+        //     cursor: pointer;
+        //     &:hover{
+        //         color: aliceblue;
+        //         background-color: #ab7c24;
+        //         box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        //     }
+        // }
     }
     .allCourse{
         display: flex;

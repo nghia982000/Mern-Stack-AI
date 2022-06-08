@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState, useRef } from 'react'
 
 import './style.scss'
 import {
@@ -19,6 +19,7 @@ import * as actions from '../../Store/Actions/course'
 import * as actionsVideo from '../../Store/Actions/video'
 import * as actionsComment from '../../Store/Actions/comment'
 import * as actionsQuestion from '../../Store/Actions/quizzes'
+import * as actionsHistory from '../../Store/Actions/history'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -26,6 +27,7 @@ import { selectDetailCourse } from '../../Store/Selectors/course'
 import { selectVideos } from '../../Store/Selectors/video'
 import { selectListComment } from '../../Store/Selectors/comment'
 import { selectGetListQuestions } from '../../Store/Selectors/quizzes'
+import { selectListTestResult } from '../../Store/Selectors/history'
 
 const { Panel } = Collapse
 
@@ -39,7 +41,9 @@ const Learning = ({
   selectListComment,
   selectGetListQuestions,
   getListQuestion,
-  testResult
+  testResult,
+  selectListTestResult,
+  getListTestResult
 }) => {
   const [video, setVideo] = useState({
     id: '',
@@ -47,10 +51,10 @@ const Learning = ({
     title: ''
   })
   const [role, setRole] = useState()
-  const [videoEnd, SetVideoEnd] = useState(false)
   const [exercise, setExercise] = useState({
     content: '',
-    title: ''
+    title: '',
+    id: ''
   })
   const [question, setQuestion] = useState({
     data: [],
@@ -72,25 +76,24 @@ const Learning = ({
 
     return `${getHours} : ${getMinutes} : ${getSeconds}`
   }
-  const endVideo = () => {
-    console.log('end video')
-    SetVideoEnd(true)
+  // const endVideo = () => {
+  //   console.log('end video')
+  //   SetVideoEnd(true)
 
-  }
-  const loadStart = () => {
-    console.log('start video')
-    showModal()
-  }
-  const [onclose, setOnclose] = useState(false)
+  // }
+  // const loadStart = () => {
+  //   console.log('start video')
+  //   showModal()
+  // }
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const showModal = () => {
     setIsModalVisible(true)
   }
-  const handleOk = () => {
-    setIsModalVisible(false)
-    setOnclose(true)
-  }
+  // const handleOk = () => {
+  //   setIsModalVisible(false)
+  //   setOnclose(true)
+  // }
   const handleCancel = () => {
     setIsModalVisible(false)
   }
@@ -101,24 +104,79 @@ const Learning = ({
     const data = Object.values(values)
     const response = await testResult({
       id: question.id,
-      data:{
-        listAnswer:data
+      data: {
+        listAnswer: data,
+        role:'quizzes'
       }
     })
-    console.log(response)
+    if (response) {
+      console.log(response.data.result)
+      success(response.data.result)
+    }
+    getListTestResult(question.id)
     setStateQuizzes(false)
+  }
+  const success = (result) => {
+    const numberTrue = result.filter((item) => item.check)
+    Modal.success({
+      title: `Kết quả kiểm tra  ${numberTrue.length}/${result.length}`,
+      content: (
+        <div>
+          {
+            result.map((item, index) => {
+              return (
+                <span key={index}>{`Câu ${index + 1}:${(item.check) ? 'Đúng ' : 'Sai '}`}</span>
+              )
+            })
+          }
+        </div>
+      ),
+      onOk() {
+      },
+    })
+  }
+  const formatDatetime = (Datetime) => {
+    var date = new Date(Datetime)
+    return (`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+  }
+  const [lessons, setLessons] = useState([])
+  useMemo(() => {
+    const newArr = selectVideos.reduce((arr, lesson, index) => {
+      const arrSort = selectVideos.filter((item) => {
+        return item.lecture === lesson.lecture
+      })
+      arr.push({
+        lecture: lesson.lecture,
+        lesson: arrSort
+      })
+      return arr
+    }, [])
+    const listLesson = Array.from(new Set(newArr.map(JSON.stringify))).map(JSON.parse)
+    setLessons([...listLesson])
+  }, [selectVideos])
+
+  const countRef = useRef(null)
+  const [timer, setTimer] = useState(0)
+  const handleStart = () => {
+    countRef.current = setInterval(() => {
+      setTimer((timer) => timer + 1)
+    }, 1000)
+  }
+  const handlePause = () => {
+    clearInterval(countRef.current)
+    setTimer(0)
   }
   return (
     <div className='learing'>
-      {
+      {/* {
         onclose && <ItemDraggable onclose={setOnclose} endVideo={videoEnd} handleEndvideo={SetVideoEnd} />
-      }
+      } */}
       <div className="learingLeft">
         {
           role === 'video' ? (
             <>
               <div className="videoFrameTest">
-                <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url} onLoadStart={() => loadStart()} onEnded={() => endVideo()} controls>
+                <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url}  controls>
                 </video>
                 {/* <button className='testNoti'>test</button> */}
               </div>
@@ -136,10 +194,19 @@ const Learning = ({
           ) : (
             role === 'exercise' ? (
               <div className="learingLeftExercise">
-                <div className="learingLeftExerciseTitle">
-                  <h1>{exercise.title}</h1>
+                <div style={{width:'80%', margin: '0 auto'}}>
+                  <div className="learingLeftExerciseTitle">
+                    <h1>{exercise.title}</h1>
+                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: exercise.content }}></div>
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: exercise.content }}></div>
+                <div className="learingLeftComment">
+                  {
+                    exercise.id && (
+                      <ItemComment videoId={exercise.id} createComment={createComment} getComment={getComment} selectListComment={selectListComment} />
+                    )
+                  }
+                </div>
               </div>
             ) : (
               role === 'quizzes' ? (
@@ -147,10 +214,32 @@ const Learning = ({
                   <div className="learingLeftQuestionTitle">
                     <h1>{question.title}</h1>
                   </div>
-                  <button onClick={() => (
-                    getListQuestion(question.id),
-                    setStateQuizzes(true)
-                  )}>Băt đầu làm</button>
+                  {
+                    (selectListTestResult.length !== 0 && !stateQuizzes) ? (
+                      <div className="learingLeftQuestionHistory">
+                        <h2>Kết quả lần làm gần đây:</h2>
+                         
+                        {
+                          selectListTestResult.reverse().map((item, index) => {
+                            const numberTrueHistory = item.testResult.filter((item) => item.check)
+                            return (
+                              <p key={index}>{`${formatDatetime(item.createdAt)} - Kết quả: ${numberTrueHistory.length}/${item.testResult.length}`}</p>
+                            )
+                          })
+                        }
+                      </div>
+                    ) : ''
+                  }
+                  {
+                    !stateQuizzes && (
+                      <Button type="primary" onClick={() => (
+                        getListQuestion(question.id),
+                        setStateQuizzes(true)
+                      )}>{
+                          (selectListTestResult.length !== 0) ? 'Làm lại' : 'Bắt đầu làm bài'
+                        }</Button>
+                    )
+                  }
                   <div className="learingLeftQuestionList">
                     {
                       stateQuizzes && (
@@ -164,6 +253,7 @@ const Learning = ({
                                   <h2>{`Câu ${index + 1}: ${item.question}`}</h2>
                                   <Form.Item
                                     name={index + 1}
+                                    rules={[{ required: 'true', message: 'Vui lòng chọn đáp án' }]}
                                   >
                                     <Radio.Group >
                                       <Space direction="vertical">
@@ -192,7 +282,7 @@ const Learning = ({
                           }
                           <Form.Item >
                             <Button type="primary" htmlType="submit" >
-                              Submit
+                              Nộp bài
                             </Button>
                           </Form.Item>
                         </Form>
@@ -213,72 +303,78 @@ const Learning = ({
         {/* <h2>Nội dung khóa học</h2> */}
         <Collapse accordion>
           {
-            selectVideos.map((item, index) => {
+            lessons.map((item, index) => {
               return (
-                item.role === 'exercise' ? (
-                  <Panel header={`Lecture ${item.lecture}`} key={index}>
-                    <div className="itemVideoLearing" onClick={() => {
-                      setExercise({
-                        ...exercise,
-                        title: item.title,
-                        content: item.content
-                      })
-                      setRole('exercise')
-                    }
-                    } >
-                      <span>
-                        <FileTextOutlined />
-                        {item.title}
-                      </span>
-                    </div>
-                  </Panel>
-                ) : (
-                  item.role === 'video' ? (
-                    <Panel header={`Lecture ${item.lecture}`} key={index}>
-                      <div className="itemVideoLearing" onClick={() => {
-                        setVideo({
-                          ...video,
-                          url: item.url,
-                          title: item.title,
-                          id: item._id
-                        })
-                        setRole('video')
-                      }
-                      } >
-                        <span>
-                          <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                          {item.title}
-                        </span>
-                        <span>{formatTime(item.duration)}</span>
-                      </div>
-                    </Panel>
-                  ) : (
-                    <Panel header={`Lecture ${item.lecture}`} key={index}>
-                      <div className="itemVideoLearing" onClick={() => {
-                        setQuestion({
-                          ...question,
-                          title: item.title,
-                          id: item._id
-                        })
-                        setRole('quizzes')
-                      }
-                      } >
-                        <span>
-                          <FileDoneOutlined />
-                          {item.title}
-                        </span>
-                      </div>
-                    </Panel>
-                  )
-                )
+                <Panel header={` Chương ${item.lecture}`} key={index}>
+                  {
+                    item.lesson.map((lesson, indexArr) => {
+                      return (
+                        lesson.role === 'exercise' ? (
+                          <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                            setExercise({
+                              ...exercise,
+                              title: lesson.title,
+                              content: lesson.content,
+                              id: lesson._id
+                            })
+                            setRole('exercise')
+                          }
+                          } >
+                            <span>
+                              <FileTextOutlined />
+                              {` Bài ${indexArr + 1}: ${lesson.title}`}
+                            </span>
+                          </div>
+
+                        ) : lesson.role === 'video' ? (
+                          <div key={indexArr} className="itemVideoLearing" style={{display:'block'}} onClick={() => {
+                            setVideo({
+                              ...video,
+                              url: lesson.url,
+                              title: lesson.title,
+                              id: lesson._id
+                            })
+                            setRole('video')
+                          }
+                          } >
+                            <div>
+                              {`Bài ${indexArr + 1}: ${lesson.title}`}
+                            </div>
+                            <div>
+                              <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                              {formatTime(lesson.duration)}
+                              </div>
+                          </div>
+                        ) : (
+                          <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                            getListTestResult(lesson._id)
+                            setQuestion({
+                              ...question,
+                              title: lesson.title,
+                              id: lesson._id
+                            })
+                            setRole('quizzes')
+                            setStateQuizzes(false)
+                          }
+                          } >
+                            <span>
+                              <FileDoneOutlined />
+                              {` Bài ${indexArr + 1}: ${lesson.title}`}
+                            </span>
+                          </div>
+                        )
+                      )
+                    })
+                  }
+                </Panel>
               )
             })
           }
         </Collapse>
       </div>
-      <Modal title="Thông báo" visible={isModalVisible} okText='Giám sát' onOk={handleOk} cancelText='Không' onCancel={handleCancel}>
+      {/* <Modal title="Thông báo" visible={isModalVisible} okText='Giám sát' onOk={handleOk} cancelText='Không' onCancel={handleCancel}>
         <p>Bạn có muốn giám sát quá trình xem video này không</p>
-      </Modal>
+      </Modal> */}
     </div >
   )
 }
@@ -287,7 +383,8 @@ const mapStateToProps = createStructuredSelector({
   selectDetailCourse,
   selectVideos,
   selectListComment,
-  selectGetListQuestions
+  selectGetListQuestions,
+  selectListTestResult
 })
 const mapDispatchToProps = (dispatch) => ({
   detailCourse: (payload) => dispatch(actions.detailCourse(payload)),
@@ -295,7 +392,8 @@ const mapDispatchToProps = (dispatch) => ({
   createComment: (payload) => dispatch(actionsComment.createComment(payload)),
   getComment: (payload) => dispatch(actionsComment.getComment(payload)),
   getListQuestion: (payload) => dispatch(actionsQuestion.getQuestionRequest(payload)),
-  testResult: (payload) => actionsQuestion.testResult(dispatch)(payload)
+  testResult: (payload) => actionsQuestion.testResult(dispatch)(payload),
+  getListTestResult: (payload) => dispatch(actionsHistory.getListTestResultRequest(payload)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

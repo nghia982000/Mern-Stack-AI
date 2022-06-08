@@ -12,13 +12,13 @@ const payment = async (req, res, next) => {
         })
         if(bought){
             return res.status(400).json({
-                message: 'The course has been purchased',
+                message: 'Bạn đã mua khóa học này',
                 success: false
             })
         }
         if (user.point < course.point) {
             return res.status(400).json({
-                message: 'Not enough coins',
+                message: 'Không đủ xu',
                 success: false
             })
         }

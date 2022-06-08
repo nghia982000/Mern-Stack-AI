@@ -3,6 +3,7 @@ import Draggable from 'react-draggable'
 import './style.scss'
 import * as tf from '@tensorflow/tfjs'
 import axios from 'axios'
+import { Modal } from 'antd'
 
 const ItemDraggable = ({ onclose,endVideo,handleEndvideo }) => {
     const class_Name = { 0: 'Leaving', 1: 'Tired', 2: 'Turn around', 3: 'Using Phone', 4: 'Working' }
@@ -117,7 +118,8 @@ const ItemDraggable = ({ onclose,endVideo,handleEndvideo }) => {
         setStep2(false)
         setStep1(false)
         loop.current = false
-        alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
+        info()
+        // alert(`Focus on work:${Math.floor(percent(result.current).Working)}%`)
     }
     const sleep = (ms = 0) => {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -137,26 +139,32 @@ const ItemDraggable = ({ onclose,endVideo,handleEndvideo }) => {
         for (var key in result) {
             newResult[key] = (result[key] / total) * 100
         }
-        axios.post(`https://server-mern-stack-ai.herokuapp.com/monitor/createActive`, {
+        axios.post(`https://server-mern-stack-ai.herokuapp.com/history/createActive`, {
             result,
             precent: newResult
         })
             .then(res => {
                 console.log(res.data.Active)
             })
-        // axios.post(` http://localhost:5000/monitor/createActive`, {
-        //     result,
-        //     precent: newResult,
-        //     time
-        // })
-        //     .then(res => {
-        //         console.log(res.data.Active)
-        //     })
         return newResult
     }
     const addResult = (value) => {
         result.current[value] = result.current[value] + 1
         console.log(result.current)
+    }
+    const info = () => {
+        Modal.info({
+            title: 'Kết quả giám sát của bạn',
+            content: (
+                <div>
+                    <p>Bạn tập đã trung vào công việc là:{Math.floor(percent(result.current).Working)}%</p>
+                </div>
+            ),
+
+            onOk() {
+
+            },
+        })
     }
     return (
         <>
@@ -170,7 +178,10 @@ const ItemDraggable = ({ onclose,endVideo,handleEndvideo }) => {
                             !step1 && (
                                 <>
                                     <button onClick={() => setStep1(true)}>Bắt đầu</button>
-                                    <button onClick={() => onclose(false)}>Đóng</button>
+                                    <button onClick={() => (
+                                        handleEndvideo(false),
+                                        onclose(false)
+                                    )}>Đóng</button>
                                 </>
                             )
                         }

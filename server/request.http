@@ -11,8 +11,28 @@ POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"admin1",
+    "username":"admin",
     "password":"123456789"
+}
+
+###
+POST http://localhost:5000/auth/changePassword
+Content-Type: application/json
+
+{
+    "username":"admin231200",
+    "oldPassword":"123456",
+    "email":"nghiasin1@gmail.com",
+    "newPassword":"123456789"
+}
+###
+POST http://localhost:5000/auth/fogotPassword
+Content-Type: application/json
+
+{
+    "username":"admin231200",
+    "email":"nghiasin1@gmail.com",
+    "nameAccount":"123456789"
 }
 
 
@@ -104,7 +124,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1N
 
 
 ###
-POST    http://localhost:5000/monitor/createActive
+POST    http://localhost:5000/history/createActive
 Content-Type: application/json
 
 {
@@ -116,14 +136,14 @@ Content-Type: application/json
         "Working": 4000
     },
     "precent":{
-        "Leaving": 100,
-        "Tired": 300,
-        "Turn around": 90,
-        "Using Phone": 80,
-        "Working": 4000
+        "Leaving": 10,
+        "Tired": 10,
+        "Turn around": 20,
+        "Using Phone": 10,
+        "Working": 75
     },
-    "time":180,
-    "userId":"626a65b23515c4ac1963dd1b"
+    "time":1300,
+    "userId":"623c8f784881385ddd6d163a"
 }
 ###
 POST    http://localhost:5000/comment/createComment
@@ -143,7 +163,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1N
 {
     "videoId":"626a65b23515c4ac1963dd1b"
 }
+###
+GET       http://localhost:5000/comment/reportComment/629981823a4da476a26bc4fb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTIzNzM4NDN9.Veu873gHitCykfFO5E3FKROEELH8IfiXfb_vSpXy_x4
 
+###
+GET       http://localhost:5000/comment/getListReplyComment/629981823a4da476a26bc4fb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTIzNzM4NDN9.Veu873gHitCykfFO5E3FKROEELH8IfiXfb_vSpXy_x4
+
+
+###
+POST        http://localhost:5000/comment/replyComment/629981823a4da476a26bc4fb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mjc1NGUxYTZkMWE0ZDE2NjU0ZjA4ZWYiLCJpYXQiOjE2NTIzNzM4NDN9.Veu873gHitCykfFO5E3FKROEELH8IfiXfb_vSpXy_x4
+
+{
+    "nameAccount":"Nghĩa",
+    "content":"test"
+}
 ###
 POST      http://localhost:5000/videoExercise/createExercise
 Content-Type: application/json
@@ -209,6 +248,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjO
     },
     "correctAnswer":"D"
 }
+
+###
+GET    http://localhost:5000/history/getListTestResult/627d3a511472586e8e8129ae
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
 
 ###
 POST  http://localhost:5000/quizzes/testResult/627d3a511472586e8e8129ae

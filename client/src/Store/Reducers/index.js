@@ -5,6 +5,7 @@ import videoReducers from './video'
 import commentReducers from './comment'
 import exerciseReducers from './exercise'
 import quizzesReducers from './quizzes'
+import historyReducers from './history'
 
 export default combineReducers({
     authReducers,
@@ -12,5 +13,6 @@ export default combineReducers({
     videoReducers,
     commentReducers,
     exerciseReducers,
-    quizzesReducers
+    quizzesReducers,
+    historyReducers
 })

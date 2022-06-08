@@ -1,17 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './style.scss'
 import LogoAD from '../../Assets/img/logoUser.png'
 import background from '../../Assets/img/backgroundAc.png'
 import imgBxh from '../../Assets/img/manwork.jpg'
+import {
+    FormOutlined,
+    FundViewOutlined
+} from "@ant-design/icons"
 
 import * as actions from '../../Store/Actions/course'
+import * as actionsHistory from '../../Store/Actions/history'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { selectBoughtCourse } from '../../Store/Selectors/course'
 import { selectUser } from '../../Store/Selectors/auth'
+import { selectListAcctive } from '../../Store/Selectors/history'
 
-const Account = ({ selectBoughtCourse,selectUser }) => {
+const Account = ({ selectBoughtCourse, selectUser, getListAcctive, selectListAcctive }) => {
+    useEffect(() => {
+        getListAcctive()
+
+    }, [])
+    console.log(selectListAcctive)
+    const formatDatetime = (Datetime) => {
+        var date = new Date(Datetime)
+        return (`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+    }
     return (
         <div className='Account'>
             <div className="accountBackground">
@@ -22,7 +37,7 @@ const Account = ({ selectBoughtCourse,selectUser }) => {
                     <img src={LogoAD} alt="" />
                 </div>
                 <div className="accountProfileName">
-                    {selectUser.username}
+                    {selectUser.nameAccount}
                 </div>
             </div>
             <div className="accountContent">
@@ -31,6 +46,38 @@ const Account = ({ selectBoughtCourse,selectUser }) => {
                         Hoạt động gần đây
                     </div>
                     <div className="accountRecentContent">
+                        {
+                            selectListAcctive.length !== 0 ? (
+                                selectListAcctive.map((item, index) => {
+                                    return (
+                                        item.role === 'monitor' ? (
+                                            <div className="accountRecentItem" key={index}>
+                                                <div className="accountRecentItemIcon">
+                                                    <FundViewOutlined />
+                                                </div>
+                                                <div className="accountRecentItemContent">
+                                                    <p>Kết quả giám sát:{Math.floor(item.percent.Working)}</p>
+                                                    <p>Thời gian giám sát:{item.time}</p>
+                                                    <p>{formatDatetime(item.createdAt)}</p>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="accountRecentItem" key={index}>
+                                                <div className="accountRecentItemIcon">
+                                                    <FormOutlined />
+                                                </div>
+                                                <div className="accountRecentItemContent">
+                                                    <p>Kết quả kiểm tra trắc nghiêm: {`${item.testResult.filter((item) => item.check).length}/${item.testResult.length}`}</p>
+                                                    <p>{formatDatetime(item.createdAt)}</p>
+                                                </div>
+                                            </div>
+                                        )
+
+                                    )
+                                })
+                            ) : 'Chưa có hoạt động nào'
+                        }
+
 
                     </div>
                 </div>
@@ -68,9 +115,11 @@ const Account = ({ selectBoughtCourse,selectUser }) => {
 
 const mapStateToProps = createStructuredSelector({
     selectBoughtCourse,
-    selectUser
+    selectUser,
+    selectListAcctive
 })
 const mapDispatchToProps = (dispatch) => ({
+    getListAcctive: () => dispatch(actionsHistory.getListAcctive()),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

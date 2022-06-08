@@ -105,10 +105,10 @@ export function* sagaDeleteCourse() {
     yield takeLatest(DELETE_COURSE, fetchDeleteCourse)
 }
 
-function* fetchCreateCourse(Actions) {
+function* fetchCreateCourse({payload,resolve}) {
     try {
-        const response = yield call(apiCourse.apiCreateCourse,Actions.payload)
-        console.log(response)
+        const response = yield call(apiCourse.apiCreateCourse,payload)
+        resolve(response.data)
         yield put(createCourseSuccess(response.data.Course))
     } catch (err) {
         console.log(err)
@@ -125,10 +125,10 @@ function* fetchCreateCourse(Actions) {
 export function* sagaCreateCourse() {
     yield takeLatest(CREATE_COURSE, fetchCreateCourse)
 }
-function* fetchUpdateCourse(Actions) {
+function* fetchUpdateCourse({payload,resolve}) {
     try {
-        const response = yield call(apiCourse.apiUpdateCourse,Actions.payload)
-        // console.log(response)
+        const response = yield call(apiCourse.apiUpdateCourse,payload)
+        resolve(response.data)
         yield put(updateCourseSuccess(response.data.course))
     } catch (err) {
         console.log(err)
@@ -146,20 +146,20 @@ export function* sagaUpdateCourse() {
     yield takeLatest(UPDATE_COURSE_REQUEST, fetchUpdateCourse)
 }
 
-function* fetchFavotiteCourse(Actions) {
+function* fetchFavotiteCourse({ payload, resolve }) {
     try {
-        const response = yield call(apiCourse.apiFavoriteCourse,Actions.payload)
+        const response = yield call(apiCourse.apiFavoriteCourse,payload)
         // console.log(response.data.data)
         yield put(favoriteCourseSuccess(response.data.data))
     } catch (err) {
         console.log(err)
         if(err.response){
             console.log(err.response.data)
-            alert(err.response.data.message)
+            resolve(err.response.data.message)
         }
         else{
             console.log({success:false,message:err.message})
-            alert(err.message)
+            resolve(err.message)
         }
     }
 }
@@ -210,20 +210,20 @@ export function* sagaDeleteFavorite() {
     yield takeLatest(DELETE_FAVORITE, fetchDeleteFavotite)
 }
 
-function* fetchBuyCourse(Actions) {
+function* fetchBuyCourse({ payload, resolve }) {
     try {
-        const response = yield call(apiCourse.apiBuyCourse,Actions.payload)
+        const response = yield call(apiCourse.apiBuyCourse,payload)
         // console.log(response)
         yield put(buyCourseSuccess(response.data))
     } catch (err) {
         console.log(err)
         if(err.response){
             console.log(err.response.data)
-            alert(err.response.data.message)
+            resolve(err.response.data.message)
         }
         else{
             console.log({success:false,message:err.message})
-            alert(err.message)
+            resolve(err.message)
         }
     }
 }

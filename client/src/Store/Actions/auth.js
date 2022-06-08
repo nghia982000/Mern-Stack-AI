@@ -7,14 +7,11 @@ import {
     GET_ACCOUNT,
     GET_ACCOUNT_SUCCESS,
     DELETE_ACCOUNT,
-    DELETE_ACCOUNT_SUCCESS
+    DELETE_ACCOUNT_SUCCESS,
+    CHANGE_PASSWORD,
+    DETAIL_ACCOUNT,
+    STATE_MONITOR
 } from '../Constants/auth'
-export function login(payload) {
-    return {
-        type: LOGIN,
-        payload,
-    }
-}
 export const register=(dispatch) => (payload) =>
     new Promise((resolve) =>
         dispatch({
@@ -22,6 +19,33 @@ export const register=(dispatch) => (payload) =>
             payload, resolve
         })
     )
+export const changePassword=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CHANGE_PASSWORD,
+            payload, resolve
+        })
+    )
+export const login=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: LOGIN,
+            payload, resolve
+        })
+    )
+export const detailAccount=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: DETAIL_ACCOUNT,
+            payload, resolve
+        })
+    )
+export function stateMonitor(payload) {
+    return {
+        type: STATE_MONITOR,
+        payload
+    }
+}
 export function checkLoginRequest() {
     return {
         type: CHECKLOGINREQUEST

@@ -3,7 +3,11 @@ import axios from 'axios'
 import {
   Table,
   Popconfirm,
-  Space
+  Space,
+  Button,
+  Radio,
+  Select,
+  Input
 } from 'antd'
 import { useNavigate } from "react-router-dom"
 
@@ -11,19 +15,12 @@ import * as actions from '../../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { selectListCourse } from '../../../Store/Selectors/course'
+import { selectListCourse, selectListField } from '../../../Store/Selectors/course'
+const { Option } = Select
+const { Search } = Input
 
-const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState,detailCourse }) => {
-  const [file, setFile] = useState()
+const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState, detailCourse, selectListField, selectField, searchCourse }) => {
   const navigate = useNavigate()
-  const [response, setResponse] = useState()
-  const handleSubmit = () => {
-    const formData = new FormData()
-    formData.append('photo', file[0])
-    console.log(formData)
-    axios.post(`http://localhost:5000/course/testUpload`, formData)
-
-  }
   useEffect(() => {
     listCourse()
   }, [])
@@ -39,35 +36,63 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
       key: '5',
       render: (text, record) => (
         <Space size="middle">
-          <button onClick={() => (
+          <Button type="primary" onClick={() => (
             detailCourse(record._id),
             updateState(true),
             createState(false),
             navigate('/admin/cuCourse')
-          )}>Cập nhật</button>
-          <button onClick={() => navigate(`/admin/lesson/${record._id}`)}>Bài giảng</button>
+          )}>Xem và cập nhật</ Button>
+          <Button type="primary" onClick={() => navigate(`/admin/lesson/${record._id}`)}>Bài giảng</ Button>
           <Popconfirm
-            title="Sinh viên này sẽ bị xóa vĩnh viễn"
+            title="Khóa học này sẽ bị xóa vĩnh viễn"
             onConfirm={() => handleDelete(record._id)}
           >
-            <button>Xóa</button>
+            <Button type="primary">Xóa</ Button>
           </Popconfirm>
         </Space>
 
       )
     },
   ]
+  const onSearch = (value) => searchCourse({ item: value })
+  const handleField = (value) => {
+    if (value === 'All') {
+      listCourse()
+      return
+    }
+    selectField({ field: value })
+  }
+
   return (
     <div className='courseAd'>
-      <button onClick={() => (
-        updateState(false),
-        createState(true),
-        navigate('/admin/cuCourse')
-      )}>Tạo khóa học mới</button>
+      <Space >
+        <Search style={{
+          width: 350,
+        }}
+          placeholder="Tìm kiếm khóa học" onSearch={onSearch} enterButton />
+        <Select style={{
+          width: 120,
+        }} size="middle" defaultValue="All" placeholder="Content" onChange={handleField} >
+          <Option value="All">Tất cả</Option>
+          {
+            selectListField.map((item, index) => {
+              return (
+                <Option key={index} value={item}>{item}</Option>
+              )
+            })
+          }
+        </Select>
+        <Button type="primary" onClick={() => (
+          updateState(false),
+          createState(true),
+          navigate('/admin/cuCourse')
+        )}>Tạo khóa học mới</ Button>
+      </Space>
       <Table
         columns={columns}
         dataSource={dataCourse}
         rowKey={record => record._id}
+        style={{ paddingTop: '10px' }}
       />
     </div>
   )
@@ -75,6 +100,7 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
 
 const mapStateToProps = createStructuredSelector({
   dataCourse: selectListCourse,
+  selectListField
 })
 const mapDispatchToProps = (dispatch) => ({
   listCourse: () => dispatch(actions.listCourse()),
@@ -82,6 +108,8 @@ const mapDispatchToProps = (dispatch) => ({
   createState: (payload) => dispatch(actions.createState(payload)),
   updateState: (payload) => dispatch(actions.updateState(payload)),
   detailCourse: (payload) => dispatch(actions.detailCourse(payload)),
+  selectField: (payload) => dispatch(actions.selectField(payload)),
+  searchCourse: (payload) => dispatch(actions.searchCourse(payload))
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

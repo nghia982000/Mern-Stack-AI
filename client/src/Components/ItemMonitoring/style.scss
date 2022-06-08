@@ -19,7 +19,8 @@
             padding: 10px 20px;
             color: aliceblue;
             border-radius: 5px;
-            width: 200px;
+            text-align: center;
+            max-width: 450px;
             // border-radius: 5px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
             cursor: pointer;
@@ -36,4 +37,37 @@
             width: 100%;
         }
     }
+}
+@media (min-width:768px) and (max-width     : 1199.98px) {
+    .itemMonitoring{
+        .itemMonitoringLeft{
+            flex: 1.5;
+            .itemMonitoringTitle{
+                font-size: 50px;
+            }
+        }
+        .itemMonitoringRight{
+            flex: 2;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .itemMonitoring{
+        height: 100%;
+        flex-flow: column-reverse;
+        .itemMonitoringLeft{
+            text-align: center;
+            .itemMonitoringTitle{
+                font-size: 40px;
+            }
+            .itemMonitoringBtn{
+                margin: auto;
+            }
+        }
+        .itemMonitoringRight{
+            
+        }
+    }
+
 }

@@ -1,34 +1,134 @@
-.header{
+.headerDrawer {
+
+    .headerLogoDrawer {
+        border-bottom: 5px solid rgb(68, 185, 39);
+        border-radius: 40px;
+        width: 50px;
+        margin: auto;
+
+        img {
+            width: 50px;
+        }
+    }
+
+    .headerMenuDrawer {
+        border-top: 1px solid #e2d0d0;
+        padding: 20px 0;
+
+        .headerMenuDrawerItem {
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #e2d0d0;
+            }
+        }
+
+    }
+
+    .headerAccountDrawer {
+        .UserAuthProfile {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2d0d0;
+            padding: 10px 0;
+
+            .AuthProfileLogo {
+                width: 60px;
+                height: 60px;
+                border-radius: 30px;
+
+                img {
+                    width: 60px;
+                }
+            }
+
+            .AuthProfileName {
+                padding-left: 20px;
+                font-size: 18px;
+                font-weight: 600;
+
+                p {
+                    margin: 0;
+                }
+            }
+        }
+
+        .UserAuthContent {
+            padding: 20px 0;
+            .headerAccountDrawerItem {
+                padding: 20px;
+                font-size: 18px;
+                border-radius: 10px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #e2d0d0;
+                }
+            }
+        }
+    }
+    .headerDrawerFooter{
+        padding: 20px 0;
+        border-top: 1px solid #e2d0d0;
+        .headerAccountDrawerItem {
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #e2d0d0;
+            }
+        }
+    }
+}
+
+.header {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
-    border-bottom: 0.5px solid #e2d0d0;
-    padding: 25px 50px 10px 50px;
+    // border-bottom: 0.5px solid #e2d0d0;
+    padding: 20px 50px 20px 50px;
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     z-index: 10;
-    background-color: #fff;
-    .headerLeft{
+    background-color: #f0eeee;
+
+    .headerMenuResp {
+        flex: 1;
+        font-size: 25px;
+        display: none;
+    }
+
+    .headerLeft {
+        flex: 1;
         display: flex;
         justify-content: left;
         align-items: center;
-        .headerName{
+
+        .headerName {
             font-size: 30px;
             font-weight: bold;
             margin: 0;
             color: rgb(68, 185, 39);
         }
-        .headerLogo{
+
+        .headerLogo {
             border-bottom: 5px solid rgb(68, 185, 39);
             border-radius: 40px;
-            img{
+
+            img {
                 width: 50px;
             }
         }
-        .headerMenu{
-            a{
+
+        .headerMenu {
+            a {
                 padding: 0 10px;
                 color: #222222;
                 font-weight: 600;
@@ -36,87 +136,130 @@
             }
         }
     }
-    .headerCenter{
-        .headerSearch{
-            margin-left: 20px;
+
+    .headerCenter {
+        flex: 1;
+
+        .headerSearch {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid rgb(229, 239, 227);
+            border: 2px solid rgb(150, 153, 150);
             width: 350px;
             height: 40px;
-            padding:10px 10px;
+            padding: 10px 10px;
             border-radius: 20px;
-            form{
+
+            &:hover {
+                box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+            }
+
+            form {
                 width: 100%;
             }
-            input{
+
+            input {
                 outline: none;
                 border: none;
                 height: 100%;
                 width: 90%;
+                background-color: transparent;
             }
-            .headerSearchLogo{
 
-            }
+            .headerSearchLogo {}
         }
     }
-    .headerRight{
+
+    .headerRight {
+        flex: 1;
         display: flex;
         justify-content: right;
         align-items: center;
-        .headerAuth{
+
+        .headerAuth {
             background-color: #d6942a;
             border-radius: 20px;
             padding: 2px 30px;
             font-size: 16px;
             display: flex;
             align-items: center;
-            p{
+
+            p {
                 margin-bottom: 2px;
             }
+
             cursor: pointer;
-            &:hover{
-                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            };
+
+            &:hover {
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            }
+
+            ;
             color: #fff;
             font-weight: 600;
         }
-        .headerUser{
+
+        .headerUser {
             display: flex;
             justify-content: right;
             align-items: center;
-            .headerUserIcon{
+            .headerUserResp{
+                display: none;
+            }
+            .headerUserIcon {
                 font-size: 25px;
                 padding-right: 15px;
                 position: relative;
                 cursor: pointer;
-                .headerUserCourse{
+
+                .headerUserCourse {
                     position: absolute;
                     width: 380px;
                     top: 40px;
                     padding: 10px;
                     background-color: #fff;
-                    right:0;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    right: 0;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
                     border-radius: 10px;
-                    .userCourseHeader{
-                        padding: 20px 10px ;
+
+                    .userCourseHeader {
+                        padding: 20px 10px;
                         font-weight: 600;
-                        &:hover{
+
+                        &:hover {
                             color: #c2b9b9;
                         }
                     }
-                    .userCourseContent{
-                        .userCourseItem{
+
+                    .userCourseContent {
+                        max-height: 400px;
+                        overflow: auto;
+
+                        &::-webkit-scrollbar {
+                            width: 5px;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background: transparent !important;
+
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            background: #bbbbbb;
+                            border-radius: 10px;
+                        }
+
+                        .userCourseItem {
                             display: flex;
                             padding: 10px;
                             cursor: pointer;
-                            &:hover{
+
+                            &:hover {
                                 background-color: #edeaea;
                                 border-radius: 10px;
                             }
-                            .CourseItemImg{
+
+                            .CourseItemImg {
                                 flex: 1;
                                 height: 70px;
                                 background-position: top center;
@@ -124,20 +267,28 @@
                                 background-size: cover;
                                 border-radius: 10px;
                             }
-                            .CourseItemTitle{
+
+                            .CourseItemTitle {
                                 flex: 2;
                                 font-size: 16px;
-                                display: flex;
-                                align-items: center;
+                                // display: flex;
+                                // align-items: center;
+                                line-height: 32px;
                                 padding-left: 10px;
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 2;
+                                overflow: hidden;
                             }
                         }
                     }
                 }
             }
-            .headerUserLogo{
+
+            .headerUserLogo {
                 position: relative;
-                .AuthProfileLogo{
+
+                .AuthProfileLogo {
                     border-radius: 20px;
                     border: 1px solid #c2b9b9;
                     width: 40px;
@@ -148,46 +299,58 @@
                     align-items: center;
                     overflow: hidden;
                     cursor: pointer;
-                    img{
+
+                    img {
                         width: 40px;
                     }
                 }
-                .headerUserAuth{
+
+                .headerUserAuth {
                     position: absolute;
-                    width: 230px;
+                    width: 300px;
                     top: 40px;
                     padding: 10px 20px;
                     background-color: #fff;
-                    right:0;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    right: 0;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
                     border-radius: 10px;
-                    .UserAuthProfile{
+
+                    .UserAuthProfile {
                         display: flex;
                         align-items: center;
                         border-bottom: 1px solid #e2d0d0;
                         padding: 10px 0;
-                        .AuthProfileLogo{
+
+                        .AuthProfileLogo {
                             width: 60px;
                             height: 60px;
                             border-radius: 30px;
-                            img{
+
+                            img {
                                 width: 60px;
                             }
                         }
-                        .AuthProfileName{
+
+                        .AuthProfileName {
                             padding-left: 20px;
                             font-size: 18px;
                             font-weight: 600;
+
+                            p {
+                                margin: 0;
+                            }
                         }
                     }
-                    .UserAuthContent{
-                        p{
+
+                    .UserAuthContent {
+                        p {
                             padding: 10px 0;
                             margin: 0;
                             font-weight: 600;
                             cursor: pointer;
                             font-size: 16px;
-                            &:hover{
+
+                            &:hover {
                                 color: #c2b9b9;
                             }
                         }
@@ -196,4 +359,44 @@
             }
         }
     }
+}
+
+@media (min-width:768px) and (max-width: 1199.98px) {
+    .header {
+        .headerLeft {
+            display: none;
+        }
+
+        .headerMenuResp {
+            display: block;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .header {
+        .headerLeft {
+            display: none;
+        }
+        
+        .headerMenuResp {
+            display: block;
+        }
+        .headerRight{
+            .headerUser{
+                .headerUserResp{
+                    display: block;
+                    font-size: 25px;
+                }
+                .headerUserIcon{
+                    display: none;
+                }
+                .headerUserLogo{
+                    display: none;
+                }
+            }
+
+        }
+    }
+
 }

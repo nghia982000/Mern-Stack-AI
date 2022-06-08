@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import LogoAD from '../../Assets/img/logoUser.png'
+import Comment from './comment'
 
 const ItemComment = ({ videoId, createComment, getComment, selectListComment }) => {
     const [action, setAction] = useState(false)
@@ -19,24 +20,24 @@ const ItemComment = ({ videoId, createComment, getComment, selectListComment }) 
             getComment({ videoId })
         }
     }, [videoId])
-    const formatDatetime=(Datetime)=>{
-        var date = new Date(Datetime)
-        return (`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`)
-      }
+    
+    const report=(id)=>{
+        console.log(id)
+    }
     return (
         <div className='ItemComment'>
-            <h1>Comment</h1>
+            <h1>Bình luận</h1>
             <div className="inpComment">
                 <div className="inpCommentAvatar">
                     <img src={LogoAD} alt="" />
                 </div>
                 <form action="" className='formInp' onSubmit={(e) => onSubmit(e)}>
-                    <input type="text" ref={content} onFocus={() => setAction(true)} placeholder='Comment here ...' />
+                    <input type="text" ref={content} onFocus={() => setAction(true)} placeholder='Viết bình luận tại đây' />
                     {
                         action && (
                             <div className="btnComment">
-                                <span onClick={() => setAction(false)}>Cancel</span>
-                                <button type='submit'>Submit</button>
+                                <span onClick={() => setAction(false)}>Hủy</span>
+                                <button type='submit'>Bình luận</button>
                             </div>
                         )
                     }
@@ -46,24 +47,7 @@ const ItemComment = ({ videoId, createComment, getComment, selectListComment }) 
                 {
                     selectListComment.map((item, index) => {
                         return (
-                            <div className="itemComment" key={index}>
-                                <div className="itemCommentAvatar">
-                                    <img src={LogoAD} alt="" />
-                                </div>
-                                <div className="itemCommentContainer">
-                                    <div className="itemCommentContent">
-                                        <h3>{item.name}</h3>
-                                        <p>{item.content}</p>
-                                    </div>
-                                    <div className="itemCommentAction">
-                                        {
-                                            formatDatetime(item.createdAt)
-                                        }
-                                        {/* <p>Thích - </p>
-                                        <p>Trả lời</p> */}
-                                    </div>
-                                </div>
-                            </div>
+                            <Comment item={item} key={index} LogoAD={LogoAD}/>
                         )
                     })
                 }

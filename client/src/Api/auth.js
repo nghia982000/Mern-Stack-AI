@@ -8,3 +8,5 @@ export const fetchRegister = (payload) => axios.post(`${URL}/auth/register`,payl
 export const fetchCheckLogin = () => axios.get(`${URL}/auth/checkLogin`)
 export const getAccount = () => axios.get(`${URL}/auth/getAccount`)
 export const deleteAccount = (id) => axios.delete(`${URL}/auth/deleteAccount/${id}`)
+export const changePassword = (payload) => axios.post(`${URL}/auth/changePassword`,payload)
+export const detailAccount = (id) => axios.get(`${URL}/auth/detailAccount/${id}`)

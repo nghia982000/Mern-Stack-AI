@@ -33,6 +33,11 @@
                 margin-top: 30px;
             }
             .itemVideoCourse{
+                padding: 10px;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgba(0,0,0,0.05);
+                }
                 span{
                     padding-right: 10px;
                 }
@@ -75,6 +80,30 @@
                     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
                 }
             }
+        }
+    }
+}
+@media (min-width:768px) and (max-width : 1199.98px) {
+    .detail{
+        flex-flow: column-reverse;
+        padding: 0 50px;
+        .detailLeft{
+    
+        }
+        .detailRight{
+            padding: 50px 0 0 0;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .detail{
+        flex-flow: column-reverse;
+        .detailLeft{
+    
+        }
+        .detailRight{
+            padding: 50px 0 0 0;
         }
     }
 }

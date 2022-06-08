@@ -17,21 +17,11 @@ import { compose } from 'redux'
 import {
     selectAuthLoading,
 } from '../Store/Selectors/auth'
-import Monitoring from '../Pages/Monitoring'
 
 const Layout = ({ checkLoginRequest, selectAuthLoading }) => {
     useEffect(() => {
         checkLoginRequest()
     }, [])
-    // useEffect(() => {
-    //     if (!selectIsAuthenticated) {
-    //             window.location.href = '/login'
-    //         }
-    // }, [selectIsAuthenticated])
-    // // if (!selectIsAuthenticated) {
-    // //     window.location.href = '/login'
-    // // }
-    // console.log(selectIsAuthenticated)
     return (
         <>
             <Header />
@@ -42,7 +32,6 @@ const Layout = ({ checkLoginRequest, selectAuthLoading }) => {
                     <Route path="/myCourse" element={<MyCourse />} />
                     <Route path="/detail/:id" element={<Detail />} />
                     <Route path="/learning/:id" element={<Learning />} />
-                    <Route path="/monitoring" element={<Monitoring />} />
                     <Route path="/account" element={<Account />} />
                 </Routes>
             </div>

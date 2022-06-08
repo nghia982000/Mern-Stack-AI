@@ -13,13 +13,9 @@ const ExerciseSchema = new Schema({
     content: {
         type: String,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
     course: {
         type:Schema.Types.ObjectId,
         ref:'courses'
     }
-})
+},{timestamps:true})
 module.exports = mongoose.model('exercises', ExerciseSchema)

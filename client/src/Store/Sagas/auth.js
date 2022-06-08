@@ -5,6 +5,8 @@ import {
     CHECKLOGINREQUEST,
     GET_ACCOUNT,
     DELETE_ACCOUNT,
+    CHANGE_PASSWORD,
+    DETAIL_ACCOUNT
 } from '../Constants/auth'
 import {
     checkLoginFailure,
@@ -15,34 +17,34 @@ import {
 import * as apiAuth from '../../Api/auth'
 import setAuthToken from '../../Api/until'
 
-function* fetchLoginSaga(action) {
+function* fetchLoginSaga({ payload, resolve }) {
     try {
-        const response = yield call(apiAuth.fetchLogin, action.payload)
+        const response = yield call(apiAuth.fetchLogin, payload)
         console.log(response)
         if (response.data.success) {
             sessionStorage.setItem('token',response.data.accessToken)
             yield put(checkLoginSuccess(response.data.user))
-            // if(response.data.role==='manager'){
-            //     window.location.href='/admin/course'
-            // }else{
-            //     window.location.href='/'
-            // }
         }
 
     } catch (err) {
         console.error(err)
-        if(err.response){
-            console.log(err.response.data)
-            alert(err.response.data.message)
-        }
-        else{
-            console.log({success:false,message:err.message})
-            alert(err.message)
-        }
+        resolve(err.response.data)
     }
 }
 export function* sagaLogin() {
     yield takeLatest(LOGIN, fetchLoginSaga)
+}
+function* fetchDetailAccountSaga({ payload, resolve }) {
+    try {
+        const response = yield call(apiAuth.detailAccount, payload)
+        resolve(response.data)
+    } catch (err) {
+        console.error(err)
+        resolve(err.response.data)
+    }
+}
+export function* sagaDetailAccount() {
+    yield takeLatest(DETAIL_ACCOUNT, fetchDetailAccountSaga)
 }
 
 function* fetchRegisterSaga({ payload, resolve }) {
@@ -50,25 +52,28 @@ function* fetchRegisterSaga({ payload, resolve }) {
         const response = yield call(apiAuth.fetchRegister,payload)
         // console.log(response)
         resolve(response.data)
-        // if (response.data.success) {
-        //     window.location.href='/login'
-        //     alert('Account successfully created')
-        // }
 
     } catch (err) {
         console.error(err)
-        if(err.response){
-            console.log(err.response.data)
-            alert(err.response.data.message)
-        }
-        else{
-            console.log({success:false,message:err.message})
-            alert(err.message)
-        }
+        resolve(err.response.data)
     }
 }
 export function* sagaRegister() {
     yield takeLatest(REGISTER, fetchRegisterSaga)
+}
+function* fetchChangePasswordSaga({ payload, resolve }) {
+    try {
+        const response = yield call(apiAuth.changePassword,payload)
+        resolve(response.data)
+
+    } catch (err) {
+        console.error(err)
+        resolve(err.response.data)
+        
+    }
+}
+export function* sagaChangePassword() {
+    yield takeLatest(CHANGE_PASSWORD, fetchChangePasswordSaga)
 }
 
 function* fetchCheckLoginSaga() {

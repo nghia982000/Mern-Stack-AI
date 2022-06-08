@@ -12,10 +12,10 @@ import {
 } from '../Actions/video'
 import * as apiVideo from '../../Api/video'
 
-function* fetchCreateVideoSaga(action) {
+function* fetchCreateVideoSaga({payload,resolve}) {
     try {
-        const response = yield call(apiVideo.apiCreateVideo, action.payload)
-        console.log(response)
+        const response = yield call(apiVideo.apiCreateVideo, payload)
+        resolve(response.data)
         yield put(createVideoSuccess(response.data))
     } catch (err) {
         console.error(err)
@@ -72,10 +72,10 @@ function* fetchDeleteVideo(Actions) {
 export function* sagaDeleteVideo() {
     yield takeLatest(DELETE_VIDEO, fetchDeleteVideo)
 }
-function* fetchUpdateVideo(Actions) {
+function* fetchUpdateVideo({payload,resolve}) {
     try {
-        const response = yield call(apiVideo.apiUpdateVideo,Actions.payload)
-        console.log(response)
+        const response = yield call(apiVideo.apiUpdateVideo,payload)
+        resolve(response.data)
         yield put(updateVideoSuccess(response.data.video))
     } catch (err) {
         console.log(err)

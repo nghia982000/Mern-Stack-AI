@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import {
   Table,
   Popconfirm,
-  Space
+  Space,
+  Button
 } from 'antd'
 
 import * as actions from '../../../Store/Actions/comment'
@@ -21,12 +22,12 @@ const Comment = ({selectListCommentAll,getListComment,deleteComment}) => {
       key: '5',
       render: (text, record) => (
         <Space size="middle">
-          <button>Xem bình luận</button>
+          {/* <Button type='primary'>Xem bình luận</Button> */}
           <Popconfirm
             title="Bình luận này sẽ bị xóa vĩnh viễn"
             onConfirm={() => handleDelete(record._id)}
           >
-            <button>Xóa</button>
+            <Button type='primary'>Xóa</Button>
           </Popconfirm>
         </Space>
 

@@ -39,24 +39,26 @@ export function deleteCourse(payload){
         payload
     }
 }
-export function createCourse(payload){
-    return{
-        type: CREATE_COURSE,
-        payload
-    }
-}
+export const createCourse=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: CREATE_COURSE,
+            payload, resolve
+        })
+    )
 export function createCourseSuccess(payload){
     return{
         type: CREATE_COURSE_SUCCESS,
         payload
     }
 }
-export function updateCourseRequest(payload){
-    return{
-        type: UPDATE_COURSE_REQUEST,
-        payload
-    }
-}
+export const updateCourseRequest=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: UPDATE_COURSE_REQUEST,
+            payload, resolve
+        })
+    )
 export function updateCourseSuccess(payload){
     return{
         type: UPDATE_COURSE_SUCCESS,
@@ -93,12 +95,13 @@ export function deleteFavoriteSuccess(payload){
         payload
     }
 }
-export function favoriteCourse(payload){
-    return{
-        type: FAVORITE_COURSE,
-        payload
-    }
-}
+export const favoriteCourse=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: FAVORITE_COURSE,
+            payload, resolve
+        })
+    )
 export function favoriteCourseSuccess(payload){
     return{
         type: FAVORITE_COURSE_SUCCESS,
@@ -116,12 +119,13 @@ export function saveFavorite(payload){
         payload
     }
 }
-export function buyCourseRequest(payload){
-    return{
-        type: BUY_COURSE_REQUEST,
-        payload
-    }
-}
+export const buyCourseRequest=(dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: BUY_COURSE_REQUEST,
+            payload, resolve
+        })
+    )
 export function buyCourseSuccess(payload){
     return{
         type: BUY_COURSE_SUCCESS,
