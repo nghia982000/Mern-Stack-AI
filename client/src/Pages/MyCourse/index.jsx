@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
+import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -12,7 +13,7 @@ const MyCourse = ({selectBoughtCourse }) => {
   return (
     <div className='MyCourse'>
       <div className="myCourseTitle">
-        My Course
+        Khóa học của tôi
       </div>
       <div className="allCourse">
         {
@@ -20,6 +21,9 @@ const MyCourse = ({selectBoughtCourse }) => {
             return (<ItemCourse key={index} type='itemCourse' item={item} />)
           })
         }
+      </div>
+      <div className="advertisement">
+        <GoogleAds slot={9579687915}/>
       </div>
     </div>
   )

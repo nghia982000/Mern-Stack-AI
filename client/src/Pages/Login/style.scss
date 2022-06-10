@@ -1,6 +1,14 @@
-.login{
+.loginBackground {
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.login {
+    background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     width: 900px;
     height: 400px;
     position: absolute;
@@ -9,30 +17,57 @@
     transform: translate(-50%, -50%);
     display: flex;
     padding: 50px;
-    .loginImage{
+    .loginImageCreateResp{
+        display: none;
+    }
+    .loginImage {
         flex: 50%;
         display: flex;
         flex-flow: column;
         justify-content: center;
         align-items: center;
-        .loginImagePic{
+
+        .loginImagePic {
             width: 80%;
         }
-        .loginImageCreate{
 
-        }
+        .loginImageCreate {}
     }
-    .loginForm{
+
+    .loginForm {
         flex: 50%;
-        hr{
+
+        hr {
             margin: 0;
             height: 0px;
             color: black;
         }
-        .loginFormTitle{
+
+        .loginFormTitle {
             font-size: 35px;
             font-weight: bold;
             margin-bottom: 15px;
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    .login {
+        width: 700px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .login {
+        width: 400px;
+        .loginImage {
+            display: none;
+        }
+        .loginForm{
+            .loginImageCreateResp{
+                display: block;
+            }
         }
     }
 }

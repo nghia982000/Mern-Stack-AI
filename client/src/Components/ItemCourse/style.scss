@@ -40,6 +40,10 @@
     .itemCourseTitle {
         font-size: 18px;
         font-weight: 600;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 }
 
@@ -87,6 +91,10 @@
     .itemCourseTitle {
         font-size: 18px;
         font-weight: 600;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 }
 
@@ -103,6 +111,7 @@
         max-width: 46%;
     }
 }
+
 @media (max-width: 500px) {
     .itemCourse {
         flex: 95%;

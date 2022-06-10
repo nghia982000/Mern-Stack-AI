@@ -51,6 +51,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
     const [isPaused, setIsPaused] = useState(false)
     const [remind, setRemind] = useState('')
     const countRef = useRef(null)
+    const [stateRemind, setStateRemind] = useState(false)
     const result = useRef({
         'Leaving': 0,
         'Tired': 0,
@@ -68,14 +69,14 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
         if (arrRemind.current.some((item) => item !== value)) {
             arrRemind.current = []
         }
-        if (arrRemind.current.length % 5 == 0) {
+        // if (arrRemind.current.length == 5 || arrRemind.current.length % 25 == 0) {
+        if (arrRemind.current.length % 5 === 0 ) {
             if (remind !== arrRemind.current[0]) {
                 setRemind(arrRemind.current[0])
             }
         }
         arrRemind.current.push(value)
     }
-    const [stateRemind, setStateRemind] = useState(false)
     useEffect(() => {
         console.log(remind)
         if (remind) {
@@ -87,6 +88,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
                     showNotification('Bạn đang dùng điện thoại hãy tập trung vào công việc', LogoAD, 'Nhắc nhở')
                     break
                 case 'Turn around':
+                    notify('Your title', { body: 'Your message.' })
                     showNotification('Bạn đang không tập trung', LogoAD, 'Nhắc nhở')
                     break
                 case 'Leaving':
@@ -96,6 +98,9 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
             }
         }
     }, [remind])
+    useEffect(()=>{
+        initNotifications({ cooldown: 3000 })
+    },[])
     const loadModel = async () => {
         const model = await tf.loadLayersModel('https://raw.githubusercontent.com/nghia982000/tfjs-model/main/model.json')
         return model
@@ -133,7 +138,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
     }
     const addResult = (value) => {
         result.current[value] = result.current[value] + 1
-        console.log(result.current)
+        // console.log(result.current)
     }
     const detectFrame = async (video, model) => {
         if (!loop.current) {
@@ -152,7 +157,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
             })
 
         let newKq = adjust(kq)
-        console.log(newKq)
+        // console.log(newKq)
         addItemRemind(newKq)
         addResult(newKq)
         setState(newKq)
@@ -246,7 +251,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
                 precent: percent(result.current),
                 time,
                 userId: selectUser._id,
-                role:'monitor'
+                role: 'monitor'
             })
             if (rep.data.success) {
                 setTimer(0)
@@ -327,11 +332,19 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
     const [unit1, setUnit1] = useState(true)
     const info = (point) => {
         const focusWorking = Math.floor(percent(result.current).Working)
+        const focusTired = Math.floor(percent(result.current).Tired)
+        const focusTurnAround = Math.floor(percent(result.current)['Turn around'])
+        const focusUsingPhone = Math.floor(percent(result.current)['Using Phone'])
+        const focusLeaving = Math.floor(percent(result.current).Leaving)
         Modal.info({
             title: 'Kết quả giám sát của bạn',
             content: (
                 <div>
-                    <p>Bạn tập đã trung vào công việc là:{focusWorking}%</p>
+                    <h3>Bạn đã tập trung vào công việc là:{focusWorking}%</h3>
+                    <h3>Bạn sử dụng điện thoại là:{focusUsingPhone}%</h3>
+                    <h3>Bạn đã rời khỏi nơi làm việc là:{focusLeaving}%</h3>
+                    <h3>Bạn đã không chú ý là:{focusTurnAround}%</h3>
+                    <h3>Bạn đã không mệt mỏi là:{focusTired}%</h3>
                     {
                         point && (
                             <p>Bạn được cộng {point} xu vào tài khoản</p>
@@ -409,12 +422,8 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
                                 }}
                                 onChange={handleChange}
                             >
-                                <Option value={60}>1 phút</Option>
-                                <Option value={300}>5 phút</Option>
-                                <Option value={600}>10 phút</Option>
                                 <Option value={900}>15 phút</Option>
                                 <Option value={1200}>20 phút</Option>
-                                <Option value={1500}>25 phút</Option>
                                 <Option value={1800}>30 phút</Option>
                             </Select>
                             {

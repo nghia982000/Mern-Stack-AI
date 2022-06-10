@@ -1,8 +1,15 @@
+.registerBackground {
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
 .register{
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     width: 900px;
-    height: 500px;
+    height: 550px;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -20,6 +27,9 @@
         }
     }
     .registerForm{
+        .registerImageCreateResp{
+            display: none;
+        }
         flex: 50%;
         hr{
             margin: 0;
@@ -30,6 +40,26 @@
             font-size: 35px;
             font-weight: bold;
             margin-bottom: 15px;
+        }
+    }
+}
+@media (max-width: 1000px) {
+    .register {
+        width: 700px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .register {
+        width: 400px;
+        .registerImage {
+            display: none;
+        }
+        .registerForm{
+            .registerImageCreateResp{
+                display: block;
+            }
         }
     }
 }

@@ -8,10 +8,13 @@ import {
   ReadOutlined,
   CommentOutlined,
   BarChartOutlined,
-  HomeOutlined
+  HomeOutlined,
+  UserOutlined,
+  KeyOutlined,
+  LogoutOutlined
 
 } from '@ant-design/icons'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu,Avatar } from 'antd'
 import { Routes, Route, Link, useNavigate } from "react-router-dom"
 import logoAd from '../../Assets/img/logoAD.png'
 import Course from './/Course'
@@ -76,7 +79,7 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
           style={{
             height: '100vh',
           }}>
-          <div className="logo" onClick={() => navigate("/login")}>
+          <div className="logo" onClick={() => navigate("/")}>
             <img src={logoAd} alt='' />
           </div>
           <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} className="SiderMenu"
@@ -96,11 +99,21 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
                 Quản lý comment
               </Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<BarChartOutlined />}>
+            <Menu.Item key="4" icon={<KeyOutlined />}>
+              <Link to="/password">
+                Đổi mật khẩu
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="5" icon={<LogoutOutlined />}>
+              <span>
+                Đăng xuất
+              </span>
+            </Menu.Item>
+            {/* <Menu.Item key="4" icon={<BarChartOutlined />}>
               <Link to="/admin/statistical">
                 Thống kê
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
 
         </Sider>

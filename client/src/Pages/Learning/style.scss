@@ -2,7 +2,9 @@
     display: flex;
     padding-top: 0px;
     margin: 0 -95px -80px -95px;
-
+    .learingResp{
+        display: none;
+    }
     .learingLeft {
         flex: 3;
         // border: 1px solid #222222;
@@ -67,6 +69,9 @@
         padding-left: 10px;
         height: 615px;
         overflow: auto;
+        h2{
+            padding: 20px 0;
+        }
         &::-webkit-scrollbar{
             width: 5px;
         }
@@ -90,10 +95,66 @@
         }
     }
 }
-@media (min-width:768px) and (max-width : 1199.98px) {
+@media (min-width:1000px) and (max-width : 1199.98px) {
+    .learing{
+        margin: 0 -30px -80px -30px;
+        
+    }
+}
+
+@media (max-width: 1000px) {
+    .learing{
+        position: relative;
+        margin: 0 -30px -80px -30px;
+        .learingResp{
+            font-size: 30px;
+            display: block;
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: #bbbbbb;
+            border-radius:25px ;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #504f4f;
+            &:hover{
+                border: 1px solid #222222;
+            }
+        }
+        
+        .learingRight{
+            display: none;
+        }
+        .learingLeft{
+            padding-right: 0;
+            // height: 100%;
+            &::-webkit-scrollbar{
+                width: 0px;
+            }
+        }
+    }
+    .learingDrawerResp{
+        .ant-drawer-body{
+            padding: 10px;
+        }
+        .itemVideoLearing {
+            cursor: pointer;
+            padding: 10px 0;
+            span {
+                padding-right: 10px;
+            }
+
+            display: flex;
+            justify-content: space-between;
+        }
+    }
 
 }
 
-@media (max-width: 767.98px) {
-    
+@media (max-width: 768px){
+    .learing{
+        margin: 0 -10px -80px -10px;
+    }
 }

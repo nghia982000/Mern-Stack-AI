@@ -18,7 +18,7 @@ const payment = async (req, res, next) => {
         }
         if (user.point < course.point) {
             return res.status(400).json({
-                message: 'Không đủ xu',
+                message: 'Không đủ xu tiến hành giám sát để có thêm xu',
                 success: false
             })
         }

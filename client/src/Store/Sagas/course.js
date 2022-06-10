@@ -149,13 +149,13 @@ export function* sagaUpdateCourse() {
 function* fetchFavotiteCourse({ payload, resolve }) {
     try {
         const response = yield call(apiCourse.apiFavoriteCourse,payload)
-        // console.log(response.data.data)
+        resolve(response.data)
         yield put(favoriteCourseSuccess(response.data.data))
     } catch (err) {
         console.log(err)
         if(err.response){
             console.log(err.response.data)
-            resolve(err.response.data.message)
+            resolve(err.response.data)
         }
         else{
             console.log({success:false,message:err.message})
@@ -213,13 +213,13 @@ export function* sagaDeleteFavorite() {
 function* fetchBuyCourse({ payload, resolve }) {
     try {
         const response = yield call(apiCourse.apiBuyCourse,payload)
-        // console.log(response)
+        resolve(response.data)
         yield put(buyCourseSuccess(response.data))
     } catch (err) {
         console.log(err)
         if(err.response){
             console.log(err.response.data)
-            resolve(err.response.data.message)
+            resolve(err.response.data)
         }
         else{
             console.log({success:false,message:err.message})

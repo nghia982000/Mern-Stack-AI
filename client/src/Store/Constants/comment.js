@@ -8,6 +8,7 @@ const DELETE_COMMENT=' delete comment'
 const REPLY_COMMENT='reply comment'
 const REPORT_COMMENT='report comment'
 const GET_LIST_REPLY_COMMENT='get list reply comment'
+const GET_CMT='get cmt'
 export {
     CREATE_COMMENT,
     GET_COMMENT,
@@ -18,5 +19,6 @@ export {
     DELETE_COMMENT,
     REPORT_COMMENT,
     REPLY_COMMENT,
-    GET_LIST_REPLY_COMMENT
+    GET_LIST_REPLY_COMMENT,
+    GET_CMT
 }

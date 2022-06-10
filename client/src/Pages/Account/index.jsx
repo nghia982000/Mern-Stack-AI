@@ -56,8 +56,8 @@ const Account = ({ selectBoughtCourse, selectUser, getListAcctive, selectListAcc
                                                     <FundViewOutlined />
                                                 </div>
                                                 <div className="accountRecentItemContent">
-                                                    <p>Kết quả giám sát:{Math.floor(item.percent.Working)}</p>
-                                                    <p>Thời gian giám sát:{item.time}</p>
+                                                    <p>Kết quả giám sát:{Math.floor(item.precent.Working)}%</p>
+                                                    <p>Thời gian giám sát:{item.time}s</p>
                                                     <p>{formatDatetime(item.createdAt)}</p>
                                                 </div>
                                             </div>

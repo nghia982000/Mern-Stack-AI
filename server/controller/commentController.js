@@ -182,6 +182,27 @@ class CommentController {
             })
         }
     }
+    async getCmt(req, res) {
+        try {
+            const rep=await Comment.findOne({_id:req.params.id})
+            if (!rep) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Comment not found '
+                })
+            }
+            res.json({
+                success: true,
+                data:rep
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
 
 }
 

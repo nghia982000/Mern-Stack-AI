@@ -28,7 +28,7 @@
                 border: none;
                 border-bottom: 1px solid #c2b9b9;
                 height: 40px;
-                width: 600px;
+                width: 500px;
             }
             .btnComment {
                 padding-top: 10px;
@@ -115,6 +115,28 @@
                             color: #de3f0f;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+@media (max-width: 1000px){
+    .ItemComment{
+        .inpComment{
+            .formInp{
+                input{
+                    width: 400px;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 650px){
+    .ItemComment{
+        .inpComment{
+            .formInp{
+                input{
+                    width: 200px;
                 }
             }
         }

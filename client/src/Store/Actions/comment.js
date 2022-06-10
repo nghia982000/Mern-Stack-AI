@@ -8,9 +8,17 @@ import {
     DELETE_COMMENT,
     REPORT_COMMENT,
     REPLY_COMMENT,
-    GET_LIST_REPLY_COMMENT
+    GET_LIST_REPLY_COMMENT,
+    GET_CMT
 } from '../Constants/comment'
 
+export const getCmt = (dispatch) => (payload) =>
+    new Promise((resolve) =>
+        dispatch({
+            type: GET_CMT,
+            payload, resolve
+        })
+    )
 export const reportComment = (dispatch) => (payload) =>
     new Promise((resolve) =>
         dispatch({

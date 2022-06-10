@@ -42,6 +42,7 @@ export default function* () {
     Comment.sagaReportComment(),
     Comment.sagaGetListReplycomment(),
     Comment.sagaReplyComment(),
+    Comment.sagaGetCmt(),
 
     Exercise.sagaCreateExercise(),
     Exercise.sagaUpdateExercise(),

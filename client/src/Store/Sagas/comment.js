@@ -6,7 +6,8 @@ import {
     DELETE_COMMENT,
     REPORT_COMMENT,
     REPLY_COMMENT,
-    GET_LIST_REPLY_COMMENT
+    GET_LIST_REPLY_COMMENT,
+    GET_CMT
 } from '../Constants/comment'
 import {
     saveComment,
@@ -75,6 +76,25 @@ export function* sagaReplyComment() {
     yield takeLatest(REPLY_COMMENT, fetchReplyComment)
 }
 
+function* fetchGetCmt({payload,resolve}) {
+    try {
+        const response = yield call(apiComment.getCmt, payload)
+        resolve(response.data)
+    } catch (err) {
+        console.error(err)
+        if (err.response) {
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else {
+            console.log({ success: false, message: err.message })
+            alert(err.message)
+        }
+    }
+}
+export function* sagaGetCmt() {
+    yield takeLatest(GET_CMT, fetchGetCmt)
+}
 function* fetchGetComment(action) {
     try {
         const response = yield call(apiComment.getComment, action.payload)

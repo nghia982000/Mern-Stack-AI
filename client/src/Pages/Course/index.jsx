@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
 import { Radio, Space } from 'antd'
+import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -18,13 +19,13 @@ const Course = ({ listCourse, dataCourse, selectListField, selectField }) => {
       <div className="catagoryCourse">
         <Radio.Group defaultValue={0} buttonStyle="solid" size="large">
           <Space wrap size="middle">
-            <Radio.Button style={{borderRadius:'10px'}} value={0} key={0} onClick={() => { listCourse() }}>
+            <Radio.Button style={{ borderRadius: '10px' }} value={0} key={0} onClick={() => { listCourse() }}>
               Tất cả
             </Radio.Button>
             {
               selectListField.map((item, index) => {
                 return (
-                  <Radio.Button style={{borderRadius:'10px'}} value={index+1} key={index+1} onClick={() => { selectField({ field: item }) }}>
+                  <Radio.Button style={{ borderRadius: '10px' }} value={index + 1} key={index + 1} onClick={() => { selectField({ field: item }) }}>
                     {item}
                   </Radio.Button>
                 )
@@ -39,6 +40,9 @@ const Course = ({ listCourse, dataCourse, selectListField, selectField }) => {
             return (<ItemCourse key={index} type='itemCourse' item={item} />)
           })
         }
+      </div>
+      <div className="advertisement">
+        <GoogleAds slot={9579687915}/>
       </div>
     </div>
   )

@@ -94,7 +94,6 @@ const mapStateToProps = createStructuredSelector({
 })
 const mapDispatchToProps = (dispatch) => ({
   getAccount: () => dispatch(actions.getAccount()),
- 
   deleteAccount: (payload) => dispatch(actions.deleteAccount(payload)),
   detailAccount: (payload) => actions.detailAccount(dispatch)(payload)
 })

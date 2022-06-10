@@ -7,9 +7,10 @@ import {
   Modal,
   Button,
   Radio,
-  Space
+  Space,
+  Drawer
 } from 'antd'
-import { PlayCircleOutlined, FileTextOutlined, FileDoneOutlined } from '@ant-design/icons'
+import { PlayCircleOutlined, FileTextOutlined, FileDoneOutlined, BarsOutlined } from '@ant-design/icons'
 import imgCourse from '../../Assets/img/desk.png'
 import { useParams } from 'react-router-dom'
 import ItemComment from '../../Components/ItemComment'
@@ -106,7 +107,7 @@ const Learning = ({
       id: question.id,
       data: {
         listAnswer: data,
-        role:'quizzes'
+        role: 'quizzes'
       }
     })
     if (response) {
@@ -166,8 +167,102 @@ const Learning = ({
     clearInterval(countRef.current)
     setTimer(0)
   }
+  const [visible, setVisible] = useState(false);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
   return (
     <div className='learing'>
+      <div className="learingResp" onClick={showDrawer}>
+        <BarsOutlined />
+      </div>
+      <Drawer className='learingDrawerResp' title={selectDetailCourse.title} placement="left" closable={false} onClose={onClose} visible={visible}>
+        {
+          lessons.length === 0 ? (
+            <div>Bài học chưa được cập nhật</div>
+          ) : (
+            <Collapse accordion >
+              {
+                lessons.map((item, index) => {
+                  return (
+                    <Panel header={` Chương ${item.lecture}`} key={index}>
+                      {
+                        item.lesson.map((lesson, indexArr) => {
+                          return (
+                            lesson.role === 'exercise' ? (
+                              <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                                setExercise({
+                                  ...exercise,
+                                  title: lesson.title,
+                                  content: lesson.content,
+                                  id: lesson._id
+                                })
+                                setRole('exercise')
+                                setVisible(false)
+                              }
+                              } >
+                                <span>
+                                  <FileTextOutlined />
+                                  {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                </span>
+                              </div>
+
+                            ) : lesson.role === 'video' ? (
+                              <div key={indexArr} className="itemVideoLearing" style={{ display: 'block' }} onClick={() => {
+                                setVideo({
+                                  ...video,
+                                  url: lesson.url,
+                                  title: lesson.title,
+                                  id: lesson._id
+                                })
+                                setRole('video')
+                                setVisible(false)
+                              }
+                              } >
+                                <div>
+                                  {`Bài ${indexArr + 1}: ${lesson.title}`}
+                                </div>
+                                <div>
+                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                                  {formatTime(lesson.duration)}
+                                </div>
+                              </div>
+                            ) : (
+                              <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                                getListTestResult(lesson._id)
+                                setQuestion({
+                                  ...question,
+                                  title: lesson.title,
+                                  id: lesson._id
+                                })
+                                setRole('quizzes')
+                                setStateQuizzes(false)
+                                setVisible(false)
+                              }
+                              } >
+                                <span>
+                                  <FileDoneOutlined />
+                                  {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                </span>
+                              </div>
+                            )
+                          )
+                        })
+                      }
+                    </Panel>
+                  )
+                })
+              }
+            </Collapse>
+
+          )
+        }
+      </Drawer>
       {/* {
         onclose && <ItemDraggable onclose={setOnclose} endVideo={videoEnd} handleEndvideo={SetVideoEnd} />
       } */}
@@ -176,7 +271,7 @@ const Learning = ({
           role === 'video' ? (
             <>
               <div className="videoFrameTest">
-                <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url}  controls>
+                <video className="learingLeftVideo" style={{ backgroundImage: `url(${selectDetailCourse.image})` }} src={video.url} controls>
                 </video>
                 {/* <button className='testNoti'>test</button> */}
               </div>
@@ -194,7 +289,7 @@ const Learning = ({
           ) : (
             role === 'exercise' ? (
               <div className="learingLeftExercise">
-                <div style={{width:'80%', margin: '0 auto'}}>
+                <div style={{ width: '80%', margin: '0 auto' }}>
                   <div className="learingLeftExerciseTitle">
                     <h1>{exercise.title}</h1>
                   </div>
@@ -218,7 +313,7 @@ const Learning = ({
                     (selectListTestResult.length !== 0 && !stateQuizzes) ? (
                       <div className="learingLeftQuestionHistory">
                         <h2>Kết quả lần làm gần đây:</h2>
-                         
+
                         {
                           selectListTestResult.reverse().map((item, index) => {
                             const numberTrueHistory = item.testResult.filter((item) => item.check)
@@ -301,76 +396,86 @@ const Learning = ({
       <div className="learingRight">
         <h2>{selectDetailCourse.title}</h2>
         {/* <h2>Nội dung khóa học</h2> */}
-        <Collapse accordion>
-          {
-            lessons.map((item, index) => {
-              return (
-                <Panel header={` Chương ${item.lecture}`} key={index}>
-                  {
-                    item.lesson.map((lesson, indexArr) => {
-                      return (
-                        lesson.role === 'exercise' ? (
-                          <div key={indexArr} className="itemVideoLearing" onClick={() => {
-                            setExercise({
-                              ...exercise,
-                              title: lesson.title,
-                              content: lesson.content,
-                              id: lesson._id
-                            })
-                            setRole('exercise')
-                          }
-                          } >
-                            <span>
-                              <FileTextOutlined />
-                              {` Bài ${indexArr + 1}: ${lesson.title}`}
-                            </span>
-                          </div>
-
-                        ) : lesson.role === 'video' ? (
-                          <div key={indexArr} className="itemVideoLearing" style={{display:'block'}} onClick={() => {
-                            setVideo({
-                              ...video,
-                              url: lesson.url,
-                              title: lesson.title,
-                              id: lesson._id
-                            })
-                            setRole('video')
-                          }
-                          } >
-                            <div>
-                              {`Bài ${indexArr + 1}: ${lesson.title}`}
-                            </div>
-                            <div>
-                              <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
-                              {formatTime(lesson.duration)}
+        {
+          lessons.length === 0 ? (
+            <div>Bài học chưa được cập nhật</div>
+          ) : (
+            <Collapse accordion >
+              {
+                lessons.map((item, index) => {
+                  return (
+                    <Panel header={` Chương ${item.lecture}`} key={index}>
+                      {
+                        item.lesson.map((lesson, indexArr) => {
+                          return (
+                            lesson.role === 'exercise' ? (
+                              <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                                setExercise({
+                                  ...exercise,
+                                  title: lesson.title,
+                                  content: lesson.content,
+                                  id: lesson._id
+                                })
+                                setRole('exercise')
+                                setVisible(false)
+                              }
+                              } >
+                                <span>
+                                  <FileTextOutlined />
+                                  {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                </span>
                               </div>
-                          </div>
-                        ) : (
-                          <div key={indexArr} className="itemVideoLearing" onClick={() => {
-                            getListTestResult(lesson._id)
-                            setQuestion({
-                              ...question,
-                              title: lesson.title,
-                              id: lesson._id
-                            })
-                            setRole('quizzes')
-                            setStateQuizzes(false)
-                          }
-                          } >
-                            <span>
-                              <FileDoneOutlined />
-                              {` Bài ${indexArr + 1}: ${lesson.title}`}
-                            </span>
-                          </div>
-                        )
-                      )
-                    })
-                  }
-                </Panel>
-              )
-            })
-          }
-        </Collapse>
+
+                            ) : lesson.role === 'video' ? (
+                              <div key={indexArr} className="itemVideoLearing" style={{ display: 'block' }} onClick={() => {
+                                setVideo({
+                                  ...video,
+                                  url: lesson.url,
+                                  title: lesson.title,
+                                  id: lesson._id
+                                })
+                                setRole('video')
+                                setVisible(false)
+                              }
+                              } >
+                                <div>
+                                  {`Bài ${indexArr + 1}: ${lesson.title}`}
+                                </div>
+                                <div>
+                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                                  {formatTime(lesson.duration)}
+                                </div>
+                              </div>
+                            ) : (
+                              <div key={indexArr} className="itemVideoLearing" onClick={() => {
+                                getListTestResult(lesson._id)
+                                setQuestion({
+                                  ...question,
+                                  title: lesson.title,
+                                  id: lesson._id
+                                })
+                                setRole('quizzes')
+                                setStateQuizzes(false)
+                                setVisible(false)
+                              }
+                              } >
+                                <span>
+                                  <FileDoneOutlined />
+                                  {` Bài ${indexArr + 1}: ${lesson.title}`}
+                                </span>
+                              </div>
+                            )
+                          )
+                        })
+                      }
+                    </Panel>
+                  )
+                })
+              }
+            </Collapse>
+
+          )
+        }
       </div>
       {/* <Modal title="Thông báo" visible={isModalVisible} okText='Giám sát' onOk={handleOk} cancelText='Không' onCancel={handleCancel}>
         <p>Bạn có muốn giám sát quá trình xem video này không</p>

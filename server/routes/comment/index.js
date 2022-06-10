@@ -11,6 +11,7 @@ router.delete('/deleteComment/:id',verifyToken,decentralization, commentControll
 router.get('/reportComment/:id',verifyToken, commentController.reportComment)
 router.post('/replyComment/:id',verifyToken, commentController.replyComment)
 router.get('/getListReplyComment/:id',verifyToken, commentController.getListReplyComment)
+router.get('/getCmt/:id',verifyToken, commentController.getCmt)
 
 
 module.exports = router

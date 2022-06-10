@@ -20,7 +20,12 @@ class VideoExerciseController {
         const id = req.params.id
         try {
             const data = await VideoExercise.find({ course: id })
-            res.json({ success: true, data })
+            res.json({ 
+                success: true, 
+                data: data.sort((a,b)=>{
+                    return a.lecture-b.lecture
+                })
+            })
         } catch (error) {
             console.log(error)
             res.status(500).json({

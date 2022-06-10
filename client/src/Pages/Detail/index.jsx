@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useLayoutEffect,useMemo } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useMemo } from 'react'
 import './style.scss'
 import { Collapse, notification } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
 import { CheckOutlined, PlayCircleOutlined, FileTextOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
+import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import * as actionsVideo from '../../Store/Actions/video'
@@ -98,7 +99,7 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
                 {
                   lessons.map((item, index) => {
                     return (
-                      <Panel  header={`Chương ${item.lecture}`} key={index}>
+                      <Panel header={`Chương ${item.lecture}`} key={index}>
                         {
                           item.lesson.map((lesson, indexArr) => {
                             return (
@@ -112,11 +113,12 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
 
                               ) : lesson.role === 'video' ? (
                                 <div key={indexArr} className="itemVideoCourse" >
-                                  <span>
+                                  <span style={{flex:'4'}}>
                                     <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
                                     {` Bài ${indexArr + 1}: ${lesson.title}`}
                                   </span>
-                                  <span>{formatTime(lesson.duration)}</span>
+                                  <span style={{flex:'2',textAlign:'right'}}
+                                  >{formatTime(lesson.duration)}</span>
                                 </div>
                               ) : (
                                 <div key={indexArr} className="itemVideoCourse" >
@@ -137,6 +139,9 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             )
           }
         </div>
+        <div className="advertisement">
+          <GoogleAds slot={9579687915} />
+        </div>
       </div>
       <div className="detailRight">
         <div className="detailRightImg" style={{ backgroundImage: `url(${selectDetailCourse.image})` }}>
@@ -152,8 +157,13 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             !btnFavorite && (
               <div className="detailRightActionBtn" onClick={async () => {
                 const rep = await favoriteCourse({ id })
-                if (rep) {
-                  noti(rep)
+                if (!rep.success) {
+                  noti(rep.message)
+                }else{
+                  notification.open({
+                    message: 'Thêm khóa học thành công',
+                    icon: <CheckOutlined style={{ color: "red" }} />,
+                  })
                 }
               }}>
                 Thêm vào yêu thích
@@ -171,8 +181,13 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             !btnBuyCourse && (
               <div className="detailRightActionBtn" onClick={async () => {
                 const rep = await buyCourseRequest({ id })
-                if (rep) {
-                  noti(rep)
+                if (!rep.success) {
+                  noti(rep.message)
+                }else{
+                  notification.open({
+                    message: 'Mua khóa học thành công',
+                    icon: <CheckOutlined style={{ color: "red" }} />,
+                  })
                 }
               }} >
                 Mua khóa học
