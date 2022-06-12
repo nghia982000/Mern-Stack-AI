@@ -29,6 +29,7 @@ export default function* () {
     Course.sagaGetBoughtCourse(),
     Course.sagaSelectField(),
     Course.sagaSearchCourse(),
+    Course.sagaStatistical(),
 
     Video.sagaCreateVideo(),
     Video.sagaGetVideo(),

@@ -20,5 +20,6 @@ router.get('/getFavorite',verifyToken, courseController.getFavorite)
 router.delete('/deleteFavorite/:id',verifyToken, courseController.deleteFavorite)
 
 // router.post('/testUpload', courseController.testUpload)
+router.get('/statistical',verifyToken, courseController.statistical)
 
 module.exports = router

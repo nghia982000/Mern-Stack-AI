@@ -11,7 +11,8 @@ import {
     FAVORITE_COURSE_SUCCESS,
     SAVE_BOUGHT_COURSE,
     BUY_COURSE_SUCCESS,
-    CREATE_COURSE_SUCCESS
+    CREATE_COURSE_SUCCESS,
+    STATISTICAL_SUCCESS
 } from '../Constants/course'
 import {
     CHECKLOGINFAILURE
@@ -69,6 +70,9 @@ export default function courseReducers(state = INIT_STATE, action) {
                 const newCourse = [action.payload,...state.data]
                 console.log(newCourse)
                 draft.data = newCourse
+                break
+            case STATISTICAL_SUCCESS:
+                draft.statistical = action.payload
                 break
             default:
                 return state

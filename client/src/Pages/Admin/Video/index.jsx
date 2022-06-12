@@ -71,6 +71,7 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
             } else {
                 formData.append('url', selectDetailVideo.url)
                 formData.append('duration', selectDetailVideo.duration)
+                formData.append('public_id', selectDetailVideo.public_id)
                 console.log('có url')
             }
             const rep=await updateVideo(formData)

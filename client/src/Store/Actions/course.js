@@ -20,11 +20,24 @@ import {
     SAVE_BOUGHT_COURSE,
     SELECT_FIELD,
     SEARCH_COURSE,
-    CREATE_COURSE_SUCCESS
+    CREATE_COURSE_SUCCESS,
+    STATISTICAL,
+    STATISTICAL_SUCCESS
 } from '../Constants/course'
 export function listCourse(){
     return{
         type: LIST_COURSE
+    }
+}
+export function statistical(){
+    return{
+        type: STATISTICAL
+    }
+}
+export function statisticalSuccess(payload){
+    return{
+        type: STATISTICAL_SUCCESS,
+        payload
     }
 }
 export function saveCourse(payload){

@@ -20,6 +20,8 @@ const GET_BOUGHT_COURSE='get bought course'
 const SAVE_BOUGHT_COURSE='save bought course'
 const SELECT_FIELD='select field'
 const SEARCH_COURSE='search course'
+const STATISTICAL='statistical'
+const STATISTICAL_SUCCESS='statistical success'
 export {
     LIST_COURSE,
     SAVE_COURSE,
@@ -42,5 +44,7 @@ export {
     SAVE_BOUGHT_COURSE,
     SELECT_FIELD,
     SEARCH_COURSE,
-    CREATE_COURSE_SUCCESS
+    CREATE_COURSE_SUCCESS,
+    STATISTICAL,
+    STATISTICAL_SUCCESS
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect ,useState} from 'react'
 import {
   Table,
   Popconfirm,
@@ -14,7 +14,18 @@ import { compose } from 'redux'
 import { selectListCommentAll } from '../../../Store/Selectors/comment'
 
 const Comment = ({ selectListCommentAll, getListComment, deleteComment, getCmt }) => {
+  const [page, setPage] = useState(1)
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current)
+}
   const columns = [
+    {
+      title: 'STT',
+      dataIndex: '',
+      key: '0',
+      width:'100px',
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
+    },
     { title: 'Tên tài khoản', dataIndex: 'name', key: '1', ellipsis: true },
     { title: 'Nội dung', dataIndex: 'content', key: '2', ellipsis: true },
     {
@@ -83,6 +94,10 @@ const Comment = ({ selectListCommentAll, getListComment, deleteComment, getCmt }
         columns={columns}
         dataSource={selectListCommentAll}
         rowKey={record => record._id}
+        onChange={handleTableChange}
+        scroll={{
+          y: 400,
+        }}
       />
     </div>
   )

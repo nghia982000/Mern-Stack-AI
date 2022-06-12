@@ -16,10 +16,21 @@ import { selectListAccount, selectDetailAccount } from '../../../Store/Selectors
 
 
 const Account = ({ selectListAccount, deleteAccount, getAccount, detailAccount, selectDetailAccount }) => {
+  const [page, setPage] = useState(1)
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current)
+}
   const columns = [
+    {
+      title: 'STT',
+      dataIndex: '',
+      key: '0',
+      width:'100px',
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
+    },
     { title: 'Tên người dùng', dataIndex: 'nameAccount', key: '1', ellipsis: true },
     { title: 'Email', dataIndex: 'email', key: '2', ellipsis: true },
-    { title: 'Điểm', dataIndex: 'point', key: '3', ellipsis: true },
+    { title: 'Điểm', dataIndex: 'point', key: '3', ellipsis: true ,width:'100px'},
     {
       title: 'Thao tác',
       dataIndex: '',
@@ -40,7 +51,7 @@ const Account = ({ selectListAccount, deleteAccount, getAccount, detailAccount, 
   ]
   useEffect(() => {
     getAccount()
-   
+
   }, [])
   const handleDelete = (id) => {
     deleteAccount(id)
@@ -54,19 +65,19 @@ const Account = ({ selectListAccount, deleteAccount, getAccount, detailAccount, 
       title: 'Thông tin tài khoản',
       content: (
         <div>
-          <div style={{ display: 'flex', justifyContent:'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h4>Tên hiển thị:</h4>
             <h4>{detail.nameAccount}</h4>
           </div>
-          <div style={{ display: 'flex', justifyContent:'space-between'  }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h4>Tên đăng nhập:</h4>
             <h4>{detail.username}</h4>
           </div>
-          <div style={{ display: 'flex', justifyContent:'space-between'  }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h4>Email:</h4>
             <h4>{detail.email}</h4>
           </div>
-          <div style={{ display: 'flex', justifyContent:'space-between'  }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h4>Điểm:</h4>
             <h4>{detail.point}</h4>
           </div>
@@ -82,6 +93,10 @@ const Account = ({ selectListAccount, deleteAccount, getAccount, detailAccount, 
         columns={columns}
         dataSource={selectListAccount}
         rowKey={record => record._id}
+        onChange={handleTableChange}
+        scroll={{
+          y: 400,
+        }}
       />
     </div>
   )
@@ -90,7 +105,7 @@ const Account = ({ selectListAccount, deleteAccount, getAccount, detailAccount, 
 const mapStateToProps = createStructuredSelector({
   selectListAccount,
   selectDetailAccount,
-  
+
 })
 const mapDispatchToProps = (dispatch) => ({
   getAccount: () => dispatch(actions.getAccount()),

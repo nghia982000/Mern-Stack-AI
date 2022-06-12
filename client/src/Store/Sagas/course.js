@@ -10,7 +10,8 @@ import {
     BUY_COURSE_REQUEST,
     GET_BOUGHT_COURSE,
     SELECT_FIELD,
-    SEARCH_COURSE
+    SEARCH_COURSE,
+    STATISTICAL
 } from '../Constants/course'
 import {
     saveCourse,
@@ -20,7 +21,8 @@ import {
     favoriteCourseSuccess,
     buyCourseSuccess,
     saveBoughtCourse,
-    createCourseSuccess
+    createCourseSuccess,
+    statisticalSuccess
 } from '../Actions/course'
 import * as apiCourse from '../../Api/course'
 
@@ -251,4 +253,25 @@ function* fetchGetBoughtCourse(Actions) {
 }
 export function* sagaGetBoughtCourse() {
     yield takeLatest(GET_BOUGHT_COURSE, fetchGetBoughtCourse)
+}
+function* fetchStatistical() {
+    try {
+        const response = yield call(apiCourse.apiStatistical)
+        // console.log(response)
+        yield put(statisticalSuccess(response.data.data))
+       
+    } catch (err) {
+        console.log(err)
+        if(err.response){
+            console.log(err.response.data)
+            alert(err.response.data.message)
+        }
+        else{
+            console.log({success:false,message:err.message})
+            alert(err.message)
+        }
+    }
+}
+export function* sagaStatistical() {
+    yield takeLatest(STATISTICAL, fetchStatistical)
 }

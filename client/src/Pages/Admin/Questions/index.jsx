@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import {
   Table,
   Popconfirm,
@@ -17,7 +17,18 @@ import { selectGetListQuestions } from '../../../Store/Selectors/quizzes'
 const Question = ({ selectGetListQuestions, getListQuestion, createStateQuestion, updateStateQuestion, detailQuestion, deleteQuestion }) => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current)
+}
   const columns = [
+    {
+      title: 'STT',
+      dataIndex: '',
+      key: '0',
+      width:'100px',
+      render:(value, item, index) => (page - 1) * 10 + index + 1
+    },
     { title: 'Câu hỏi', dataIndex: 'question', key: '1', ellipsis: true },
     { title: 'Đáp án', dataIndex: 'correctAnswer', key: '2', ellipsis: true },
     {
@@ -70,6 +81,10 @@ const Question = ({ selectGetListQuestions, getListQuestion, createStateQuestion
         dataSource={selectGetListQuestions}
         rowKey={record => record._id}
         style={{ paddingTop: '10px' }}
+        onChange={handleTableChange}
+        scroll={{
+          y: 400,
+        }}
       />
     </div>
   )

@@ -1,4 +1,6 @@
 const Course = require('../models/Course')
+const User = require('../models/User')
+const VideoExercise = require('../models/VideoExercise')
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const { findOneAndUpdate } = require('../models/Course')
@@ -399,6 +401,33 @@ class CourseController {
                         message: 'Internal server error'
                     })
                 })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+            })
+        }
+    }
+    async statistical(req, res) {
+        try {
+            const quantityUser=(await User.find({})).length
+            const listCourse=await Course.find({})
+            const listLecture=await VideoExercise.find({})
+            const quantityStudent=listCourse.reduce((total,item)=>{
+                return total=total+item.course.length
+            },0)
+            res.json({
+                success: true,
+                data: {
+                    student:quantityStudent,
+                    user:quantityUser,
+                    course:listCourse.length,
+                    video:listLecture.filter(item=>item.role==='video').length,
+                    quizzes:listLecture.filter(item=>item.role==='quizzes').length,
+                    text:listLecture.filter(item=>item.role==='exercise').length,
+                }
+            })
         } catch (error) {
             console.log(error)
             res.status(500).json({

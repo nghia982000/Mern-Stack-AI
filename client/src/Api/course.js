@@ -14,3 +14,4 @@ export const apiDeleteFavorite = (id) => axios.delete(`${URL}/course/deleteFavor
 export const apiBuyCourse = (payload) => axios.post(`${URL}/course/buyCourse`,payload)
 export const apiSelectField = (payload) => axios.post(`${URL}/course/selectField`,payload)
 export const apiSearchCourse = (payload) => axios.post(`${URL}/course/searchCourse`,payload)
+export const apiStatistical = () => axios.get(`${URL}/course/statistical`)

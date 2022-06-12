@@ -27,13 +27,36 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
   const handleDelete = (id) => {
     deleteCourse(id)
   }
+  const [page, setPage] = useState(1)
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current)
+}
   const columns = [
+    {
+      title: 'STT',
+      dataIndex: '',
+      key: '0',
+      width:'100px',
+      render:(value, item, index) => (page - 1) * 10 + index + 1
+    },
     { title: 'Tiêu đề', dataIndex: 'title', key: '1', ellipsis: true },
-    { title: 'Điểm', dataIndex: 'point', key: '4', ellipsis: true },
+    { title: 'Điểm', dataIndex: 'point', key: '2',width:'100px'},
+    {
+      title: 'Số học viên',
+      dataIndex: '',
+      key: '3',
+      render: (text, record) => (
+        <div>
+        {record.course.length}
+        </div>
+
+      ),
+      width:'150px'
+    },
     {
       title: 'Thao tác',
       dataIndex: '',
-      key: '5',
+      key: '4',
       render: (text, record) => (
         <Space size="middle">
           <Button type="primary" onClick={() => (
@@ -93,6 +116,10 @@ const Course = ({ listCourse, dataCourse, deleteCourse, updateState, createState
         dataSource={dataCourse}
         rowKey={record => record._id}
         style={{ paddingTop: '10px' }}
+        onChange={handleTableChange}
+        scroll={{
+          y: 400,
+        }}
       />
     </div>
   )

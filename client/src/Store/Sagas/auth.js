@@ -20,7 +20,7 @@ import setAuthToken from '../../Api/until'
 function* fetchLoginSaga({ payload, resolve }) {
     try {
         const response = yield call(apiAuth.fetchLogin, payload)
-        console.log(response)
+        // console.log(response)
         if (response.data.success) {
             sessionStorage.setItem('token',response.data.accessToken)
             yield put(checkLoginSuccess(response.data.user))
@@ -101,7 +101,7 @@ export function* sagaCheckLogin() {
 function* fetchGetAccount() {
     try {
         const response = yield call(apiAuth.getAccount)
-        console.log(response)
+        // console.log(response)
         yield put(getAccountSuccess(response.data.data))
     } catch (err) {
         console.error(err)
@@ -121,7 +121,7 @@ export function* sagaGetAccount() {
 function* fetchDeleteAccount(action) {
     try {
         const response = yield call(apiAuth.deleteAccount,action.payload)
-        console.log(response)
+        // console.log(response)
         yield put(deleteAccountSuccess(response.data.user))
     } catch (err) {
         console.error(err)

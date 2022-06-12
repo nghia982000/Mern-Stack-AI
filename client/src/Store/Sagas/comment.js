@@ -19,7 +19,7 @@ import * as apiComment from '../../Api/comment'
 function* fetchCreateComment(action) {
     try {
         const response = yield call(apiComment.createComment, action.payload)
-        console.log(response)
+        // console.log(response)
         yield put(createCommentSuccess(response.data.comment))
     } catch (err) {
         console.error(err)
@@ -40,7 +40,7 @@ function* fetchReportComment({ payload, resolve }) {
     try {
         const response = yield call(apiComment.reportComment, payload)
         resolve(response)
-        console.log(response)
+        // console.log(response)
     } catch (err) {
         console.error(err)
         resolve(err.response.data.message)
@@ -53,7 +53,7 @@ function* fetchGetListReplycomment({ payload, resolve }) {
     try {
         const response = yield call(apiComment.getListReplyComment, payload)
         resolve(response)
-        console.log(response)
+        // console.log(response)
     } catch (err) {
         console.error(err)
         resolve(err.response.data.message)
@@ -66,7 +66,7 @@ function* fetchReplyComment({ payload, resolve }) {
     try {
         const response = yield call(apiComment.replyComment, payload)
         resolve(response)
-        console.log(response)
+        // console.log(response)
     } catch (err) {
         console.error(err)
         resolve(err.response.data.message)
@@ -98,7 +98,7 @@ export function* sagaGetCmt() {
 function* fetchGetComment(action) {
     try {
         const response = yield call(apiComment.getComment, action.payload)
-        console.log(response)
+        // console.log(response)
         yield put(saveComment(response.data.data))
     } catch (err) {
         console.error(err)
@@ -119,7 +119,7 @@ export function* sagaGetComment() {
 function* fetchGetListComment() {
     try {
         const response = yield call(apiComment.getListComment)
-        console.log(response)
+        // console.log(response)
         yield put(getListCommentSuccess(response.data.data))
     } catch (err) {
         console.error(err)
@@ -139,7 +139,7 @@ export function* sagaGetListComment() {
 function* fetchDeleteComment(action) {
     try {
         const response = yield call(apiComment.deleteComment, action.payload)
-        console.log(response)
+        // console.log(response)
     } catch (err) {
         console.error(err)
         if (err.response) {

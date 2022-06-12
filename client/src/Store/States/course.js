@@ -7,5 +7,6 @@ export const INIT_STATE={
     },
     favorite:[],
     course:[],
-    listField:[]
+    listField:[],
+    statistical:{}
 }

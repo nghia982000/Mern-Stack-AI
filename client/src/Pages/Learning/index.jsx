@@ -8,7 +8,8 @@ import {
   Button,
   Radio,
   Space,
-  Drawer
+  Drawer,
+  Col, Row, Statistic 
 } from 'antd'
 import { PlayCircleOutlined, FileTextOutlined, FileDoneOutlined, BarsOutlined } from '@ant-design/icons'
 import imgCourse from '../../Assets/img/desk.png'
@@ -31,6 +32,8 @@ import { selectGetListQuestions } from '../../Store/Selectors/quizzes'
 import { selectListTestResult } from '../../Store/Selectors/history'
 
 const { Panel } = Collapse
+const { Countdown } = Statistic
+const deadline = Date.now() + 1000*60
 
 const Learning = ({
   selectDetailCourse,
@@ -355,19 +358,19 @@ const Learning = ({
                                         <Radio value={{
                                           "id": `${item._id}`,
                                           "correctAnswer": "A"
-                                        }}>{item.answer.A}</Radio>
+                                        }}>A. {item.answer.A}</Radio>
                                         <Radio value={{
                                           "id": `${item._id}`,
                                           "correctAnswer": "B"
-                                        }}>{item.answer.B}</Radio>
+                                        }}>B. {item.answer.B}</Radio>
                                         <Radio value={{
                                           "id": `${item._id}`,
                                           "correctAnswer": "C"
-                                        }}>{item.answer.C}</Radio>
+                                        }}>C. {item.answer.C}</Radio>
                                         <Radio value={{
                                           "id": `${item._id}`,
                                           "correctAnswer": "D"
-                                        }}>{item.answer.D}</Radio>
+                                        }}>D. {item.answer.D}</Radio>
                                       </Space>
                                     </Radio.Group>
                                   </Form.Item>

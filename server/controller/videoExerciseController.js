@@ -51,6 +51,7 @@ class VideoExerciseController {
                 title,
                 lecture,
                 role,
+                public_id:urlVideo.public_id,
                 url: urlVideo.url,
                 course: id,
                 duration:urlVideo.duration
@@ -72,7 +73,7 @@ class VideoExerciseController {
 
     async updateVideo(req, res) {
         // const video = req.files.video
-        const { title, lecture, id, url,duration} = req.body
+        const { title, lecture, id, url,duration,public_id} = req.body
         const videoUrl = {
             url
         }
@@ -90,6 +91,7 @@ class VideoExerciseController {
             title,
             lecture,
             id,
+            public_id:videoUrl.url. public_id || public_id,
             url: videoUrl.url.url || url,
             duration:videoUrl.url.duration||duration
         }
@@ -128,7 +130,10 @@ class VideoExerciseController {
                 _id: req.params.id
             }
             const deletedVideo = await VideoExercise.findOneAndDelete(videoDeleteCondition)
-            console.log(deletedVideo)
+            if(deletedVideo.role==='video'){
+                await cloudinary.uploader.destroy(deletedVideo.public_id, { resource_type: "video" }, function(error,result) {
+                    console.log(result, error) })
+            }
             //User not authorised to update Course or Course not found
             if (!deletedVideo) {
                 return res.status(401).json({

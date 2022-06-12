@@ -16,6 +16,9 @@ const VideoExerciseSchema = new Schema({
     content: {
         type: String,
     },
+    public_id:{
+        type:String
+    },
     url: {
         type: String,
     },  

@@ -307,3 +307,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjO
     "role":"quizzes"
 }
 
+###
+GET     http://localhost:5000/course/statistical
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjNjOGY3ODQ4ODEzODVkZGQ2ZDE2M2EiLCJpYXQiOjE2NTM2NDUyNTZ9.EbeEyiRq63AcFqJN1vzr3GAJ1kCP1JNBfeFk2KVN0XU
+
+

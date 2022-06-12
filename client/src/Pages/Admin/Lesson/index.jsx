@@ -129,6 +129,9 @@ const Lesson = ({
                     columns={columns}
                     dataSource={selectVideos}
                     rowKey={record => record._id}
+                    scroll={{
+                        y: 400,
+                      }}
                 />
             </div>
 

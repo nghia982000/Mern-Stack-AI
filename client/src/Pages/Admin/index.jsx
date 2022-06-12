@@ -11,10 +11,11 @@ import {
   HomeOutlined,
   UserOutlined,
   KeyOutlined,
-  LogoutOutlined
-
+  LogoutOutlined,
+  ExclamationCircleOutlined,
+  CheckCircleOutlined
 } from '@ant-design/icons'
-import { Layout, Menu,Avatar } from 'antd'
+import { Layout, Menu, Avatar, Modal,notification } from 'antd'
 import { Routes, Route, Link, useNavigate } from "react-router-dom"
 import logoAd from '../../Assets/img/logoAD.png'
 import Course from './/Course'
@@ -34,23 +35,23 @@ import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {
-    selectIsAuthenticated,
-    selectUser
+  selectIsAuthenticated,
+  selectUser
 } from '../../Store/Selectors/auth'
 
 const { Header, Sider, Content } = Layout
 const { SubMenu } = Menu
 
-const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
+const Admin = ({ checkLoginRequest, selectIsAuthenticated, selectUser }) => {
   const [colapsed, setColapsed] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const toggle = () => {
     setCollapsed(!collapsed)
   }
   const navigate = useNavigate()
-  useEffect(()=>{
+  useEffect(() => {
     checkLoginRequest()
-  },[])
+  }, [])
 
   useEffect(() => {
     if (!selectIsAuthenticated) {
@@ -59,12 +60,50 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
   }, [selectIsAuthenticated])
 
   useEffect(() => {
-    if(selectUser){
-      if (selectUser.role ==='user') {
+    if (selectUser) {
+      if (selectUser.role === 'user') {
         navigate('/')
       }
     }
   }, [selectUser])
+  const confirm = () => {
+    Modal.confirm({
+      title: 'Thông báo',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Bạn có muốn đổi mật khẩu không',
+      okText: 'Có',
+      cancelText:'Không',
+      onOk() {
+        navigate('/password')
+      },
+      onCancel() {
+        console.log('Cancel')
+      }
+
+    })
+  }
+  const confirmLogout = () => {
+    Modal.confirm({
+      title: 'Thông báo',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Bạn có muốn đăng xuất không',
+      okText: 'Có',
+      cancelText:'Không',
+      onOk() {
+        sessionStorage.removeItem('token')
+        if (!sessionStorage['token']) {
+          notification.open({
+            message: 'Đăng xuất thành công',
+            icon: <CheckCircleOutlined style={{ color: "green" }} />,
+          })
+          navigate('/')
+        }
+      },
+      onCancel() {
+        console.log('Cancel')
+      }
+    })
+  }
   return (
     <div className='admin'>
       <Layout>
@@ -99,21 +138,21 @@ const Admin = ({ checkLoginRequest, selectIsAuthenticated,selectUser }) => {
                 Quản lý comment
               </Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<KeyOutlined />}>
-              <Link to="/password">
-                Đổi mật khẩu
+            <Menu.Item key="4" icon={<BarChartOutlined />}>
+              <Link to="/admin/statistical">
+                Thống kê
               </Link>
             </Menu.Item>
-            <Menu.Item key="5" icon={<LogoutOutlined />}>
+            <Menu.Item key="5" icon={<KeyOutlined />} onClick={confirm}>
+              <span>
+                Đổi mật khẩu
+              </span>
+            </Menu.Item>
+            <Menu.Item key="6" icon={<LogoutOutlined />} onClick={confirmLogout}>
               <span>
                 Đăng xuất
               </span>
             </Menu.Item>
-            {/* <Menu.Item key="4" icon={<BarChartOutlined />}>
-              <Link to="/admin/statistical">
-                Thống kê
-              </Link>
-            </Menu.Item> */}
           </Menu>
 
         </Sider>
