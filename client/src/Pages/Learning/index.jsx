@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState, useRef } from 'react'
-
+import purify from "dompurify"
 import './style.scss'
 import {
   Collapse,
@@ -296,7 +296,7 @@ const Learning = ({
                   <div className="learingLeftExerciseTitle">
                     <h1>{exercise.title}</h1>
                   </div>
-                  <div dangerouslySetInnerHTML={{ __html: exercise.content }}></div>
+                  <div dangerouslySetInnerHTML={{ __html: purify.sanitize(exercise.content) }}></div>
                 </div>
                 <div className="learingLeftComment">
                   {
