@@ -53,7 +53,8 @@ const Lesson = ({
         getVideo(id)
     }, [])
     const columns = [
-        { title: 'Chương', dataIndex: 'lecture', key: '0', ellipsis: true },
+        { title: 'Chương', dataIndex: 'lecture', key: '0',width: '150px' },
+        { title: 'Bài', dataIndex: 'lesson', key: '1', width: '150px' },
         { title: 'Tiêu đề', dataIndex: 'title', key: '2', ellipsis: true },
         {
             title: 'Action',

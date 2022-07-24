@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
 import { Radio, Space } from 'antd'
-import GoogleAds from '../../Components/Adver'
+// import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -41,9 +41,11 @@ const Course = ({ listCourse, dataCourse, selectListField, selectField }) => {
           })
         }
       </div>
-      <div className="advertisement">
+      {/* <div className="advertisement">
         <GoogleAds slot={9579687915}/>
-      </div>
+      </div> */}
+      <div style={{height:'300px'}} >
+        </div>
     </div>
   )
 }

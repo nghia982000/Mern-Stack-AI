@@ -4,7 +4,7 @@ import { Collapse, notification } from 'antd'
 import imgCourse from '../../Assets/img/desk.png'
 import { CheckOutlined, PlayCircleOutlined, FileTextOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
-import GoogleAds from '../../Components/Adver'
+// import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import * as actionsVideo from '../../Store/Actions/video'
@@ -98,6 +98,9 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
               <Collapse >
                 {
                   lessons.map((item, index) => {
+                    const newLesson = item.lesson.sort((a, b) => {
+                      return a.lesson - b.lesson
+                    })
                     return (
                       <Panel header={`Chương ${item.lecture}`} key={index}>
                         {
@@ -139,8 +142,10 @@ const Detail = ({ selectDetailCourse, detailCourse, getVideo, selectVideos, favo
             )
           }
         </div>
-        <div className="advertisement">
+        {/* <div className="advertisement">
           <GoogleAds slot={9579687915} />
+        </div> */}
+        <div style={{height:'200px'}} >
         </div>
       </div>
       <div className="detailRight">

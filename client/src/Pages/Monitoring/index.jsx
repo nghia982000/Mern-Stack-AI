@@ -88,7 +88,6 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
                     showNotification('Bạn đang dùng điện thoại hãy tập trung vào công việc', LogoAD, 'Nhắc nhở')
                     break
                 case 'Turn around':
-                    notify('Your title', { body: 'Your message.' })
                     showNotification('Bạn đang không tập trung', LogoAD, 'Nhắc nhở')
                     break
                 case 'Leaving':

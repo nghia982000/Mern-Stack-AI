@@ -38,6 +38,7 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
             formModal.setFieldsValue({
                 title: selectDetailVideo.title,
                 lecture: selectDetailVideo.lecture,
+                lesson:selectDetailVideo.lesson,
                 url: selectDetailVideo.url
             })
         }
@@ -49,6 +50,7 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
             formData.append('title', values.title)
             formData.append('id', id)
             formData.append('lecture', values.lecture)
+            formData.append('lesson', values.lesson)
             formData.append('video', values.video.file)
             formData.append('role', 'video')
             console.log(formData)
@@ -63,6 +65,7 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
             formData.append('title', values.title)
             formData.append('id', selectDetailVideo._id)
             formData.append('lecture', values.lecture)
+            formData.append('lesson', values.lesson)
             formData.append('role', 'video')
             // console.log(formData)
             if (urlVideo) {
@@ -112,6 +115,16 @@ const Video = ({ selectCreateState, selectUpdateState, selectDetailVideo, create
                     {
                         required: true,
                         message: 'Vui lòng nhập chương!'
+                    }
+                ]}
+                    hasFeedback
+                >
+                    <InputNumber />
+                </Form.Item>
+                <Form.Item name="lesson" label="Bài" rules={[
+                    {
+                        required: true,
+                        message: 'Vui lòng nhập bài!'
                     }
                 ]}
                     hasFeedback

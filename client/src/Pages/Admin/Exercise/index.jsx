@@ -38,6 +38,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
       formModal.setFieldsValue({
         title: selectDetailExercise.title,
         lecture: selectDetailExercise.lecture,
+        lesson:selectDetailExercise.lesson
       })
       setData({ ...data, content: selectDetailExercise.content })
     }
@@ -48,6 +49,7 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
     formData.append('title', values.title)
     formData.append('id', id)
     formData.append('lecture', values.lecture)
+    formData.append('lesson', values.lesson)
     formData.append('role', 'exercise')
     formData.append('content', data.content)
     if (selectCreateState) {
@@ -127,6 +129,13 @@ const Exercise = ({ createExercise, selectUpdateState, selectCreateState, select
           rules={[{ required: true, message: 'Vui lòng nhập chương!' }]}
         >
           <InputNumber size="large" placeholder="Chương" />
+        </Form.Item>
+        <Form.Item
+          label='Bài'
+          name="lesson"
+          rules={[{ required: true, message: 'Vui lòng nhập bài!' }]}
+        >
+          <InputNumber size="large" placeholder="bài" />
         </Form.Item>
         <Form.Item
           label='Tiêu đề'

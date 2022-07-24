@@ -85,7 +85,10 @@
         }
         .itemVideoLearing {
             cursor: pointer;
-            padding: 10px 0;
+            &:hover{
+                background-color: #e9e0e0;
+            }
+            padding: 10px;
             span {
                 padding-right: 10px;
             }

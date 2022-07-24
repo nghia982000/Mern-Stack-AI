@@ -9,7 +9,7 @@ import {
   Radio,
   Space,
   Drawer,
-  Col, Row, Statistic 
+  Col, Row, Statistic
 } from 'antd'
 import { PlayCircleOutlined, FileTextOutlined, FileDoneOutlined, BarsOutlined } from '@ant-design/icons'
 import imgCourse from '../../Assets/img/desk.png'
@@ -33,7 +33,7 @@ import { selectListTestResult } from '../../Store/Selectors/history'
 
 const { Panel } = Collapse
 const { Countdown } = Statistic
-const deadline = Date.now() + 1000*60
+const deadline = Date.now() + 1000 * 60
 
 const Learning = ({
   selectDetailCourse,
@@ -192,6 +192,9 @@ const Learning = ({
             <Collapse accordion >
               {
                 lessons.map((item, index) => {
+                  const newLesson = item.lesson.sort((a, b) => {
+                    return a.lesson - b.lesson
+                  })
                   return (
                     <Panel header={` Chương ${item.lecture}`} key={index}>
                       {
@@ -228,10 +231,10 @@ const Learning = ({
                               }
                               } >
                                 <div>
+                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
                                   {`Bài ${indexArr + 1}: ${lesson.title}`}
                                 </div>
-                                <div>
-                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                                <div style={{paddingLeft:'25px'}}>
                                   {formatTime(lesson.duration)}
                                 </div>
                               </div>
@@ -406,6 +409,9 @@ const Learning = ({
             <Collapse accordion >
               {
                 lessons.map((item, index) => {
+                  const newLesson = item.lesson.sort((a, b) => {
+                    return a.lesson - b.lesson
+                  })
                   return (
                     <Panel header={` Chương ${item.lecture}`} key={index}>
                       {
@@ -442,10 +448,10 @@ const Learning = ({
                               }
                               } >
                                 <div>
+                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
                                   {`Bài ${indexArr + 1}: ${lesson.title}`}
                                 </div>
-                                <div>
-                                  <PlayCircleOutlined style={{ color: '#f9b9a7' }} />
+                                <div style={{paddingLeft:'25px'}}>
                                   {formatTime(lesson.duration)}
                                 </div>
                               </div>

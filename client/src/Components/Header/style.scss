@@ -139,7 +139,6 @@
 
     .headerCenter {
         flex: 1;
-
         .headerSearch {
             display: flex;
             align-items: center;
@@ -149,7 +148,7 @@
             height: 40px;
             padding: 10px 10px;
             border-radius: 20px;
-
+            margin: auto;
             &:hover {
                 box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
             }

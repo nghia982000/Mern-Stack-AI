@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import ItemCourse from '../../Components/ItemCourse'
 import './style.scss'
-import GoogleAds from '../../Components/Adver'
+// import GoogleAds from '../../Components/Adver'
 
 import * as actions from '../../Store/Actions/course'
 import { createStructuredSelector } from 'reselect'
@@ -22,9 +22,11 @@ const MyCourse = ({selectBoughtCourse }) => {
           })
         }
       </div>
-      <div className="advertisement">
+      {/* <div className="advertisement">
         <GoogleAds slot={9579687915}/>
-      </div>
+      </div> */}
+      <div style={{height:'300px'}} >
+        </div>
     </div>
   )
 }

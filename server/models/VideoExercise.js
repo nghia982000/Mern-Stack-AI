@@ -6,6 +6,10 @@ const VideoExerciseSchema = new Schema({
         type: Number,
         required: true,
     },
+    lesson:{
+        type: Number,
+        // required: true,
+    },
     title: {
         type: String,
         required: true,

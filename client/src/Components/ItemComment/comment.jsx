@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './styleComment.scss'
-import { Collapse, notification } from 'antd'
-import { CloseCircleOutlined } from '@ant-design/icons'
+import { Collapse, notification,Modal } from 'antd'
+import { CloseCircleOutlined,ExclamationCircleOutlined } from '@ant-design/icons'
 
 import * as actions from '../../Store/Actions/comment'
 import { createStructuredSelector } from 'reselect'
@@ -10,41 +10,66 @@ import { compose } from 'redux'
 import { selectListCommentAll } from '../../Store/Selectors/comment'
 import { selectUser } from '../../Store/Selectors/auth'
 
-const Comment = ({ item, index, LogoAD, reportComment,replyComment,getListReplyComment,selectUser}) => {
+const Comment = ({ item, index, LogoAD, reportComment, replyComment, getListReplyComment, selectUser }) => {
     const [actionCom, setActionCom] = useState(false)
-    const [listReply,setListReply]=useState(item.reply)
+    const [listReply, setListReply] = useState(item.reply)
     const [stateComment, setStateComment] = useState(false)
     const content = useRef()
-    const onSubmit =async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
-        const rep=await replyComment({
-            id:item._id,
-            data:{
+        const rep = await replyComment({
+            id: item._id,
+            data: {
                 content: content.current.value,
-                nameAccount:selectUser.nameAccount
+                nameAccount: selectUser.nameAccount
             }
         })
-        if(rep.data.success){
+        if (rep.data.success) {
             setListReply(rep.data.reply)
         }
         content.current.value = ''
         setStateComment(false)
         setActionCom(false)
     }
-    const report = async (id) => {
-        const rep = await reportComment(id)
-        if (rep.data.success) {
-            notification.open({
-                message: `Bạn đã báo cáo thành công`,
-                icon: <CloseCircleOutlined style={{ color: "red" }} />,
-            })
-        }
+    // const report = async (id) => {
+    //     const rep = await reportComment(id)
+    //     if (rep.data.success) {
+    //         notification.open({
+    //             message: `Bạn đã báo cáo thành công`,
+    //             icon: <CloseCircleOutlined style={{ color: "red" }} />,
+    //         })
+    //     }
+    // }
+    const confirm = (id) => {
+        Modal.confirm({
+            title: 'Thông báo',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Bạn có muốn báo cáo bình luận này không?',
+            okText: 'Có',
+            cancelText: 'Không',
+            async onOk() {
+                const rep = await reportComment(id)
+                if (rep.data.success) {
+                    notification.open({
+                        message: `Bạn đã báo cáo thành công`,
+                        icon: <CloseCircleOutlined style={{ color: "red" }} />,
+                    })
+                }
+            },
+            onCancel() {
+                console.log('Cancel')
+            }
+
+        })
     }
     const formatDatetime = (Datetime) => {
         var date = new Date(Datetime)
         return (`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
     }
     const [stateListReply, setStateListReply] = useState(false)
+    useEffect(() => {
+        setListReply(item.reply)
+    }, [item])
     return (
         <div className="itemComment" key={index}>
             <div className="itemCommentAvatar">
@@ -59,7 +84,7 @@ const Comment = ({ item, index, LogoAD, reportComment,replyComment,getListReplyC
                     {
                         formatDatetime(item.createdAt)
                     }
-                    <p onClick={() => report(item._id)}> - Báo cáo - </p>
+                    <p onClick={() => confirm(item._id)}> - Báo cáo - </p>
                     <p onClick={() => setStateComment(!stateComment)}>Trả lời</p>
                 </div>
                 {
@@ -100,7 +125,7 @@ const Comment = ({ item, index, LogoAD, reportComment,replyComment,getListReplyC
                                 stateListReply && (
                                     listReply.map((reply, index) => {
                                         return (
-                                            <div className="itemComment" key={index} style={{borderBottom:'1px solid #f2f3f5'}}>
+                                            <div className="itemComment" key={index} style={{ borderBottom: '1px solid #f2f3f5' }}>
                                                 <div className="itemCommentAvatar">
                                                     <img src={LogoAD} alt="" />
                                                 </div>

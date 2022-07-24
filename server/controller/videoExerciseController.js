@@ -20,10 +20,13 @@ class VideoExerciseController {
         const id = req.params.id
         try {
             const data = await VideoExercise.find({ course: id })
+            // const sortData=data.sort((a,b)=>{
+            //     return a.lecture-b.lecture
+            // })
             res.json({ 
                 success: true, 
                 data: data.sort((a,b)=>{
-                    return a.lecture-b.lecture
+                    return a.lecture-b.lecture||a.lesson-b.lesson
                 })
             })
         } catch (error) {
@@ -35,7 +38,7 @@ class VideoExerciseController {
         }
     }
     async createVideo(req, res) {
-        const { title, lecture, id,role } = req.body
+        const { title, lecture, id,role,lesson } = req.body
         const video = req.files.video
         try {
             const urlVideo = await cloudinary.uploader.upload(
@@ -49,6 +52,7 @@ class VideoExerciseController {
             console.log(urlVideo)
             const newVideo = new VideoExercise({
                 title,
+                lesson,
                 lecture,
                 role,
                 public_id:urlVideo.public_id,
@@ -73,7 +77,7 @@ class VideoExerciseController {
 
     async updateVideo(req, res) {
         // const video = req.files.video
-        const { title, lecture, id, url,duration,public_id} = req.body
+        const { title, lecture, id, url,duration,public_id,lesson} = req.body
         const videoUrl = {
             url
         }
@@ -89,6 +93,7 @@ class VideoExerciseController {
         console.log(videoUrl)
         let updateVideo = {
             title,
+            lesson,
             lecture,
             id,
             public_id:videoUrl.url. public_id || public_id,
@@ -166,11 +171,12 @@ class VideoExerciseController {
     //         })
     // }
     async createExercise(req, res) {
-        const {content,id ,title, lecture, role} = req.body
+        const {content,id ,title, lecture, role,lesson} = req.body
         try {
             console.log(content,id ,title, lecture, role)
             const newExercise = new VideoExercise({
                 title,
+                lesson,
                 lecture,
                 content:content,
                 course:id,
@@ -191,11 +197,12 @@ class VideoExerciseController {
         }
     }
     async updateExercise(req, res) {
-        const {content,id ,title, lecture, role} = req.body
+        const {content,id ,title, lecture, role,lesson} = req.body
         console.log(req.params.id)
         try {
             let updateExercise = {
                 title,
+                lesson,
                 lecture,
                 content:content,
                 course:id,
@@ -231,11 +238,12 @@ class VideoExerciseController {
         }
     }
     async createQuizzes(req, res) {
-        const {id,title, lecture, role} = req.body
+        const {id,title, lecture, role,lesson} = req.body
         try {
             console.log(id ,title, lecture, role)
             const newQuizzes = new VideoExercise({
                 title,
+                lesson,
                 lecture,
                 course:id,
                 role
@@ -255,11 +263,12 @@ class VideoExerciseController {
         }
     }
     async updateQuizzes(req, res) {
-        const {id ,title, lecture, role} = req.body
+        const {id ,title, lecture, role,lesson} = req.body
         console.log(req.params.id)
         try {
             let updateQuizzes = {
                 title,
+                lesson,
                 lecture,
                 course:id,
                 role

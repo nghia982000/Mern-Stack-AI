@@ -96,7 +96,7 @@ const ItemMonitoring = ({ stateMonitor, selectIsAuthenticated }) => {
         <div className="itemMonitoringTitle">
           Giám sát quá trình làm việc của bạn
         </div>
-        <div className="itemMonitoringBtn" onClick={showModal} >
+        <div className="itemMonitoringBtn" onClick={startMonitoring} >
           Bắt đầu giám sát
         </div>
       </div>

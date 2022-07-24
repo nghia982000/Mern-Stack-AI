@@ -38,6 +38,7 @@ const Account = ({ selectBoughtCourse, selectUser, getListAcctive, selectListAcc
                 </div>
                 <div className="accountProfileName">
                     {selectUser.nameAccount}
+                    <div>{selectUser.point} coin</div>
                 </div>
             </div>
             <div className="accountContent">
