@@ -343,7 +343,7 @@ const Monitoring = ({ selectIsAuthenticated, selectUser, createActive }) => {
                     <h3>Bạn sử dụng điện thoại là:{focusUsingPhone}%</h3>
                     <h3>Bạn đã rời khỏi nơi làm việc là:{focusLeaving}%</h3>
                     <h3>Bạn đã không chú ý là:{focusTurnAround}%</h3>
-                    <h3>Bạn đã không mệt mỏi là:{focusTired}%</h3>
+                    <h3>Bạn đã mệt mỏi là:{focusTired}%</h3>
                     {
                         point && (
                             <p>Bạn được cộng {point} xu vào tài khoản</p>

@@ -30,6 +30,7 @@ const Quizzes = ({ createQuizzes, selectUpdateState, selectCreateState, selectDe
       formModal.setFieldsValue({
         title: selectDetailQuizzes.title,
         lecture: selectDetailQuizzes.lecture,
+        lesson: selectDetailQuizzes.lesson,
       })
     }
   }, [selectUpdateState, selectCreateState])
@@ -102,7 +103,7 @@ const Quizzes = ({ createQuizzes, selectUpdateState, selectCreateState, selectDe
           name="lesson"
           rules={[{ required: true, message: 'Vui lòng nhập bài!' }]}
         >
-          <InputNumber size="large" placeholder="bài" />
+          <InputNumber size="large" placeholder="Bài" />
         </Form.Item>
         <Form.Item
           label='Tiêu đề'
